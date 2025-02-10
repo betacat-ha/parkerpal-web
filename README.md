@@ -66,17 +66,5 @@
 
 #### npm run build
 
-# 功能演示图
-
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%871.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%872.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%873.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%874.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%875.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%876.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%877.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%878.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%879.png)
-![输入图片说明](functionimg/%E5%9B%BE%E7%89%8710.png)
 
 
