@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from "element-plus/es/components/form";
-import { deleteCamera, getIotDeviceList, newOrUpdatedCamera } from "@/api";
+import { deleteIotDevice, getIotDeviceList, newOrUpdateIotDevice } from "@/api";
 import { ElMessage } from "element-plus";
 import { iotRoleList, groupNumberList, tollList } from "@/views/data";
 import { computed } from "vue";
@@ -9,15 +9,18 @@ defineOptions({
   name: "DeviceManagement"
 });
 type DataListType = {
-  createTime?: string;
-  macAddress: string;
-  location: string;
-  name: string;
-  role: number;
-  groupId: number;
   id: string;
-  isToll: number;
-  updateTime?: string;
+  macAddress: string;
+  name: string;
+  location: string;
+  role: number;
+  createTime: number;
+  updateTime: number;
+  groupId: number;
+  createUserId: number;
+  isDisabled: number;
+  isDeleted: number;
+  parkingSpaces: null;
 };
 let refList = ref<FormInstance[]>([]);
 const dataList = ref<DataListType[]>([]);
@@ -30,21 +33,35 @@ const params = reactive({
 });
 const editIndex = ref(-1);
 const rules = reactive<FormRules<any>>({
-  name: [{ required: true, message: "请输入设备名称", trigger: "blur" }],
-  location: [
-    { required: true, message: "请输入设备所在位置", trigger: "blur" }
-  ],
-  devicePassword: [
-    { required: true, message: "请输入设备密码", trigger: "blur" }
-  ],
-  deviceUserName: [
-    { required: true, message: "请输入设备账号", trigger: "blur" }
+  id: [
+    { required: true, message: '请输入设备ID', trigger: 'blur' },
   ],
   macAddress: [
-    { required: true, message: "请输入设备MAC地址", trigger: "blur" }
+    { required: true, message: '请输入MAC地址', trigger: 'blur' },
+    {
+      pattern: /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
+      message: 'MAC地址格式不正确',
+      trigger: 'blur',
+    },
   ],
-  role: [{ required: true, message: "请选择设备类型", trigger: "blur" }],
-  groupId: [{ required: true, message: "请选择设备组号", trigger: "blur" }],
+  name: [
+    { required: true, message: '请输入设备名称', trigger: 'blur' },
+  ],
+  location: [
+    { required: true, message: '请输入设备所在位置', trigger: 'blur' },
+  ],
+  role: [
+    { required: true, message: '请选择设备角色', trigger: 'change' },
+  ],
+  groupId: [
+    { required: true, message: '请选择设备所属组', trigger: 'change' },
+  ],
+  createUserId: [
+    { required: true, message: '请选择创建用户', trigger: 'change' },
+  ],
+  // isDisabled: [
+  //   { required: true, message: '请选择设备状态', trigger: 'change' },
+  // ],
 });
 // 设置多个ref
 const setItemRef = (el: any) => {
@@ -61,7 +78,7 @@ const tableHeight = computed(() => {
 const saveFn = (data: any) => {
   Promise.all(refList.value.map(v => v.validate()))
     .then(() => {
-      return newOrUpdatedCamera(data.row);
+      return newOrUpdateIotDevice(data.row);
     })
     .then(() => {
       editIndex.value = -1;
@@ -82,7 +99,7 @@ const deleteFn = (id: string) => {
     type: "warning"
   })
     .then(() => {
-      return deleteCamera({ ids: [id] });
+      return deleteIotDevice({ ids: [id] });
     })
     .then(() => {
       ElMessage.success("删除成功");
@@ -92,10 +109,8 @@ const deleteFn = (id: string) => {
 const searchParams = reactive({
   location: "",
   name: "",
-  devicePort: "",
   role: "",
   groupId: "",
-  isToll: ""
 });
 
 //获取数据
@@ -111,7 +126,7 @@ const getData = () => {
     dataList.value = list;
     console.log(dataList);
     Object.assign(params, { pageNumber, pageSize, total, totalNumber });
-    backups = JSON.parse(JSON.stringify(res.data));
+    backups = JSON.parse(JSON.stringify(list));
   });
 };
 const tooltipOptions: any = {
@@ -128,15 +143,14 @@ const tableRef = ref<any>(null);
 const addData = () => {
   if (editIndex.value == -1) {
     dataList.value.unshift({
-      location: "",
-      name: "",
-      devicePort: "",
-      role: 0,
-      groupId: 0,
-      devicePassword: "",
-      deviceUserName: "",
       id: "",
-      isToll: 0
+      macAddress: "",
+      name: "",
+      location: "",
+      role: 0,
+      groupId: 1,
+      createUserId: 1,
+      isDisabled: 0,
     });
     editIndex.value = 0;
     tableRef.value.$refs.scrollBarRef.setScrollTop(0);

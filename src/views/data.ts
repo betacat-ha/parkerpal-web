@@ -94,15 +94,15 @@ export const statusList = [
 ];
 export const groupNumberList = [
   {
-    label: "主库",
+    label: "负一层",
     value: 1
   },
   {
-    label: "东库",
+    label: "负二层",
     value: 2
   },
   {
-    label: "西库",
+    label: "地面",
     value: 3
   }
 ];
@@ -151,7 +151,7 @@ export const tableColumn: tableColumnType[] = [
   }
 ];
 
-export const warehousingTableColumn:tableColumnType[] = [
+export const warehousingTableColumn: tableColumnType[] = [
   {
     prop: "mainlandLicensePlates",
     label: "车牌号码/手机号码"
@@ -179,7 +179,7 @@ export const warehousingTableColumn:tableColumnType[] = [
     prop: "startTime",
     label: "进库时间"
   }
-] ;
+];
 export const outboundColumn: tableColumnType[] = [
   {
     prop: "mainlandLicensePlates",
