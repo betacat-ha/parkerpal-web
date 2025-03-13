@@ -13,7 +13,7 @@ export default {
     {
       path: "/iot-deivces/device-dashboard",
       name: "DeviceDashboard",
-      component: () => import("@/views/iotDevice/deviceManagement/index.vue"),
+      component: () => import("@/views/iotDevice/dashboard/index.vue"),
       meta: {
         title: "数据大屏",
         roles: ["4", "3"]
