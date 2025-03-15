@@ -4,6 +4,7 @@ import { getParkingSpaceStatus } from "@/api";
 import { default as mapApp } from '@/utils/map/init'
 import { ref, onMounted } from 'vue'
 import { get } from 'sortablejs';
+import { number } from 'echarts';
 
 // 获取地图组件 DOM
 const mapViewRef = ref(null);
@@ -25,11 +26,11 @@ setInterval(() => {
 }, 5000);
 
 const refreshSpacesStatus = () => {
-  getParkingSpaceStatus({}).then(res => {
+  getParkingSpaceStatus({ modelName: "10005" }).then(res => {
     for (let space of res.data) {
       mapApp.changeModelColor({
-        id: space.id,
-        fnum: space.fnum,
+        id: Number(space.id),
+        fnum: Number(space.fnum),
         color: color[space.status]
       })
     }

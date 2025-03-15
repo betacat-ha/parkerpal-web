@@ -88,7 +88,7 @@ export interface ParkingSpaceStatus {
   /**
    * 车位状态
    */
-  status: string;
+  status: number;
 }
 
 /**
@@ -157,13 +157,13 @@ export const deleteIotDevice = (data: { ids: string[] }) => {
  */
 export const getParkingSpaceStatus = (data: {
   id?: string;
-  areaId?: string;
+  modelName?: string;
 }) => {
   return http.post<Result<ParkingSpaceStatus[]>, object>(
-    "https://m1.apifoxmock.com/m1/5573636-0-default/iot/getParkingSpaceStatus",
+    "/iot/getParkingSpaceStatus",
     {
       data
     },
-    { headers: { isEnableLoading: false } }
+    { headers: { isEnableLoading: false } } // 关闭加载动画
   )
 };
