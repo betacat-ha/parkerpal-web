@@ -72,6 +72,26 @@ export interface SystemParkingSpace {
 }
 
 /**
+ * 车位状态模型
+ */
+export interface ParkingSpaceStatus {
+  /**
+   * 车位编号
+   */
+  id: string;
+
+  /**
+   * 车位楼层
+   */
+  fnum: string;
+
+  /**
+   * 车位状态
+   */
+  status: string;
+}
+
+/**
  * 查询IOT设备列表
  * @param data 查询条件
  * @returns 
@@ -129,4 +149,21 @@ export const deleteIotDevice = (data: { ids: string[] }) => {
       data
     }
   );
+};
+
+/**
+ * 获取车位状态
+ * @param data 查询条件
+ */
+export const getParkingSpaceStatus = (data: {
+  id?: string;
+  areaId?: string;
+}) => {
+  return http.post<Result<ParkingSpaceStatus[]>, object>(
+    "https://m1.apifoxmock.com/m1/5573636-0-default/iot/getParkingSpaceStatus",
+    {
+      data
+    },
+    { headers: { isEnableLoading: false } }
+  )
 };

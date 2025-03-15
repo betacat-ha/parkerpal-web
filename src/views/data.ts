@@ -297,3 +297,20 @@ export const monthlyStatusList = [
     label: "过保"
   }
 ];
+
+export const parkingSpaceStatusList = [
+  {
+    value: "1",
+    label: "固定车位"
+  },
+  {
+    value: "2",
+    label: "占用车位"
+  },
+  {
+    value: "3",
+    label: "空闲车位"
+  }
+];
+
+export const parkingSpaceStatusColor = ["#7eacca", "#ff0000", "#00ff00"];
