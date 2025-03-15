@@ -2,16 +2,6 @@
 import { MAP_ID, MAP_DATA_PATH, EFFECT_PATH } from "./const";
 
 class MapApplication extends esmap.ESEventDispatcher {
-  private map: any;
-  private heatmapInstance: any;
-  private onlyPopConfig: PopConfig | null;
-  private manyPopConfigs: PopConfig | null;
-  private showStoreList: string[];
-  private manyStoreList: any[];
-  private watchSuccessList: (() => void)[];
-  private successSign: boolean;
-  private isShowModelMap: boolean;
-  private frameWindows: FrameWindows;
 
   constructor() {
     super();
@@ -39,26 +29,21 @@ class MapApplication extends esmap.ESEventDispatcher {
   /**
    * 初始化地图
    */
-  initMap(): void {
-    const container = document.getElementById('map-container');
-
-    if (!container) {
-      console.error("Map container not found");
-      return;
-    }
-
+  initMap() {
+    var container = document.getElementById('map-container');
     console.log(window.esmap)
     this.map = new window.esmap.ESMap({
       mode: window.esmap.MapMode.Building, // 加载室内地图
       container: container, //渲染dom
       mapDataSrc: MAP_DATA_PATH, //地图数据位置 
-      visibleFloors: 'all',//更多初始化参数配置请参考https://www.esmap.cn/docs/sdk3.0-tutorial/map-init.html
+      visibleFloors: [1],//更多初始化参数配置请参考https://www.esmap.cn/docs/sdk3.0-tutorial/map-init.html
       token: "escope",
-      focusAlphaMode: false,
-      // focusFloor: 3,
-      // focusAlpha: 0.1
+      focusAnimateMode: true, // 开启聚焦层切换的动画显示
+      focusAlphaMode: true,
+      focusFloor: 1,
+      focusAlpha: 0.1,
+      focusMode: 1
     });
-
     //打开地图数据
     this.map.openMapById(MAP_ID);
     this.map.showCompass = true;     //显示指南针
@@ -94,6 +79,7 @@ class MapApplication extends esmap.ESEventDispatcher {
       // var zoomControl = new esmap.ESZoomControl(this.map, ctlOpt1);
       // 多层控制控件
       // var toolControl = new esmap.ESToolControl(this.map);
+
       this.successSign = true
       this.isShowLoading(false);   // 关闭加载动画
       // 初始化气泡组件数据
@@ -230,6 +216,17 @@ class MapApplication extends esmap.ESEventDispatcher {
   }
 
   /**
+   * 修改模型颜色
+   */
+  changeModelColor({ id, fnum, color }) {
+    this.map.changeModelColor({
+      id: id,
+      fnum: fnum,
+      color: color
+    });
+  }
+
+  /**
  * 搜索地图中的资源信息
  */
   searchRes(keyword) {
@@ -346,4 +343,4 @@ class MapApplication extends esmap.ESEventDispatcher {
 
 }
 
-export default new MapApplication();
+export default new MapApplication;
