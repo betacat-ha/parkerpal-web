@@ -26,6 +26,14 @@ export default {
         title: "设备管理",
         roles: ["4", "3"]
       }
+    }, {
+      path: "/iot-deivces/map",
+      name: "IndoorMap",
+      component: () => import("@/views/iotDevice/map/index.vue"),
+      meta: {
+        title: "室内地图",
+        roles: ["4", "3"]
+      }
     }
   ]
 } satisfies RouteConfigsTable;
