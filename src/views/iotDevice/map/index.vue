@@ -5,11 +5,18 @@ import { default as mapApp } from '@/utils/map/init'
 import { ref, onMounted } from 'vue'
 import { get } from 'sortablejs';
 import { number } from 'echarts';
+import { useSocket } from '@/utils/websocket'
+import { useUserStoreHook } from "@/store/modules/user";
 
 // 获取地图组件 DOM
 const mapViewRef = ref(null);
 
 const color = ["#7eacca", "#ff0000", "#00ff00"];
+
+// websocket
+const account = useUserStoreHook().userInfo.account;
+const token = useUserStoreHook().userInfo.token;
+const { socket, on } = useSocket(import.meta.env.VITE_WEBSOCKET_HOST + account, { protocol: [token] })
 
 onMounted(() => {
   // 赋值到 mapApp 对象中方便调用子组件方法
@@ -37,6 +44,30 @@ const refreshSpacesStatus = () => {
   })
 }
 
+on('close', () => console.log('Socket closed!'))
+
+// webSocket连接上服务器时
+on('open', (event: any) => {
+  console.log('webSocket连接上服务器时', event)
+})
+
+socket.on('message', (data: any) => {
+  if (data) {
+    // TODO: 此处拿到后端推送过来的数据，进行你后续的数据渲染逻辑
+    const jsonData = JSON.parse(JSON.parse(data).data);
+
+    console.log(jsonData.id);
+    console.log(jsonData.status);
+
+    if (jsonData != null) {
+      mapApp.changeModelColor({
+        id: Number(jsonData.id),
+        fnum: 1,
+        color: color[Number(jsonData.status)]
+      })
+    }
+  }
+})
 
 // 让 mapViewRef 在父组件中可访问
 defineExpose({ mapViewRef });

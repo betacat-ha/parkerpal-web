@@ -300,15 +300,15 @@ export const monthlyStatusList = [
 
 export const parkingSpaceStatusList = [
   {
-    value: "1",
+    value: "0",
     label: "固定车位"
   },
   {
-    value: "2",
+    value: "1",
     label: "占用车位"
   },
   {
-    value: "3",
+    value: "2",
     label: "空闲车位"
   }
 ];
