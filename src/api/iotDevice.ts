@@ -102,6 +102,7 @@ export const getIotDeviceList = (data: {
   name?: string;
   macAddress?: string;
   role?: number | string;
+  [property: string]: any;
 }) => {
   return http.request<IotDevice[]>(
     "post",
