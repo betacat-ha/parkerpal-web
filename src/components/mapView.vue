@@ -147,4 +147,51 @@ defineExpose({ showInnerMap });
     }
   }
 }
+
+.m-pop {
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0px 5px;
+  background: url(/public/image/pop-background.png) no-repeat center top/100% 100%;
+  color: #fff;
+  font-size: 12px;
+
+  h4 {
+    margin-top: 15px;
+    /* margin-bottom: 10px; */
+    margin-left: 10px;
+    color: #52CBF6;
+    font-weight: 700;
+  }
+
+  .m-box {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .title {
+    font-size: 18px;
+    text-align: center;
+    margin: 10px 10px 10px 10px;
+  }
+
+  .pop-img {
+    width: 20px;
+    cursor: pointer;
+  }
+}
+
+.myPopClose {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  color: #919fb9;
+  cursor: pointer;
+  font-size: 20px;
+  background: url(/public/image/pop-close.png) no-repeat center top/100% 100%;
+}
 </style>
