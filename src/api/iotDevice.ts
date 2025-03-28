@@ -1,5 +1,6 @@
 import { http } from "@/utils/http";
 import { PagesType, Result } from "../../types";
+import { SystemParkingSpace } from "./systemParkingSpace";
 
 /**
  * 物联网-设备表
@@ -59,16 +60,6 @@ export interface IotDevice {
    * 停车位信息
    */
   parkingSpaces?: SystemParkingSpace[];
-}
-
-/**
- * 假设的 SystemParkingSpace 类型
- */
-export interface SystemParkingSpace {
-  // 根据实际情况补充字段
-  id: string;
-  spaceNumber: string;
-  status: string;
 }
 
 /**
