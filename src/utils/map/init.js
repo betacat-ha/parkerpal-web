@@ -21,9 +21,19 @@ class MapApplication extends esmap.ESEventDispatcher {
     //是否展示内嵌模型地图
     this.isShowModelMap = false
 
+    this.clickNodeCallback = null;  // 存储外部回调函数
+
     this.frameWindows = {
       innerMap: null
     }
+  }
+
+  /**
+ * 设置车位外部回调函数
+ * @param {Function} callback - 外部传入的回调函数
+ */
+  setClickNodeCallback(callback) {
+    this.clickNodeCallback = callback;
   }
 
   /**
@@ -185,7 +195,14 @@ class MapApplication extends esmap.ESEventDispatcher {
 
     // 地图点击事件
     this.map.on('mapClickNode', (e) => {
-      console.log(e);
+      // console.log(e);
+
+      // 如果外部传入了回调函数，调用它
+      if (this.clickNodeCallback) {
+        this.clickNodeCallback(e);
+      }
+
+
 
       // 记录并打印点集
       // self.tempCoords.push({ x: e.hitCoord.x, y: e.hitCoord.y, offset: 0 })
@@ -198,6 +215,39 @@ class MapApplication extends esmap.ESEventDispatcher {
       this.managerMapClick(e);
     })
 
+  }
+
+  // 创建气泡
+  createParkingSpaceDetailPop(data) {
+    // 从data中解构出x, y, fnum
+    const { x, y, fnum, name, id } = data;
+    const className = "close-" + id;
+    const popMarker = new esmap.ESPopMarker({
+      mapCoord: {
+        x: x,  // 坐标
+        y: y,
+        height: 4,        // 距离楼层地板的高度
+        fnum: fnum           // 所在楼层
+      },
+      className: 'rock-box m-pop', // 支持自定义class样式
+      width: 300,           // 气泡标注的宽度
+      height: 100,          // 气泡标注的高度
+      showLevel: 20,        // 显示级别
+      content: '<div class="title"><span>' + name + '</span></div>' +
+        '<div class="m-box">' +
+        '<video style="width: 100%;height: 100%;" controls autoplay>' +
+        '<source src="1.mp4"  type="video/mp4">' +
+        '</video>' +
+        '</div>' +
+        '<div class="myPopClose ' + className + '"></div>',
+      // 气泡框的内容,支持输入HTML代码
+      closeCallBack: () => {
+        // 信息窗点击关闭后的回调函数
+      },
+      created: () => {
+        // 创建完成的回调函数
+      }
+    });
   }
 
   /**

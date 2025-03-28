@@ -46,6 +46,24 @@ export default {
         title: "车辆出入库记录",
         roles: ["4", "3"]
       }
+    },
+    {
+      path: "/vehicle/parking-space/management",
+      name: "ParkingSpaceManagement",
+      component: () => import("@/views/vehicle/parkingSpace/management/index.vue"),
+      meta: {
+        title: "车位管理",
+        roles: ["4", "3"]
+      }
+    },
+    {
+      path: "/vehicle/parking-space/reservation",
+      name: "ParkingSpaceReservation",
+      component: () => import("@/views/vehicle/parkingSpace/reservation/index.vue"),
+      meta: {
+        title: "车位预约管理",
+        roles: ["4", "3"]
+      }
     }
   ]
 } satisfies RouteConfigsTable;
