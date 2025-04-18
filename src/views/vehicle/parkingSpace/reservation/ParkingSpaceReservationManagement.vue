@@ -160,7 +160,9 @@ const addData = () => {
   if (editIndex.value == -1) {
     dataList.value.unshift({
       macAddress: "",
-      name: "",
+      parkingSpace: {
+        name: "",
+      },
       location: "",
       role: 0,
       groupId: 1,
