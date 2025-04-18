@@ -1,5 +1,5 @@
-import {http} from "@/utils/http";
-import {Result} from "../../types";
+import { http } from "@/utils/http";
+import { Result } from "../../types";
 // 统计剩余抵用券
 export const assignedNumber = (data: { userId: string }) => {
   return http.request<Result<any>>(
@@ -14,7 +14,7 @@ export const assignedNumber = (data: { userId: string }) => {
 export const createParkCollect = (data: { userId: string; plates: string }) => {
   return http.request<Result<any>>(
     "post",
-    "/merchantReconciliation/createParkCollect",
+    "/api/createParkCollect",
     {
       data
     }
