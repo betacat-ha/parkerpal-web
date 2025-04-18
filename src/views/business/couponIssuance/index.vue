@@ -86,7 +86,7 @@ const getCode = () => {
   // TODO: 设置接口
   generateQRCode({
     userId,
-    url: "https://sample.com/#/pages/parkingLot/parkingLot" 
+    url: "https://sample.com/#/pages/parkingLot/parkingLot"
   }).then(res => {
     url.value = res.data;
     time = setTimeout(getCode, 1800000);
@@ -104,25 +104,11 @@ onBeforeUnmount(() => clearTimeout(time));
       <el-form ref="ruleFormRef" :model="form" :rules="rules">
         <div class="text-center mb-[20px]">电脑端领券</div>
         <el-form-item prop="plates">
-          <el-popover
-            v-model="carVisible"
-            placement="bottom"
-            trigger="click"
-            width="600"
-          >
-            <Carnumber
-              ref="carNumber"
-              v-model="form.plates"
-              @fatherMethod="carVisibleChange"
-            />
+          <el-popover v-model="carVisible" placement="bottom" trigger="click" width="600">
+            <Carnumber ref="carNumber" v-model="form.plates" @fatherMethod="carVisibleChange" />
             <template #reference>
-              <el-input
-                v-model="form.plates"
-                :validate-event="carVisible"
-                maxlength="11"
-                placeholder="请输入您的车牌号码/手机号码（无牌车）"
-                @input="changeValue(form.plates)"
-              />
+              <el-input v-model="form.plates" :validate-event="carVisible" maxlength="11"
+                placeholder="请输入您的车牌号码/手机号码（无牌车）" @input="changeValue(form.plates)" />
             </template>
           </el-popover>
         </el-form-item>
@@ -136,12 +122,7 @@ onBeforeUnmount(() => clearTimeout(time));
         </div>
         <el-row justify="center" style="width: 100%">
           <el-col :span="12">
-            <el-button
-              size="large"
-              style="width: 100%"
-              type="primary"
-              @click="onSubmit(ruleFormRef)"
-            >
+            <el-button size="large" style="width: 100%" type="primary" @click="onSubmit(ruleFormRef)">
               点击领券
             </el-button>
           </el-col>
@@ -150,23 +131,14 @@ onBeforeUnmount(() => clearTimeout(time));
     </div>
     <el-divider />
     <div class="w-[500px] mx-auto">
-      <div class="text-center mb-[20px]">手机端领券</div>
-      <img
-        :src="_src(url)"
-        alt="二维码"
-        class="w-[200px] h-[200px] mx-auto block mb-[20px]"
-      />
+      <div class="text-center mb-[20px]">出场二维码</div>
+      <img :src="_src(url)" alt="二维码" class="w-[200px] h-[200px] mx-auto block mb-[20px]" />
       <div class="text-center">
-        动态码，30分钟生成一次，每次扫码30分钟内有效。
+        动态码，仅可使用一次，30分钟内有效。
       </div>
       <el-row justify="center" style="width: 100%">
         <el-col :span="12">
-          <el-button
-            size="large"
-            style="width: 100%; margin-top: 20px"
-            type="primary"
-            @click="getCode"
-          >
+          <el-button size="large" style="width: 100%; margin-top: 20px" type="primary" @click="getCode">
             刷新二维码
           </el-button>
         </el-col>

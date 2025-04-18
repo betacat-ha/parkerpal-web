@@ -26,10 +26,10 @@ let backups: ParkingDetailListType[] = [];
 const editIndex = ref(-1);
 const rules = reactive<FormRules<any>>({
   assignedNumber: [
-    { required: true, message: "请输入租赁车位", trigger: "blur" }
+    { required: true, message: "请输入发放数量", trigger: "blur" }
   ],
   userName: [{ required: true, message: "绑定商家", trigger: "blur" }],
-  startTime: [{ required: true, message: "请选择租赁时间段", trigger: "blur" }],
+  startTime: [{ required: true, message: "请选择时间段", trigger: "blur" }],
   assignedStatus: [{ required: true, message: "请选择状态", trigger: "blur" }]
 });
 const params = reactive({
@@ -190,11 +190,11 @@ const freeTimePeriod = computed<any>({
 });
 const statusList = [
   {
-    label: "在租",
+    label: "有效",
     value: "1"
   },
   {
-    label: "过租",
+    label: "失效",
     value: "2"
   }
 ];
@@ -203,27 +203,24 @@ const statusList = [
   <div class="content bg-white dark:bg-[#141414]">
     <div class="c_box">
       <div class="title">
-        <div class="lf">商家租赁车位</div>
+        <div class="lf">商家停车券管理</div>
         <div class="form_box_p">
           <div class="form_box">
             <div class="form_item_box">
-              已租赁车位：{{ statistics ?? "--" }}
+              已发放停车券：{{ statistics ?? "--" }}
             </div>
             <div class="form_item_box">
-              可租赁车位：{{ parkingData?.disposableNumber ?? "--" }}
+              可发放停车券：{{ parkingData?.disposableNumber ?? "--" }}
             </div>
             <div class="form_item_box">
               总车位：{{ parkingData?.parkingNumber ?? "--" }}
             </div>
           </div>
-          <el-button
-            type="primary"
-            @click="
+          <el-button type="primary" @click="
               () => {
                 isShow = true;
               }
-            "
-            >编辑
+            ">编辑
           </el-button>
         </div>
       </div>
@@ -231,79 +228,38 @@ const statusList = [
         <div class="form_box form_box2">
           <div class="form_item_box">
             <div>商家：</div>
-            <el-input
-              v-model="searchParams.userName"
-              clearable
-              placeholder="请输入商家"
-            />
+            <el-input v-model="searchParams.userName" clearable placeholder="请输入商家" />
           </div>
           <div class="form_item_box">
-            <div>租赁状态：</div>
-            <el-select
-              v-model="searchParams.assignedStatus"
-              clearable
-              placeholder="请选择租赁状态"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="item in statusList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+            <div>额度状态：</div>
+            <el-select v-model="searchParams.assignedStatus" clearable placeholder="请选择额度状态" style="width: 100%">
+              <el-option v-for="item in statusList" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </div>
           <div class="form_item_box">
             <div>免收费时间段：</div>
             <div class="time_picker_date">
-              <el-date-picker
-                v-model="freeTimePeriod2"
-                end-placeholder="结束时间"
-                range-separator="To"
-                start-placeholder="开始时间"
-                type="datetimerange"
-                value-format="YYYY-MM-DD HH:mm:ss"
-              />
+              <el-date-picker v-model="freeTimePeriod2" end-placeholder="结束时间" range-separator="To"
+                start-placeholder="开始时间" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss" />
             </div>
           </div>
         </div>
         <el-button type="primary" @click="getData">搜索</el-button>
       </div>
       <el-table ref="tableRef" :data="dataList" :height="tableHeight">
-        <el-table-column
-          :index="indexMethod"
-          :show-overflow-tooltip="false"
-          align="center"
-          label="序号"
-          min-width="60"
-          type="index"
-        />
-        <el-table-column
-          :show-overflow-tooltip="editIndex < 0"
-          align="center"
-          label="商家"
-          min-width="200px"
-        >
+        <el-table-column :index="indexMethod" :show-overflow-tooltip="false" align="center" label="序号" min-width="60"
+          type="index" />
+        <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" label="商家" min-width="200px">
           <template #default="scope">
-            <el-form
-              v-if="scope.$index == editIndex"
-              id="form_item_box"
-              :ref="setItemRef"
-              :model="scope.row"
-              :rules="rules"
-            >
+            <el-form v-if="scope.$index == editIndex" id="form_item_box" :ref="setItemRef" :model="scope.row"
+              :rules="rules">
               <el-form-item prop="userName">
                 <div class="flex justify-center items-center w-[100%]">
-                  <el-button
-                    size="small"
-                    style="margin-right: 10px"
-                    type="primary"
-                    @click="
+                  <el-button size="small" style="margin-right: 10px" type="primary" @click="
                       () => {
                         isShowSelect = true;
                       }
-                    "
-                  >
+                    ">
                     {{ scope.row.userName ? "更改商家" : "绑定商家" }}
                   </el-button>
                   {{ scope.row.userName }}
@@ -315,27 +271,12 @@ const statusList = [
             </template>
           </template>
         </el-table-column>
-        <el-table-column
-          align="center"
-          label="租赁车位"
-          min-width="200px"
-          prop="freePoints"
-        >
+        <el-table-column align="center" label="停车券数量" min-width="200px" prop="freePoints">
           <template #default="scope">
-            <el-form
-              v-if="scope.$index == editIndex"
-              id="form_item_box"
-              :ref="setItemRef"
-              :model="scope.row"
-              :rules="rules"
-            >
+            <el-form v-if="scope.$index == editIndex" id="form_item_box" :ref="setItemRef" :model="scope.row"
+              :rules="rules">
               <el-form-item prop="assignedNumber">
-                <el-input
-                  v-model="scope.row.assignedNumber"
-                  clearable
-                  placeholder="请输入租赁车位"
-                  type="number"
-                />
+                <el-input v-model="scope.row.assignedNumber" clearable placeholder="请输入停车券数量" type="number" />
               </el-form-item>
             </el-form>
             <template v-else>
@@ -343,24 +284,13 @@ const statusList = [
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="租赁时间段" min-width="250px">
+        <el-table-column align="center" label="有效时间段" min-width="250px">
           <template #default="scope">
-            <el-form
-              v-if="scope.$index == editIndex"
-              :ref="setItemRef"
-              :model="scope.row"
-              :rules="rules"
-            >
+            <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules">
               <el-form-item prop="startTime">
-                <el-date-picker
-                  v-model="freeTimePeriod"
-                  end-placeholder="结束时间"
-                  range-separator="To"
-                  start-placeholder="开始时间"
-                  type="datetimerange"
-                  value-format="YYYY-MM-DD HH:mm:ss"
-                  @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')"
-                />
+                <el-date-picker v-model="freeTimePeriod" end-placeholder="结束时间" range-separator="To"
+                  start-placeholder="开始时间" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss"
+                  @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')" />
               </el-form-item>
             </el-form>
             <template v-else>
@@ -368,43 +298,24 @@ const statusList = [
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="租赁状态" width="200">
+        <el-table-column align="center" label="额度状态" width="200">
           <template #default="scope">
             {{ scope.row?.assignedStatus }}
           </template>
         </el-table-column>
 
-        <el-table-column
-          align="center"
-          fixed="right"
-          label="操作"
-          min-width="100"
-        >
+        <el-table-column align="center" fixed="right" label="操作" min-width="100">
           <template #default="scope">
             <template v-if="scope.$index != editIndex">
-              <el-button
-                icon="Delete"
-                size="small"
-                type="danger"
-                @click="deleteFn(scope.row.id)"
-              >
+              <el-button icon="Delete" size="small" type="danger" @click="deleteFn(scope.row.id)">
                 删除
               </el-button>
-              <el-button
-                icon="Edit"
-                size="small"
-                @click="editIndex = scope.$index"
-              >
+              <el-button icon="Edit" size="small" @click="editIndex = scope.$index">
                 编辑
               </el-button>
             </template>
             <div v-else style="margin-bottom: 20px">
-              <el-button
-                icon="FolderChecked"
-                size="small"
-                type="primary"
-                @click="saveFn(scope)"
-              >
+              <el-button icon="FolderChecked" size="small" type="primary" @click="saveFn(scope)">
                 保存
               </el-button>
               <el-button icon="Close" size="small" @click="cancellation">
@@ -418,24 +329,13 @@ const statusList = [
         <el-button icon="Plus" size="small" type="primary" @click="addData">
           新增
         </el-button>
-        <el-pagination
-          v-if="params.total"
-          v-model:current-page="params.pageNumber"
-          v-model:page-size="params.pageSize"
-          :page-sizes="[10, 50, 100, 150]"
-          :small="false"
-          :total="params.total"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="getData"
-          @current-change="getData"
-        />
+        <el-pagination v-if="params.total" v-model:current-page="params.pageNumber" v-model:page-size="params.pageSize"
+          :page-sizes="[10, 50, 100, 150]" :small="false" :total="params.total"
+          layout="total, sizes, prev, pager, next, jumper" @size-change="getData" @current-change="getData" />
       </div>
     </div>
     <Edit v-model="isShow" :from-data="parkingData" @update-fn="getParkingFn" />
-    <SelectUser
-      v-model="isShowSelect"
-      @handle-current-change="handleCurrentChange"
-    />
+    <SelectUser v-model="isShowSelect" @handle-current-change="handleCurrentChange" />
   </div>
 </template>
 

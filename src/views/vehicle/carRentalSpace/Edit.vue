@@ -45,7 +45,7 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 };
 const rules = reactive<FormRules<any>>({
   disposableNumber: [
-    { required: true, message: "请输入可租赁车位数", trigger: "blur" }
+    { required: true, message: "请输入发放停车券数量", trigger: "blur" }
   ],
   parkingNumber: [{ required: true, message: "请输入总车位", trigger: "blur" }]
 });
@@ -55,47 +55,20 @@ const closeFn = () => {
 </script>
 
 <template>
-  <el-dialog
-    :destroy-on-close="true"
-    :modelValue="modelValue"
-    title="编辑车场配置"
-    width="500px"
-    @close="closeFn"
-    @update:modelValue="$emit('update:modelValue', false)"
-  >
-    <el-form
-      ref="ruleFormRef"
-      :model="form"
-      :rules="rules"
-      label-position="top"
-      label-width="120px"
-    >
-      <el-form-item label="可租赁车位数" prop="disposableNumber">
-        <el-input
-          v-model="form.disposableNumber"
-          clearable
-          placeholder="请输入可租赁车位数"
-          type="number"
-        />
+  <el-dialog :destroy-on-close="true" :modelValue="modelValue" title="编辑车场配置" width="500px" @close="closeFn"
+    @update:modelValue="$emit('update:modelValue', false)">
+    <el-form ref="ruleFormRef" :model="form" :rules="rules" label-position="top" label-width="120px">
+      <el-form-item label="可发放停车券数" prop="disposableNumber">
+        <el-input v-model="form.disposableNumber" clearable placeholder="请输入可发放停车券数" type="number" />
       </el-form-item>
       <el-form-item label="总车位" prop="parkingNumber">
-        <el-input
-          v-model="form.parkingNumber"
-          clearable
-          placeholder="请输入总车位"
-          type="number"
-        />
+        <el-input v-model="form.parkingNumber" clearable placeholder="请输入总车位" type="number" />
       </el-form-item>
 
       <el-form-item>
         <el-row justify="center" style="width: 100%">
           <el-col :span="12">
-            <el-button
-              size="large"
-              style="width: 100%"
-              type="primary"
-              @click="onSubmit(ruleFormRef)"
-            >
+            <el-button size="large" style="width: 100%" type="primary" @click="onSubmit(ruleFormRef)">
               保存
             </el-button>
           </el-col>
