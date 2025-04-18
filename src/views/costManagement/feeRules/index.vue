@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-import {FormInstance, FormRules} from "element-plus/es/components/form";
-import {getChargeRules, updateChargeRules} from "@/api";
+import { ref, reactive, onBeforeMount } from "vue";
+import { FormInstance, FormRules } from "element-plus/es/components/form";
+import { getChargeRules, updateChargeRules } from "@/api";
+import { ElMessage } from "element-plus";
 
+// 初始化表单数据
 const form = ref({
   freeDuration: 0,
   id: "",
@@ -12,43 +15,55 @@ const form = ref({
   feeCap: "",
   tollStandard: ""
 });
+
+// 表单引用
 const ruleFormRef = ref<FormInstance>();
+
+// 表单验证规则
 const rules = reactive<FormRules<any>>({
   freeDuration: [
-    {required: true, message: "请输入进场免费时长", trigger: "blur"}
+    { required: true, message: "请输入进场免费时长", trigger: "blur" }
   ],
   tollStandard: [
-    {required: true, message: "请输入临保收费", trigger: "blur"}
+    { required: true, message: "请输入临保收费", trigger: "blur" }
   ],
   monthlyInternalCar: [
-    {required: true, message: "请输入内部收费", trigger: "blur"}
+    { required: true, message: "请输入内部收费", trigger: "blur" }
   ],
   monthlyEnterpriseCar: [
-    {required: true, message: "请输入所属企业公车", trigger: "blur"}
+    { required: true, message: "请输入所属企业公车", trigger: "blur" }
   ],
   monthlyExternalCarMachinery: [
-    {required: true, message: "请输入外部车辆（机械车位）", trigger: "blur"}
+    { required: true, message: "请输入外部车辆（机械车位）", trigger: "blur" }
   ],
   feeCap: [
-    {required: true, message: "请输入临保日收费上限", trigger: "blur"}
+    { required: true, message: "请输入临保日收费上限", trigger: "blur" }
   ],
   monthlyInternalCarNoMachinery: [
-    {required: true, message: "请输入外部车辆（非机械车位）", trigger: "blur"}
+    { required: true, message: "请输入外部车辆（非机械车位）", trigger: "blur" }
   ]
 });
+
+// 提交表单
 const onSubmit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl
     .validate()
     .then(() => {
+      console.log("提交的数据:", form.value); // 调试输出
       return updateChargeRules(form.value);
     })
     .then(() => {
       ElMessage.success("保存成功");
+    })
+    .catch((error) => {
+      console.error("提交失败:", error); // 调试输出
     });
 };
+
+// 页面加载时获取初始数据
 onBeforeMount(() => {
-  getChargeRules().then(res => {
+  getChargeRules().then((res) => {
     form.value = res.data;
   });
 });

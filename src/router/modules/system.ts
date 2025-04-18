@@ -7,7 +7,7 @@ export default {
   meta: {
     icon: "ep:setting",
     title: "系统管理",
-    rank: 1
+    rank: 99
   },
   children: [
     {
@@ -15,17 +15,24 @@ export default {
       name: "SetRole",
       component: () => import("@/views/system/setRole/index.vue"),
       meta: {
-        title: "账号管理",
+        title: "后台账号管理",
         roles: ["4", "3"]
       }
-    },{
-      path: "/system/wxManage",
-      name: "WxManage",
-      component: () => import("@/views/system/wxManage/index.vue"),
+    }, {
+      path: "/system/customerManagement",
+      name: "CustomerManagement",
+      component: () => import("@/views/system/customerManagement/index.vue"),
       meta: {
-        title: "微信支付配置",
+        title: "车主账号管理",
         roles: ["4", "3"]
       }
+    //   path: "/system/wxManage",
+    //   name: "WxManage",
+    //   component: () => import("@/views/system/wxManage/index.vue"),
+    //   meta: {
+    //     title: "微信支付配置",
+    //     roles: ["4", "3"]
+    //   }
     },
   ]
 } satisfies RouteConfigsTable;
