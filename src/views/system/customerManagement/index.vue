@@ -181,9 +181,9 @@ const statusList = {
               <el-button icon="Edit" size="small" @click="openFn(scope.row)">
                 编辑
               </el-button>
-              <el-button icon="Edit" size="small" @click="resetting(scope.row.id)">
+              <!-- <el-button icon="Edit" size="small" @click="resetting(scope.row.id)">
                 重置密码
-              </el-button>
+              </el-button> -->
             </el-form-item>
           </template>
         </el-table-column>

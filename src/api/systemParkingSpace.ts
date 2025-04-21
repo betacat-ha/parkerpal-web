@@ -129,3 +129,73 @@ export const getSpaceReservationRecordList = (data: {
     }
   );
 };
+
+/**
+ * 分页查询车位信息
+ */
+export const pageParkingSpaceList = (data: {
+  pageNumber?: number;
+  pageSize?: number;
+  id?: string;
+  name?: string;
+  fnum?: string;
+  status?: number;
+  isOccupied?: boolean;
+  isReserved?: boolean;
+  deviceId?: string;
+  type?: string;
+  [property: string]: any;
+}) => {
+  return http.post<PagesType<SystemParkingSpace>, object>(
+    "/systemManagement/pageParkingSpaceList",
+    {
+      data
+    }
+  );
+}
+
+/**
+ * 新增或修改车位信息
+ * @param data 
+ * @returns 
+ */
+export const newOrUpdateParkingSpace = (data: {
+  id?: string;
+  name: string;
+  fnum: string;
+  status?: number;
+  isOccupied?: boolean;
+  isReserved?: boolean;
+  deviceId?: string;
+  type?: string;
+  comment?: string;
+  distance?: number;
+  sensorSlot?: string;
+  modelName?: string;
+  parentId?: string;
+  [property: string]: any;
+}) => {
+  return http.post<Result<SystemParkingSpace>, object>(
+    "/systemManagement/createOrUpdateParkingSpace",
+    {
+      data
+    }
+  );
+}
+
+/**
+ * 删除车位信息
+ * @param data 
+ * @returns 
+ */
+export const deleteParkingSpace = (data: {
+  id: string;
+  [property: string]: any;
+}) => {
+  return http.post<Result<SystemParkingSpace>, object>(
+    "/systemManagement/deleteParkingSpace",
+    {
+      data
+    }
+  );
+}
