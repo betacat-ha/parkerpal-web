@@ -164,8 +164,8 @@ defineOptions({
       <!-- 公共气泡模块 -->
       <!-- <commonPopControl></commonPopControl> -->
 
-      <div class="parking fix" id="parking"><span id="carid"></span>车位{{ selectedParkingSpace.name }}情况：<span
-          id="YorN"></span></div>
+      <!-- <div class="parking fix" id="parking"><span id="carid"></span>车位{{ selectedParkingSpace.name }}情况：<span
+          id="YorN"></span></div> -->
     </div>
 
 
