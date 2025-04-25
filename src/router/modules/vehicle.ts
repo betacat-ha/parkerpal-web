@@ -39,6 +39,15 @@ export default {
       }
     },
     {
+      path: "/vehicle/zombieCar",
+      name: "ZombieCar",
+      component: () => import("@/views/costManagement/zombieCar/index.vue"),
+      meta: {
+        title: "访客车辆",
+        roles: ["4", "3"]
+      }
+    },
+    {
       path: "/vehicle/journal",
       name: "Journal",
       component: () => import("@/views/vehicle/journal/index.vue"),
