@@ -139,7 +139,7 @@ const tableHeight = computed(() => {
   <div class="bg-white dark:bg-[#141414] content">
     <div class="c_box">
       <div class="title">
-        <div class="lf">VIP车辆</div>
+        <div class="lf">内部车辆</div>
       </div>
       <div class="form_box_p">
         <div class="form_box">

@@ -29,15 +29,6 @@ export default {
       }
     },
     {
-      path: "/management/zombieCar",
-      name: "ZombieCar",
-      component: () => import("@/views/costManagement/zombieCar/index.vue"),
-      meta: {
-        title: "访客车辆",
-        roles: ["4", "3"]
-      }
-    },
-    {
       path: "/management/reconciliation",
       name: "Reconciliation",
       component: () =>

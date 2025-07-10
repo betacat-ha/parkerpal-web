@@ -134,8 +134,8 @@ onBeforeMount(getData);
 <template>
   <div class="bg-white mt-[20px] rounded-[4px] dark:bg-[#141414] flex-1">
     <div class="font-bold text-[20px] px-[20px] leading-[60px]">车位统计</div>
-    <!--    <el-empty v-show="yData.length == 0" description="暂无数据" />-->
-    <div ref="chartRef" class="h-[400px] w-[100%]" />
+    <el-empty v-if="data.totalParkingSpaces === 0" description="暂无数据" class="h-[400px] w-[100%]" />
+    <div v-if="data.totalParkingSpaces != 0" ref="chartRef" class="h-[400px] w-[100%]" />
   </div>
 </template>
 

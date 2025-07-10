@@ -1,5 +1,5 @@
 import { http } from "@/utils/http";
-import {PagesType, Result} from "../../types";
+import { PagesType, Result } from "../../types";
 
 
 type SystemManagementResult = {
@@ -154,6 +154,7 @@ export const newOrUpdatedMonthly = (data: {
 };
 // 用户-分页查询列表
 export const pageUserList = (data: {
+  roleId?: string;
   userName?: string;
   account?: string;
   pageNumber: number;
@@ -167,6 +168,24 @@ export const pageUserList = (data: {
     }
   );
 };
+
+// 用户-分页查询列表
+export const pageCustomerList = (data: {
+  roleId?: string;
+  userName?: string;
+  account?: string;
+  pageNumber: number;
+  pageSize: number;
+}) => {
+  return http.request<Result<PagesType<pageUserListType>>>(
+    "post",
+    "/systemManagement/pageCustomerList",
+    {
+      data
+    }
+  );
+};
+
 // 角色-分页查询列表
 export const pageRoleListUser = (data: {
   roleName?: string;

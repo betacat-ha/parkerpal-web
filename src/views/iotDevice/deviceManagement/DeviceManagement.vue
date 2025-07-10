@@ -111,6 +111,7 @@ const searchParams = reactive({
   name: "",
   role: "",
   groupId: "",
+  macAddress: "",
 });
 
 //获取数据
@@ -151,6 +152,10 @@ const addData = () => {
       groupId: 1,
       createUserId: 1,
       isDisabled: 0,
+      createTime: 0,
+      updateTime: 0,
+      isDeleted: 0,
+      parkingSpaces: undefined
     });
     editIndex.value = 0;
     tableRef.value.$refs.scrollBarRef.setScrollTop(0);

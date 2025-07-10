@@ -6,3 +6,4 @@ export * from "./costManagement";
 export * from "./business";
 export * from "./welcome";
 export * from "./iotDevice";
+export * from "./systemParkingSpace"

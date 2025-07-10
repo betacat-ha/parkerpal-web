@@ -111,7 +111,7 @@ class PureHttp {
           if (loadingCount == 0) {
             Loading = ElLoading.service({
               lock: true,
-              text: "Loading",
+              text: "加载中...",
               background: "rgba(255, 255, 255, 0.8)"
             });
           }

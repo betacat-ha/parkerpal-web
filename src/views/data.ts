@@ -297,3 +297,60 @@ export const monthlyStatusList = [
     label: "过保"
   }
 ];
+
+export const parkingSpaceStatusList = [
+  {
+    value: "0",
+    label: "固定车位"
+  },
+  {
+    value: "1",
+    label: "占用车位"
+  },
+  {
+    value: "2",
+    label: "空闲车位"
+  }
+];
+
+export const parkingSpaceStatusColor = ["#7eacca", "#ff0000", "#00ff00"];
+
+/**
+ * 车位预约状态
+ */
+export const parkingSpaceReservationStatus = [
+  {
+    value: "0",
+    label: "未预约"
+  },
+  {
+    value: "1",
+    label: "已预约"
+  },
+  {
+    value: "2",
+    label: "已取消"
+  },
+  {
+    value: "3",
+    label: "已过期"
+  }
+];
+
+export const parkingSpaceFNumList = [
+  {
+    value: "2",
+    label: "负一层"
+  },
+  {
+    value: "1",
+    label: "负二层"
+  },
+];
+
+export const parkingSpaceModelNameList = [
+  {
+    value: "10005",
+    label: "广师大停车场"
+  }
+]

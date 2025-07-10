@@ -15,7 +15,7 @@ export default {
       name: "OutboundOrder",
       component: () => import("@/views/orderForm/outboundOrder/index.vue"),
       meta: {
-        title: "出库订单流水"
+        title: "订单流水"
       }
     }
   ]

@@ -1,5 +1,6 @@
 import { http } from "@/utils/http";
 import { PagesType, Result } from "../../types";
+import { SystemParkingSpace } from "./systemParkingSpace";
 
 /**
  * 物联网-设备表
@@ -62,13 +63,23 @@ export interface IotDevice {
 }
 
 /**
- * 假设的 SystemParkingSpace 类型
+ * 车位状态模型
  */
-export interface SystemParkingSpace {
-  // 根据实际情况补充字段
+export interface ParkingSpaceStatus {
+  /**
+   * 车位编号
+   */
   id: string;
-  spaceNumber: string;
-  status: string;
+
+  /**
+   * 车位楼层
+   */
+  fnum: string;
+
+  /**
+   * 车位状态
+   */
+  status: number;
 }
 
 /**
@@ -82,6 +93,7 @@ export const getIotDeviceList = (data: {
   name?: string;
   macAddress?: string;
   role?: number | string;
+  [property: string]: any;
 }) => {
   return http.request<IotDevice[]>(
     "post",
@@ -129,4 +141,21 @@ export const deleteIotDevice = (data: { ids: string[] }) => {
       data
     }
   );
+};
+
+/**
+ * 获取车位状态
+ * @param data 查询条件
+ */
+export const getParkingSpaceStatus = (data: {
+  id?: string;
+  modelName?: string;
+}) => {
+  return http.post<Result<ParkingSpaceStatus[]>, object>(
+    "/iot/getParkingSpaceStatus",
+    {
+      data
+    },
+    { headers: { isEnableLoading: false } } // 关闭加载动画
+  )
 };

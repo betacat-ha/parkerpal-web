@@ -3,6 +3,7 @@ import { useECharts } from "@pureadmin/utils";
 import { countOrder } from "@/api";
 import { useUserStore } from "@/store/modules/user";
 
+const isAdmin = useUserStore().isAdmin;
 const chartRef = ref<HTMLDivElement | null>(null);
 const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 const year = ref(new Date());
@@ -53,7 +54,7 @@ const init = () => {
     series: [
       {
         data: data1.value,
-        name: "收益",
+        name: isAdmin ? "收益" : "支出",
         type: "bar",
         stack: "Ad",
         barWidth: "60%",
@@ -71,7 +72,7 @@ const init = () => {
         data: data2.value
       },
       {
-        name: "总数",
+        name: "总金额",
         type: "bar",
         barWidth: 10,
         stack: "Search Engine",
@@ -104,24 +105,12 @@ onBeforeMount(() => getData(year.value));
 
 <template>
   <div class="bg-white mt-[20px] rounded-[4px] dark:bg-[#141414]">
-    <div
-      class="font-bold px-[20px] w-[100%] text-[20px] leading-[60px] flex justify-between items-center"
-    >
+    <div class="font-bold px-[20px] w-[100%] text-[20px] leading-[60px] flex justify-between items-center">
       <div>月收费统计</div>
-      <el-date-picker
-        v-model="year"
-        :clearable="false"
-        placeholder="请选择年份"
-        type="year"
-        @change="getData"
-      />
+      <el-date-picker v-model="year" :clearable="false" placeholder="请选择年份" type="year" @change="getData" />
     </div>
     <el-empty v-show="data3.length == 0" description="暂无数据" />
-    <div
-      v-if="data3.length > 0"
-      ref="chartRef"
-      class="h-[400px] w-[100%]"
-    ></div>
+    <div v-if="data3.length > 0" ref="chartRef" class="h-[400px] w-[100%]"></div>
   </div>
 </template>
 
