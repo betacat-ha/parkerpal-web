@@ -1,7 +1,10 @@
 
-
-# 智泊无忧ParkerPal网页端
-<div>
+<div align="center">
+  <img width="100px" alt="logo" style="width: 100px;
+        height: 100px; border-radius: 15px; margin: 5;" src="./img/logo-round.png"/>
+  <p style="font-size: 24px; font-weight: bold;">智泊无忧小程序端</p>
+</div>
+<div align="center">
 <img alt="pnpm Version Badge" src="https://img.shields.io/badge/pnpm-9.15.0-orange">
 <img alt="Vue Version Badge" src="https://img.shields.io/badge/Vue-3.0-green">
 <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/betacat-ha/parkerpal-web">
