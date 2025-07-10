@@ -4,6 +4,9 @@
 <div>
 <img alt="pnpm Version Badge" src="https://img.shields.io/badge/pnpm-9.15.0-orange">
 <img alt="Vue Version Badge" src="https://img.shields.io/badge/Vue-3.0-green">
+<img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/betacat-ha/parkerpal-web">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/betacat-ha/parkerpal-web">
+<img alt="GitHub License Badge" src="https://img.shields.io/github/license/betacat-ha/parkerpal-web">
 </div>
 
 该项目基于Vue3.0，结合TypeScript，UI框架采用Element Plus，3D地图采用ESMap。
