@@ -1,4 +1,5 @@
 
+import { tr } from "element-plus/es/locale/index.mjs";
 import { MAP_ID, MAP_DATA_PATH, EFFECT_PATH } from "./const";
 
 class MapApplication extends esmap.ESEventDispatcher {
@@ -26,6 +27,8 @@ class MapApplication extends esmap.ESEventDispatcher {
     this.frameWindows = {
       innerMap: null
     }
+
+    this.rotate = true
   }
 
   /**
@@ -78,6 +81,9 @@ class MapApplication extends esmap.ESEventDispatcher {
         y: 80
       }
     });
+
+    var count = 0.05;
+    var rotate = true;//三维场景旋转目前关闭
 
     // 三维场景加载完成事件
     this.map.on("loadComplete", () => {
@@ -150,6 +156,14 @@ class MapApplication extends esmap.ESEventDispatcher {
         backgroundColor: '#FFFFFF', // 热力图背景颜色，默认白色
       });
 
+      // 地图更新完成事件
+      this.map.on("update", (e) => {
+        if (count == 360) count = 0;
+        if (rotate)
+          this.map.rotateAngle += count,
+            this.map.controls.update();
+      })
+
     });
 
     // 模型加载完成事件
@@ -195,21 +209,18 @@ class MapApplication extends esmap.ESEventDispatcher {
 
     // 地图点击事件
     this.map.on('mapClickNode', (e) => {
-      // console.log(e);
+      console.log(e);
 
       // 如果外部传入了回调函数，调用它
       if (this.clickNodeCallback) {
         this.clickNodeCallback(e);
       }
 
-
-
       // 记录并打印点集
-      // self.tempCoords.push({ x: e.hitCoord.x, y: e.hitCoord.y, offset: 0 })
-      // console.log(JSON.stringify(self.tempCoords));
+      console.log(JSON.stringify(self.tempCoords));
 
       // 获取当前相机视角
-      // console.log(self.map.cameraFlyToHelper())
+      console.log(self.map.cameraFlyToHelper())
 
       // 触发关于气泡生成的事件
       this.managerMapClick(e);
