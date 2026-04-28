@@ -16,6 +16,7 @@ import {
   useAttrs
 } from "vue";
 
+import { useI18n } from "vue-i18n";
 import ArrowUp from "@iconify-icons/ep/arrow-up-bold";
 import EpArrowDown from "@iconify-icons/ep/arrow-down-bold";
 import ArrowLeft from "@iconify-icons/ep/arrow-left-bold";
@@ -23,6 +24,11 @@ import ArrowRight from "@iconify-icons/ep/arrow-right-bold";
 
 const attrs = useAttrs();
 const { layout, isCollapse, tooltipEffect, getDivStyle } = useNav();
+const { t } = useI18n();
+
+const getTitle = (title: string) => {
+  return t(title);
+};
 
 const props = defineProps({
   item: {
@@ -146,7 +152,7 @@ function resolvePath(routePath) {
         truncated
         class="!w-full !pl-4 !text-inherit"
       >
-        {{ onlyOneChild.meta.title }}
+        {{ getTitle(onlyOneChild.meta.title) }}
       </el-text>
 
       <template #title>
@@ -158,7 +164,7 @@ function resolvePath(routePath) {
             }"
             class="!w-full !text-inherit"
           >
-            {{ onlyOneChild.meta.title }}
+            {{ getTitle(onlyOneChild.meta.title) }}
           </ReText>
           <SidebarExtraIcon :extraIcon="onlyOneChild.meta.extraIcon" />
         </div>
@@ -205,7 +211,7 @@ function resolvePath(routePath) {
             item.parentId === null
         }"
       >
-        {{ item.meta.title }}
+        {{ getTitle(item.meta.title) }}
       </ReText>
       <SidebarExtraIcon v-if="!isCollapse" :extraIcon="item.meta.extraIcon" />
     </template>

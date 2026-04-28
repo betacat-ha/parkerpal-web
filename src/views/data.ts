@@ -5,218 +5,238 @@ interface tableColumnType {
   handleFn?: (value: any) => string;
 }
 
-export const tollList = [
+export const tollList = (t: (key: string) => string) => [
   {
-    label: "开始计费",
+    label: t("journal.billList.startBilling"),
     value: 1
   },
   {
-    label: "结算计费",
+    label: t("journal.billList.settlementBilling"),
     value: 2
   },
   {
-    label: "不计费",
+    label: t("journal.billList.noBilling"),
     value: 0
   }
 ];
-const tollOutList = [
+const tollOutList = (t: (key: string) => string) => [
   {
-    label: "结算计费",
+    label: t("journal.billOutList.settlementBilling"),
     value: 1
   },
   {
-    label: "不计费",
+    label: t("journal.billOutList.noBilling"),
     value: 0
   }
 ];
-export const effectList = [
+export const effectList = (t: (key: string) => string) => [
   {
-    label: "入闸",
+    label: t("device.effect.in"),
     value: 1
   },
   {
-    label: "出闸",
+    label: t("device.effect.out"),
     value: 0
   }
 ];
 
-export const iotRoleList = [
+export const iotRoleList = (t: (key: string) => string) => [
   {
-    label: "Beacon蓝牙基站",
+    label: t("device.iotRole.beacon"),
     value: 1
   },
   {
-    label: "车位传感器",
+    label: t("device.iotRole.sensor"),
     value: 0
   }
 ];
-export const vehicleGrouping = [
+export const vehicleGrouping = (t: (key: string) => string) => [
   {
-    label: "VIP月租车",
+    label: t("vehicle.grouping.vip"),
     value: 2
   },
   {
-    label: "普通月租车",
+    label: t("vehicle.grouping.normal"),
     value: 3
   }
 ];
-export const typeCode = [
+export const typeCode = (t: (key: string) => string) => [
   {
-    label: "临保",
+    label: t("vehicle.type.temporary"),
     value: 1
   },
   {
-    label: "月保",
+    label: t("vehicle.type.monthly"),
     value: 2
   },
   {
-    label: "访客车",
+    label: t("vehicle.type.visitor"),
     value: 3
   },
   {
-    label: "无牌车",
+    label: t("vehicle.type.noPlate"),
     value: 4
   },
   {
-    label: "其他",
+    label: t("vehicle.type.other"),
     value: 5
   }
 ];
-export const statusList = [
+export const statusList = (t: (key: string) => string) => [
   {
-    label: "已出库",
+    label: t("journal.statusList.exited"),
     value: 1
   },
   {
-    label: "未出库",
+    label: t("journal.statusList.notExited"),
     value: 0
   }
 ];
-export const groupNumberList = [
+export const groupNumberList = (t: (key: string) => string) => [
   {
-    label: "负一层",
+    label: t("parking.group.f1"),
     value: 1
   },
   {
-    label: "负二层",
+    label: t("parking.group.f2"),
     value: 2
   },
   {
-    label: "地面",
+    label: t("parking.group.ground"),
     value: 3
   }
 ];
-export const tableColumn: tableColumnType[] = [
+export const tableColumn = (t: (key: string) => string): tableColumnType[] => [
   {
     prop: "userName",
-    label: "商户名称"
+    label: t("orderForm.outboundOrder.columns.merchant")
   },
   {
     prop: "mainlandLicensePlates",
-    label: "车牌号/手机号码(无牌车)",
+    label: t("orderForm.outboundOrder.columns.mainlandLicensePlates"),
     width: 220
   },
   {
     prop: "endTime",
-    label: "出场时间"
+    label: t("orderForm.outboundOrder.columns.endTime")
   },
   {
     prop: "totalDuration",
-    label: "停车时长"
+    label: t("orderForm.outboundOrder.columns.totalDuration")
   },
   {
     prop: "orderNumber",
-    label: "订单编号"
+    label: t("orderForm.outboundOrder.columns.orderNumber")
   },
   {
     prop: "totalAmount",
-    label: "总计金额"
+    label: t("orderForm.outboundOrder.columns.totalAmount")
   },
   {
     prop: "totalDiscountAmount",
-    label: "优惠金额"
+    label: t("orderForm.outboundOrder.columns.totalDiscountAmount")
   },
-
   {
     prop: "discount",
-    label: "优惠信息"
+    label: t("orderForm.outboundOrder.columns.discount")
   },
   {
     prop: "totalIncomeAmount",
-    label: "收入金额"
+    label: t("orderForm.outboundOrder.columns.totalIncomeAmount")
   },
   {
     prop: "typeName",
-    label: "类型名称"
+    label: t("orderForm.outboundOrder.columns.typeName")
   }
 ];
 
-export const warehousingTableColumn: tableColumnType[] = [
-  {
-    prop: "mainlandLicensePlates",
-    label: "车牌号码/手机号码"
-  },
-  {
-    prop: "carGroupName",
-    label: "车辆分组名称"
-  },
-  {
-    prop: "deviceGroupName",
-    label: "设备组号"
-  },
-  {
-    prop: "isToll",
-    label: "此处是否开始计费",
-    handleFn: value => tollList.find(item => item.value == value)?.label ?? "--"
-  },
-  {
-    prop: "status",
-    label: "是否已出库",
-    handleFn: value =>
-      statusList.find(item => item.value == value)?.label ?? "--"
-  },
-  {
-    prop: "startTime",
-    label: "进库时间"
-  }
-];
-export const outboundColumn: tableColumnType[] = [
-  {
-    prop: "mainlandLicensePlates",
-    label: "车牌号码/手机号码"
-  },
-  {
-    prop: "carGroupName",
-    label: "车辆分组名称"
-  },
-  {
-    prop: "deviceGroupName",
-    label: "设备组号"
-  },
-  {
-    prop: "endCameraDeviceIp",
-    label: "出库摄像头IP"
-  },
-  {
-    prop: "isToll",
-    label: "此处是否结算计费",
-    handleFn: value =>
-      tollOutList.find(item => item.value == value)?.label ?? "--"
-  },
-  {
-    prop: "startTime",
-    label: "进库时间"
-  },
-  {
-    prop: "endTime",
-    label: "出库时间"
-  },
-  {
-    prop: "remark",
-    label: "备注",
-    width: 100
-  }
-];
+export const warehousingTableColumn = (t: (key: string) => string): tableColumnType[] => {
+  return [
+    {
+      prop: "mainlandLicensePlates",
+      label: t("journal.warehousing.licensePlate")
+    },
+    {
+      prop: "carGroupName",
+      label: t("journal.warehousing.vehicleGroupName")
+    },
+    {
+      prop: "deviceGroupName",
+      label: t("journal.warehousing.deviceGroupNumber")
+    },
+    {
+      prop: "isToll",
+      label: t("journal.warehousing.isBilling"),
+      handleFn: value => {
+        const tollList = [
+          { label: t("journal.billList.startBilling"), value: 1 },
+          { label: t("journal.billList.settlementBilling"), value: 2 },
+          { label: t("journal.billList.noBilling"), value: 0 }
+        ];
+        return tollList.find(item => item.value == value)?.label ?? "--";
+      }
+    },
+    {
+      prop: "status",
+      label: t("journal.warehousing.isOutOfWarehouse"),
+      handleFn: value => {
+        const statusListLocal = [
+          { label: t("journal.statusList.exited"), value: 1 },
+          { label: t("journal.statusList.notExited"), value: 0 }
+        ];
+        return statusListLocal.find(item => item.value == value)?.label ?? "--";
+      }
+    },
+    {
+      prop: "startTime",
+      label: t("journal.warehousing.warehousingTime")
+    }
+  ];
+};
+export const outboundColumn = (t: (key: string) => string): tableColumnType[] => {
+  return [
+    {
+      prop: "mainlandLicensePlates",
+      label: t("journal.outbound.licensePlate")
+    },
+    {
+      prop: "carGroupName",
+      label: t("journal.outbound.vehicleGroupName")
+    },
+    {
+      prop: "deviceGroupName",
+      label: t("journal.outbound.deviceGroupNumber")
+    },
+    {
+      prop: "endCameraDeviceIp",
+      label: t("journal.outbound.outboundCameraIp")
+    },
+    {
+      prop: "isToll",
+      label: t("journal.outbound.isBilling"),
+      handleFn: value => {
+        const tollOutListLocal = [
+          { label: t("journal.billOutList.settlementBilling"), value: 1 },
+          { label: t("journal.billOutList.noBilling"), value: 0 }
+        ];
+        return tollOutListLocal.find(item => item.value == value)?.label ?? "--";
+      }
+    },
+    {
+      prop: "startTime",
+      label: t("journal.outbound.warehousingTime")
+    },
+    {
+      prop: "endTime",
+      label: t("journal.outbound.outboundTime")
+    },
+    {
+      prop: "remark",
+      label: t("journal.outbound.remark"),
+      width: 100
+    }
+  ];
+};
 
 export interface GrowCardItem {
   icon: string;
@@ -227,89 +247,89 @@ export interface GrowCardItem {
   action: string;
 }
 
-export const growCardList: GrowCardItem[] = [
+export const growCardList = (t: (key: string) => string): GrowCardItem[] => [
   {
-    title: "进库车辆",
+    title: t("home.growCard.inboundVehicle"),
     icon: "total-sales|svg",
     value: 20000,
     total: 500000,
     type: "success",
-    action: "日"
+    action: t("home.growCard.day")
   },
   {
-    title: "出库车辆",
+    title: t("home.growCard.outboundVehicle"),
     icon: "download-count|svg",
     value: 8000,
     total: 120000,
     type: "primary",
-    action: "日"
+    action: t("home.growCard.day")
   },
   {
-    title: "月租收费",
+    title: t("home.growCard.monthlyFee"),
     icon: "visit-count|svg",
     value: 2000,
     total: 120000,
     type: "danger",
-    action: "月"
+    action: t("home.growCard.month")
   },
   {
-    title: "临停收费",
+    title: t("home.growCard.temporaryFee"),
     icon: "transaction|svg",
     value: 5000,
     total: 50000,
     type: "danger",
-    action: "月"
+    action: t("home.growCard.month")
   }
 ];
-export const carTypeList = [
+export const carTypeList = (t: (key: string) => string) => [
   {
     value: "1",
-    label: "内部车辆",
+    label: t("vehicle.carType.internal"),
     charge: 0,
     key: "monthlyInternalCar"
   },
   {
     value: "2",
-    label: "所属企业公车",
+    label: t("vehicle.carType.enterprise"),
     charge: 0,
     key: "monthlyEnterpriseCar"
   },
   {
     value: "3",
-    label: "外部车辆(机械车位)",
+    label: t("vehicle.carType.externalMachinery"),
     charge: 0,
     key: "monthlyExternalCarMachinery"
   },
   {
     value: "4",
-    label: "外部车辆(非机械车位)",
+    label: t("vehicle.carType.externalNoMachinery"),
     charge: 0,
     key: "monthlyInternalCarNoMachinery"
   }
 ];
-export const monthlyStatusList = [
+export const monthlyStatusList = (t: (key: string) => string) => [
   {
     value: "1",
-    label: "在保"
+    label: t("costManagement.record.monthlyStatus.inWarranty")
   },
   {
     value: "2",
-    label: "过保"
+    label: t("costManagement.record.monthlyStatus.outWarranty")
   }
 ];
 
-export const parkingSpaceStatusList = [
+export const parkingSpaceStatusList = (t: (key: string) => string) => [
   {
     value: "0",
-    label: "固定车位"
+    label: t("parking.status.fixed")
   },
   {
     value: "1",
-    label: "占用车位"
+    label: t("parking.status.occupied")
   },
   {
     value: "2",
-    label: "空闲车位"
+    label: t("parking.status.empty")
   }
 ];
 
@@ -318,39 +338,39 @@ export const parkingSpaceStatusColor = ["#7eacca", "#ff0000", "#00ff00"];
 /**
  * 车位预约状态
  */
-export const parkingSpaceReservationStatus = [
+export const parkingSpaceReservationStatus = (t: (key: string) => string) => [
   {
     value: "0",
-    label: "未预约"
+    label: t("parking.reservation.unreserved")
   },
   {
     value: "1",
-    label: "已预约"
+    label: t("parking.reservation.reserved")
   },
   {
     value: "2",
-    label: "已取消"
+    label: t("parking.reservation.cancelled")
   },
   {
     value: "3",
-    label: "已过期"
+    label: t("parking.reservation.expired")
   }
 ];
 
-export const parkingSpaceFNumList = [
+export const parkingSpaceFNumList = (t: (key: string) => string) => [
   {
     value: "2",
-    label: "负一层"
+    label: t("parking.group.f1")
   },
   {
     value: "1",
-    label: "负二层"
-  },
+    label: t("parking.group.f2")
+  }
 ];
 
-export const parkingSpaceModelNameList = [
+export const parkingSpaceModelNameList = (t: (key: string) => string) => [
   {
     value: "10005",
-    label: "广师大停车场"
+    label: t("parking.model.default")
   }
 ]

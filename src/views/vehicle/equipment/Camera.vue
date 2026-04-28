@@ -1,13 +1,18 @@
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from "element-plus/es/components/form";
 import { deleteCamera, getCameraList, newOrUpdatedCamera } from "@/api";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { effectList, groupNumberList, tollList } from "@/views/data";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "Camera"
 });
+const { t } = useI18n();
+const effectListLocal = computed(() => effectList(t));
+const groupNumberListLocal = computed(() => groupNumberList(t));
+const tollListLocal = computed(() => tollList(t));
 type DataListType = {
   createTime?: string;
   deviceIp: string;
@@ -29,17 +34,17 @@ const editIndex = ref(-1);
 const rules = reactive<FormRules<any>>({
   deviceName: [{ required: true, message: "请输入设备名称", trigger: "blur" }],
   deviceLocation: [
-    { required: true, message: "请输入设备所在位置", trigger: "blur" }
+    { required: true, message: t('device.rules.deviceLocation'), trigger: "blur" }
   ],
   devicePassword: [
-    { required: true, message: "请输入设备密码", trigger: "blur" }
+    { required: true, message: t('device.rules.devicePassword'), trigger: "blur" }
   ],
   deviceUserName: [
-    { required: true, message: "请输入设备账号", trigger: "blur" }
+    { required: true, message: t('device.rules.deviceUserName'), trigger: "blur" }
   ],
   deviceIp: [{ required: true, message: "请输入设备IP地址", trigger: "blur" }],
   devicePort: [
-    { required: true, message: "请输入设备IP端口", trigger: "blur" }
+    { required: true, message: t('device.rules.devicePort'), trigger: "blur" }
   ],
   deviceRole: [{ required: true, message: "请选择设备作用", trigger: "blur" }],
   groupId: [{ required: true, message: "请选择设备组号", trigger: "blur" }],
@@ -154,52 +159,52 @@ const changeFnTime = (e: any, start: string, end: string) => {
 <template>
   <div class="content bg-white dark:bg-[#141414]">
     <div class="title">
-      <div class="lf">摄像机管理</div>
+      <div class="lf">{{ t('device.camera.title') }}</div>
     </div>
     <div class="form_box_p">
       <div class="form_box">
         <div class="form_item_box">
-          <div>设备名称：</div>
+          <div>{{ t('device.fields.deviceName') }}：</div>
           <el-input
             v-model="searchParams.deviceName"
             clearable
-            placeholder="请输入设备名称"
+            :placeholder="t('device.placeholders.deviceName')"
           />
         </div>
         <div class="form_item_box">
-          <div>设备所在位置：</div>
+          <div>{{ t('device.fields.deviceLocation') }}：</div>
           <el-input
             v-model="searchParams.deviceLocation"
             clearable
-            placeholder="请输入设备所在位置"
+            :placeholder="t('device.placeholders.deviceLocation')"
           />
         </div>
         <div class="form_item_box">
-          <div>设备IP地址：</div>
+          <div>{{ t('device.fields.deviceIp') }}：</div>
           <el-input
             v-model="searchParams.deviceIp"
             clearable
-            placeholder="请输入设备IP地址"
+            :placeholder="t('device.placeholders.deviceIp')"
           />
         </div>
         <div class="form_item_box">
-          <div>设备IP端口：</div>
+          <div>{{ t('device.fields.devicePort') }}：</div>
           <el-input
             v-model="searchParams.devicePort"
             clearable
-            placeholder="请输入设备IP端口"
+            :placeholder="t('device.placeholders.devicePort')"
           />
         </div>
         <div class="form_item_box">
-          <div>设备作用：</div>
+          <div>{{ t('device.fields.deviceRole') }}：</div>
           <el-select
             v-model="searchParams.deviceRole"
             clearable
-            placeholder="请选择设备作用"
+            :placeholder="t('device.placeholders.deviceRole')"
             style="width: 100%"
           >
             <el-option
-              v-for="item in effectList"
+              v-for="item in effectListLocal"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -207,15 +212,15 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>设备组号：</div>
+          <div>{{ t('device.fields.groupId') }}：</div>
           <el-select
             v-model="searchParams.groupId"
             clearable
-            placeholder="请选择设备组号"
+            :placeholder="t('device.placeholders.groupId')"
             style="width: 100%"
           >
             <el-option
-              v-for="item in groupNumberList"
+              v-for="item in groupNumberListLocal"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -223,15 +228,15 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>是否在此处计费：</div>
+          <div>{{ t('device.fields.isToll') }}：</div>
           <el-select
             v-model="searchParams.isToll"
             clearable
-            placeholder="请选择是否在此处计费"
+            :placeholder="t('device.placeholders.isToll')"
             style="width: 100%"
           >
             <el-option
-              v-for="item in tollList"
+              v-for="item in tollListLocal"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -243,9 +248,9 @@ const changeFnTime = (e: any, start: string, end: string) => {
           <div class="time_picker_date">
             <el-date-picker
               v-model="time"
-              end-placeholder="结束时间"
-              range-separator="To"
-              start-placeholder="开始时间"
+              :end-placeholder="t('device.placeholders.endTime')"
+                :range-separator="t('device.placeholders.rangeSeparator')"
+                :start-placeholder="t('device.placeholders.startTime')"
               type="datetimerange"
               value-format="YYYY-MM-DD HH:mm:ss"
               @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')"
@@ -253,7 +258,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </div>
         </div>
       </div>
-      <el-button type="primary" @click="getData">搜索</el-button>
+      <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
     </div>
     <el-table
       ref="tableRef"
@@ -262,11 +267,11 @@ const changeFnTime = (e: any, start: string, end: string) => {
       :tooltip-options="tooltipOptions"
       show-overflow-tooltip
     >
-      <el-table-column
+        <el-table-column
         :index="indexMethod"
         :show-overflow-tooltip="false"
         align="center"
-        label="序号"
+        :label="t('journal.warehousing.serialNumber')"
         min-width="60"
         type="index"
       />
@@ -419,7 +424,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in effectList"
+                  v-for="item in effectListLocal"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -429,7 +434,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-form>
           <template v-else>
             {{
-              effectList.find(item => item.value == scope.row.deviceRole)?.label
+              effectListLocal.find(item => item.value == scope.row.deviceRole)?.label
             }}
           </template>
         </template>
@@ -450,7 +455,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in groupNumberList"
+                  v-for="item in groupNumberListLocal"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -460,7 +465,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-form>
           <template v-else>
             {{
-              groupNumberList.find(item => item.value == scope.row.groupId)
+              groupNumberListLocal.find(item => item.value == scope.row.groupId)
                 ?.label
             }}
           </template>
@@ -482,7 +487,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in tollList"
+                  v-for="item in tollListLocal"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -491,7 +496,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
             </el-form-item>
           </el-form>
           <template v-else>
-            {{ tollList.find(item => item.value == scope.row.isToll)?.label }}
+            {{ tollListLocal.find(item => item.value == scope.row.isToll)?.label }}
           </template>
         </template>
       </el-table-column>

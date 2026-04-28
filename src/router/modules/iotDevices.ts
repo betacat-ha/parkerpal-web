@@ -6,7 +6,7 @@ export default {
   redirect: "/iot-deivces/device-dashboard",
   meta: {
     icon: "ep:cpu",
-    title: "IOT设备",
+    title: "menu.iotDevice",
     rank: 6
   },
   children: [
@@ -23,7 +23,7 @@ export default {
       name: "DeviceManagement",
       component: () => import("@/views/iotDevice/deviceManagement/index.vue"),
       meta: {
-        title: "设备管理",
+        title: "menu.deviceManagement",
         roles: ["4", "3"]
       }
     }, {
@@ -31,7 +31,7 @@ export default {
       name: "IndoorMap",
       component: () => import("@/views/iotDevice/map/index.vue"),
       meta: {
-        title: "室内地图",
+        title: "menu.indoorMap",
         roles: ["4", "3"]
       }
     }

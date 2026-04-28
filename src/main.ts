@@ -34,6 +34,8 @@ import { Auth } from "@/components/ReAuth";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/themes/light.css";
 import VueTippy from "vue-tippy";
+// 导入国际化
+import { i18n } from "@/i18n";
 
 const app = createApp(App);
 app.config.globalProperties.$echarts = echarts;
@@ -57,7 +59,7 @@ getPlatformConfig(app).then(async config => {
   app.use(router);
   await router.isReady();
   injectResponsiveStorage(app, config);
-  app.use(MotionPlugin).use(useElementPlus).use(Table);
+  app.use(MotionPlugin).use(useElementPlus).use(i18n).use(Table);
   // .use(PureDescriptions)
   // .use(useEcharts);
   app.mount("#app");

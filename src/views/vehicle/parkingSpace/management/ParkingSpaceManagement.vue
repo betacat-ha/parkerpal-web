@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from "element-plus/es/components/form";
 import { deleteIotDevice, pageParkingSpaceList, newOrUpdateParkingSpace, SystemParkingSpace } from "@/api";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { iotRoleList, parkingSpaceModelNameList, parkingSpaceFNumList, parkingSpaceStatusList } from "@/views/data";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { id } from "element-plus/es/locale/index.mjs";
 import { status } from "nprogress";
 import { number } from "echarts";
@@ -12,6 +13,10 @@ import { integer } from "vue-types";
 defineOptions({
   name: "ParkingSpaceManagement"
 });
+const { t } = useI18n();
+const parkingSpaceModelNameListLocal = computed(() => parkingSpaceModelNameList(t));
+const parkingSpaceFNumListLocal = computed(() => parkingSpaceFNumList(t));
+const parkingSpaceStatusListLocal = computed(() => parkingSpaceStatusList(t));
 let refList = ref<FormInstance[]>([]);
 const dataList = ref<SystemParkingSpace[]>([]);
 let backups: SystemParkingSpace[] = [];
@@ -24,19 +29,19 @@ const params = reactive({
 const editIndex = ref(-1);
 const rules = reactive<FormRules<any>>({
   id: [
-    { required: true, message: '请输入车位ID', trigger: 'blur' },
+    { required: true, message: t('parking.rules.id'), trigger: 'blur' },
   ],
   name: [
-    { required: true, message: '请输入车位名称', trigger: 'blur' },
+    { required: true, message: t('parking.rules.name'), trigger: 'blur' },
   ],
   deviceId: [
-    { required: true, message: '请输入设备ID', trigger: 'change' },
+    { required: true, message: t('parking.rules.deviceId'), trigger: 'change' },
   ],
   modelName: [
-    { required: true, message: '请选择楼层名', trigger: 'change' },
+    { required: true, message: t('parking.rules.modelName'), trigger: 'change' },
   ],
   status: [
-    { required: true, message: '请选择车位状态', trigger: 'change' },
+    { required: true, message: t('parking.rules.status'), trigger: 'change' },
   ],
 });
 // 设置多个ref
@@ -59,7 +64,7 @@ const saveFn = (data: any) => {
     .then(() => {
       editIndex.value = -1;
       getData();
-      ElMessage.success(data.row.id ? "编辑成功" : "新增成功");
+      ElMessage.success(t('message.saveSuccess'));
     });
 };
 //取消
@@ -69,16 +74,16 @@ const cancellation = () => {
 };
 //删除
 const deleteFn = (id: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认删除？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.warning'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
     type: "warning"
   })
     .then(() => {
       return deleteIotDevice({ ids: [id] });
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('message.deleteSuccess'));
       getData();
     });
 };
@@ -133,7 +138,7 @@ const addData = () => {
     editIndex.value = 0;
     tableRef.value.$refs.scrollBarRef.setScrollTop(0);
   } else {
-    ElMessage.warning("编辑状态不可新增！");
+    ElMessage.warning(t('message.warning'));
   }
 };
 
@@ -141,59 +146,51 @@ const addData = () => {
 <template>
   <div class="content bg-white dark:bg-[#141414]">
     <div class="title">
-      <div class="lf">车位管理</div>
+      <div class="lf">{{ t('menu.parkingSpaceManagement') }}</div>
     </div>
     <div class="form_box_p">
       <div class="form_box">
         <div class="form_item_box">
-          <div>车位名称：</div>
-          <el-input v-model="searchParams.name" clearable placeholder="请输入车位名称" />
+          <div>{{ t('parking.fields.name') }}：</div>
+          <el-input v-model="searchParams.name" clearable :placeholder="t('parking.placeholders.name')" />
         </div>
         <div class="form_item_box">
-          <div>车场：</div>
-          <el-select v-model="searchParams.modelName" clearable placeholder="请选择车场" style="width: 100%">
-            <el-option v-for="item in parkingSpaceModelNameList" :key="item.value" :label="item.label"
+          <div>{{ t('parking.fields.modelName') }}：</div>
+          <el-select v-model="searchParams.modelName" clearable :placeholder="t('parking.placeholders.modelName')" style="width: 100%">
+            <el-option v-for="item in parkingSpaceModelNameListLocal" :key="item.value" :label="item.label"
               :value="item.value" />
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>楼层：</div>
-          <el-select v-model="searchParams.fnum" clearable placeholder="请选择楼层" style="width: 100%">
-            <el-option v-for="item in parkingSpaceFNumList" :key="item.value" :label="item.label" :value="item.value" />
+          <div>{{ t('parking.fields.floor') }}：</div>
+          <el-select v-model="searchParams.fnum" clearable :placeholder="t('parking.placeholders.floor')" style="width: 100%">
+            <el-option v-for="item in parkingSpaceFNumListLocal" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>绑定的设备ID：</div>
-          <el-input v-model="searchParams.deviceId" clearable placeholder="请输入绑定的设备ID" />
+          <div>{{ t('parking.fields.deviceId') }}：</div>
+          <el-input v-model="searchParams.deviceId" clearable :placeholder="t('parking.placeholders.deviceId')" />
         </div>
         <div class="form_item_box">
-          <div>车位状态：</div>
-          <el-select v-model="searchParams.status" clearable placeholder="请选择车位状态" style="width: 100%">
-            <el-option v-for="item in parkingSpaceStatusList" :key="Number(item.value)" :label="item.label"
+          <div>{{ t('parking.fields.status') }}：</div>
+          <el-select v-model="searchParams.status" clearable :placeholder="t('parking.placeholders.status')" style="width: 100%">
+            <el-option v-for="item in parkingSpaceStatusListLocal" :key="Number(item.value)" :label="item.label"
               :value="Number(item.value)" />
           </el-select>
         </div>
-        <!-- <div class="form_item_box">
-          <div>创建时间段：</div>
-          <div class="time_picker_date">
-            <el-date-picker v-model="time" end-placeholder="结束时间" range-separator="To" start-placeholder="开始时间"
-              type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss"
-              @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')" />
-          </div>
-        </div> -->
       </div>
-      <el-button type="primary" @click="getData">搜索</el-button>
+      <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
     </div>
     <el-table ref="tableRef" :data="dataList" :height="tableHeight" :tooltip-options="tooltipOptions"
       show-overflow-tooltip>
-      <el-table-column :index="indexMethod" :show-overflow-tooltip="false" align="center" label="序号" min-width="60"
+      <el-table-column :index="indexMethod" :show-overflow-tooltip="false" align="center" :label="t('journal.warehousing.serialNumber')" min-width="60"
         type="index" />
-      <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" label="车位ID" min-width="100px">
+      <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" :label="t('parking.fields.parkingSpaceId')" min-width="100px">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" id="form_item_box" :ref="setItemRef" :model="scope.row"
             :rules="rules">
             <el-form-item prop="id">
-              <el-input v-model="scope.row.id" placeholder="请输入车位ID" />
+              <el-input v-model="scope.row.id" :placeholder="t('parking.placeholders.parkingSpaceId')" />
             </el-form-item>
           </el-form>
           <template v-else>
@@ -201,12 +198,12 @@ const addData = () => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" label="车位名" min-width="100px">
+      <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" :label="t('parking.fields.name')" min-width="100px">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" id="form_item_box" :ref="setItemRef" :model="scope.row"
             :rules="rules">
             <el-form-item prop="name">
-              <el-input v-model="scope.row.name" placeholder="请输入车位名" />
+              <el-input v-model="scope.row.name" :placeholder="t('parking.placeholders.name')" />
             </el-form-item>
           </el-form>
           <template v-else>
@@ -214,11 +211,11 @@ const addData = () => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="设备ID" min-width="100px">
+      <el-table-column align="center" :label="t('parking.fields.deviceId')" min-width="100px">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules">
             <el-form-item prop="location">
-              <el-input v-model="scope.row.deviceId" clearable placeholder="请输入设备ID" />
+              <el-input v-model="scope.row.deviceId" clearable :placeholder="t('parking.placeholders.deviceId')" />
             </el-form-item>
           </el-form>
           <template v-else>
@@ -226,82 +223,82 @@ const addData = () => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车位状态" min-width="130">
+      <el-table-column align="center" :label="t('parking.fields.status')" min-width="130">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules">
             <el-form-item prop="groupId">
-              <el-select v-model="scope.row.status" clearable placeholder="请选择车位状态" style="width: 100%">
-                <el-option v-for="item in parkingSpaceStatusList" :key="Number(item.value)" :label="item.label"
+              <el-select v-model="scope.row.status" clearable :placeholder="t('parking.placeholders.status')" style="width: 100%">
+                <el-option v-for="item in parkingSpaceStatusListLocal" :key="Number(item.value)" :label="item.label"
                   :value="Number(item.value)" />
               </el-select>
             </el-form-item>
           </el-form>
           <template v-else>
             {{
-            parkingSpaceStatusList.find(item => item.value == scope.row.status)
+            parkingSpaceStatusListLocal.find(item => item.value == scope.row.status)
             ?.label
             }}
           </template>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="车场名" min-width="180">
+      <el-table-column align="center" :label="t('parking.fields.modelName')" min-width="180">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules">
             <el-form-item prop="modelName">
-              <el-select v-model="scope.row.modelName" clearable placeholder="请选择车场名" style="width: 100%">
-                <el-option v-for="item in parkingSpaceModelNameList" :key="item.value" :label="item.label"
+              <el-select v-model="scope.row.modelName" clearable :placeholder="t('parking.placeholders.modelName')" style="width: 100%">
+                <el-option v-for="item in parkingSpaceModelNameListLocal" :key="item.value" :label="item.label"
                   :value="item.value" />
               </el-select>
             </el-form-item>
           </el-form>
           <template v-else>
             {{
-            parkingSpaceModelNameList.find(item => item.value == scope.row.modelName)
+            parkingSpaceModelNameListLocal.find(item => item.value == scope.row.modelName)
             ?.label
             }}
           </template>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="楼层" width="130">
+      <el-table-column align="center" :label="t('parking.fields.floor')" width="130">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules">
             <el-form-item prop="fnum">
-              <el-select v-model="scope.row.fnum" clearable placeholder="请选择楼层" style="width: 100%">
-                <el-option v-for="item in parkingSpaceFNumList" :key="item.value" :label="item.label"
+              <el-select v-model="scope.row.fnum" clearable :placeholder="t('parking.placeholders.floor')" style="width: 100%">
+                <el-option v-for="item in parkingSpaceFNumListLocal" :key="item.value" :label="item.label"
                   :value="item.value" />
               </el-select>
             </el-form-item>
           </el-form>
           <template v-else>
             {{
-            parkingSpaceFNumList.find(item => item.value == scope.row.fnum)
+            parkingSpaceFNumListLocal.find(item => item.value == scope.row.fnum)
             ?.label
             }}
           </template>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="创建时间" prop="createTime" width="200" />
-      <el-table-column align="center" label="修改时间" prop="updateTime" width="200" />
+      <el-table-column align="center" :label="t('label.created')" prop="createTime" width="200" />
+      <el-table-column align="center" :label="t('label.updated')" prop="updateTime" width="200" />
 
-      <el-table-column align="center" fixed="right" label="操作" width="200">
+      <el-table-column align="center" fixed="right" :label="t('label.operation')" width="200">
         <template #default="scope">
           <template v-if="scope.$index != editIndex">
             <el-button icon="Delete" size="small" type="danger" @click="deleteFn(scope.row.id)">
-              删除
+              {{ t('button.delete') }}
             </el-button>
             <el-button icon="Edit" size="small" @click="editIndex = scope.$index">
-              编辑
+              {{ t('button.edit') }}
             </el-button>
           </template>
           <div v-else style="margin-bottom: 20px">
             <el-button icon="FolderChecked" size="small" type="primary" @click="saveFn(scope)">
-              保存
+              {{ t('button.save') }}
             </el-button>
             <el-button icon="Close" size="small" @click="cancellation">
-              取消
+              {{ t('button.cancel') }}
             </el-button>
           </div>
         </template>
@@ -312,7 +309,7 @@ const addData = () => {
         :page-sizes="[10, 50, 100, 150]" :small="false" :total="params.total"
         layout="total, sizes, prev, pager, next, jumper" @size-change="getData" @current-change="getData" />
       <el-button icon="Plus" size="small" type="primary" @click="addData">
-        新增
+        {{ t('button.add') }}
       </el-button>
     </div>
   </div>

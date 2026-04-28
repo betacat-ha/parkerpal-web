@@ -7,12 +7,14 @@ import {
   newOrUpdatedMonthlyCar
 } from "@/api";
 import LicensePlateInput from "@/components/LicensePlateInput/index.vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "VipCar"
 });
+const { t } = useI18n();
 
 let refList = ref<FormInstance[]>([]);
 
@@ -21,10 +23,10 @@ let backups: MonthlyCarPageListType[] = [];
 const editIndex = ref(-1);
 const rules = reactive<FormRules<any>>({
   mainlandLicensePlates: [
-    { required: true, message: "请输入内地车牌号码", trigger: "blur" }
+    { required: true, message: t('vehicle.rules.mainlandLicensePlates'), trigger: "blur" }
   ],
   startTime: [
-    { required: true, message: "请选择免收费时间段", trigger: "blur" }
+    { required: true, message: t('vehicle.rules.startTime'), trigger: "blur" }
   ]
 });
 const params = reactive({
@@ -48,7 +50,7 @@ const saveFn = (data: any) => {
     .then(() => {
       editIndex.value = -1;
       getData();
-      ElMessage.success(data.row.id ? "编辑成功" : "新增成功");
+      ElMessage.success(t('message.saveSuccess'));
     });
 };
 //取消
@@ -58,16 +60,16 @@ const cancellation = () => {
 };
 //删除
 const deleteFn = (id: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认删除？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.warning'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
     type: "warning"
   })
     .then(() => {
       return deleteMonthlyCar({ ids: [id] });
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('message.deleteSuccess'));
       if (dataList.value.length == 1 && params.pageNumber > 1) {
         params.pageNumber = params.pageNumber - 1;
       }
@@ -115,7 +117,7 @@ const addData = () => {
     editIndex.value = 0;
     tableRef.value.$refs.scrollBarRef.setScrollTop(0);
   } else {
-    ElMessage.warning("编辑状态不可新增！");
+    ElMessage.warning(t('message.warning'));
   }
 };
 const time = ref("");
@@ -139,26 +141,26 @@ const tableHeight = computed(() => {
   <div class="bg-white dark:bg-[#141414] content">
     <div class="c_box">
       <div class="title">
-        <div class="lf">内部车辆</div>
+        <div class="lf">{{ t('menu.vipCar') }}</div>
       </div>
       <div class="form_box_p">
         <div class="form_box">
           <div class="form_item_box">
-            <div>内地车牌号码：</div>
+            <div>{{ t('vehicle.licensePlate') }}：</div>
             <el-input
               v-model="searchParams.mainlandLicensePlates"
               clearable
-              placeholder="请输入内地车牌号码"
+              :placeholder="t('vehicle.placeholders.mainlandLicensePlates')"
             />
           </div>
           <div class="form_item_box">
-            <div>创建时间段：</div>
+            <div>{{ t('vehicle.fields.createRange') }}：</div>
             <div class="time_picker_date">
               <el-date-picker
                 v-model="time"
-                end-placeholder="结束时间"
-                range-separator="To"
-                start-placeholder="开始时间"
+              :end-placeholder="t('vehicle.placeholders.endTime')"
+                :range-separator="t('device.placeholders.rangeSeparator')"
+                :start-placeholder="t('vehicle.placeholders.startTime')"
                 type="datetimerange"
                 value-format="YYYY-MM-DD HH:mm:ss"
                 @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')"
@@ -166,7 +168,7 @@ const tableHeight = computed(() => {
             </div>
           </div>
         </div>
-        <el-button type="primary" @click="getData">搜索</el-button>
+        <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
       </div>
       <el-table
         ref="tableRef"
@@ -179,14 +181,14 @@ const tableHeight = computed(() => {
           :index="indexMethod"
           :show-overflow-tooltip="false"
           align="center"
-          label="序号"
+          :label="t('journal.warehousing.serialNumber')"
           min-width="60"
           type="index"
         />
         <el-table-column
           :show-overflow-tooltip="editIndex < 0"
           align="center"
-          label="内地车牌号码"
+          :label="t('vehicle.fields.mainlandLicensePlates')"
           min-width="260px"
         >
           <template #default="scope">
@@ -206,7 +208,7 @@ const tableHeight = computed(() => {
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="其他车牌号码" min-width="200px">
+        <el-table-column align="center" :label="t('vehicle.fields.otherLicensePlates')" min-width="200px">
           <template #default="scope">
             <el-form
               v-if="scope.$index == editIndex"
@@ -218,7 +220,7 @@ const tableHeight = computed(() => {
                 <el-input
                   v-model="scope.row.otherLicensePlates"
                   clearable
-                  placeholder="多个车牌号码英文逗号分隔"
+                  :placeholder="t('vehicle.placeholders.otherLicensePlates')"
                 />
               </el-form-item>
             </el-form>
@@ -229,7 +231,7 @@ const tableHeight = computed(() => {
         </el-table-column>
         <el-table-column
           align="center"
-          label="登记时间"
+          :label="t('label.created')"
           prop="createTime"
           width="200"
         >
@@ -238,7 +240,7 @@ const tableHeight = computed(() => {
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" width="200">
+        <el-table-column align="center" fixed="right" :label="t('label.operation')" width="200">
           <template #default="scope">
             <template v-if="scope.$index != editIndex">
               <el-button
@@ -247,14 +249,14 @@ const tableHeight = computed(() => {
                 type="danger"
                 @click="deleteFn(scope.row.id)"
               >
-                删除
+                {{ t('button.delete') }}
               </el-button>
               <el-button
                 icon="Edit"
                 size="small"
                 @click="editIndex = scope.$index"
               >
-                编辑
+                {{ t('button.edit') }}
               </el-button>
             </template>
             <div v-else style="margin-bottom: 20px">
@@ -264,10 +266,10 @@ const tableHeight = computed(() => {
                 type="primary"
                 @click="saveFn(scope)"
               >
-                保存
+                {{ t('button.save') }}
               </el-button>
               <el-button icon="Close" size="small" @click="cancellation">
-                取消
+                {{ t('button.cancel') }}
               </el-button>
             </div>
           </template>
@@ -275,7 +277,7 @@ const tableHeight = computed(() => {
       </el-table>
       <div class="pagination_box">
         <el-button icon="Plus" size="small" type="primary" @click="addData">
-          新增
+          {{ t('button.add') }}
         </el-button>
         <el-pagination
           v-if="params.total"

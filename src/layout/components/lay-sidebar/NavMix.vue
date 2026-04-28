@@ -3,6 +3,7 @@ import { isAllEmpty } from "@pureadmin/utils";
 import { useNav } from "@/layout/hooks/useNav";
 import LaySearch from "../lay-search/index.vue";
 import { nextTick, onMounted, ref, toRaw, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { findRouteByPath, getParentPaths } from "@/router/utils";
 import { usePermissionStoreHook } from "@/store/modules/permission";
@@ -14,6 +15,7 @@ import Setting from "@iconify-icons/ri/settings-3-line";
 
 const menuRef = ref();
 const defaultActive = ref(null);
+const { t } = useI18n();
 
 const {
   route,
@@ -83,7 +85,7 @@ watch(
           </div>
           <div :style="getDivStyle">
             <span class="select-none">
-              {{ route.meta.title }}
+              {{ t(route.meta.title as string) }}
             </span>
             <LaySidebarExtraIcon :extraIcon="route.meta.extraIcon" />
           </div>

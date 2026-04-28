@@ -1,14 +1,19 @@
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from "element-plus/es/components/form";
 import { deleteIotDevice, getSpaceReservationRecordList, newOrUpdateSpaceReservationRecord } from "@/api";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { parkingSpaceFNumList, parkingSpaceReservationStatus, parkingSpaceModelNameList } from "@/views/data";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { number } from "echarts";
 
 defineOptions({
   name: "ParkingSpaceManagement"
 });
+const { t } = useI18n();
+const parkingSpaceModelNameListLocal = computed(() => parkingSpaceModelNameList(t));
+const parkingSpaceFNumListLocal = computed(() => parkingSpaceFNumList(t));
+const parkingSpaceReservationStatusLocal = computed(() => parkingSpaceReservationStatus(t));
 type DataListType = {
   createdAt?: string;
   id?: number;
@@ -40,38 +45,38 @@ const validateLicenseNo = (errorMessage: string) => {
 
   return (rule: any, value: any, callback: (error?: string | Error | undefined) => void) => {
     const flag = value.length === 8 ? creg.test(value) : value.length === 9 ? xreg.test(value) : false;
-    callback(flag ? undefined : value.length === 0 ? new Error("请输入车牌号") : new Error(errorMessage));
+    callback(flag ? undefined : value.length === 0 ? new Error(t('parking.rules.licensePlate')) : new Error(errorMessage));
   };
 };
 
 const rules = reactive<FormRules<any>>({
   id: [
-    { required: true, message: '请输入记录ID', trigger: 'blur' },
+    { required: true, message: t('parking.rules.id'), trigger: 'blur' },
   ],
   modelName: [
-    { required: true, message: '请选择车位所在位置', trigger: 'blur' },
+    { required: true, message: t('parking.rules.modelName'), trigger: 'blur' },
   ],
   parkingSpaceId: [
-    { required: true, message: '请选择车位号', trigger: 'change' },
+    { required: true, message: t('parking.rules.parkingSpaceId'), trigger: 'change' },
   ],
   'parkingSpace.name': [
-    { required: true, message: '请输入车位名称', trigger: 'blur' },
+    { required: true, message: t('parking.rules.name'), trigger: 'blur' },
   ],
   licensePlate: [
-    { required: true, message: '请输入车牌号', trigger: 'blur' },
-    { validator: validateLicenseNo("车牌号示例：粤A·12345"), required: true, trigger: "change" },
+    { required: true, message: t('parking.rules.licensePlate'), trigger: 'blur' },
+    { validator: validateLicenseNo(t('parking.rules.licenseExample')), required: true, trigger: "change" },
   ],
   reservationUserId: [
-    { required: true, message: '请选择预约用户', trigger: 'change' },
+    { required: true, message: t('parking.rules.reservationUserId'), trigger: 'change' },
   ],
   reservationStatus: [
-    { required: true, message: '请选择预约状态', trigger: 'change' },
+    { required: true, message: t('parking.rules.reservationStatus'), trigger: 'change' },
   ],
   reservationStart: [
-    { required: true, message: '请选择预约开始时间', trigger: 'change' },
+    { required: true, message: t('parking.rules.reservationStart'), trigger: 'change' },
   ],
   reservationEnd: [
-    { required: false, message: '请选择预约结束时间', trigger: 'change' },
+    { required: false, message: t('parking.rules.reservationEnd'), trigger: 'change' },
   ],
 });
 // 设置多个ref
@@ -94,7 +99,7 @@ const saveFn = (data: any) => {
     .then(() => {
       editIndex.value = -1;
       getData();
-      ElMessage.success(data.row.id ? "编辑成功" : "新增成功");
+      ElMessage.success(data.row.id ? t('button.edit') : t('button.add'));
     });
 };
 //取消
@@ -104,16 +109,16 @@ const cancellation = () => {
 };
 //删除
 const deleteFn = (id: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认删除？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.warning'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
     type: "warning"
   })
     .then(() => {
       return deleteIotDevice({ ids: [id] });
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('message.deleteSuccess'));
       getData();
     });
 };
@@ -172,7 +177,7 @@ const addData = () => {
     editIndex.value = 0;
     tableRef.value.$refs.scrollBarRef.setScrollTop(0);
   } else {
-    ElMessage.warning("编辑状态不可新增！");
+    ElMessage.warning(t('message.warning'));
   }
 };
 const time = ref("");
@@ -190,52 +195,52 @@ const changeFnTime = (e: any, start: string, end: string) => {
 <template>
   <div class="content bg-white dark:bg-[#141414]">
     <div class="title">
-      <div class="lf">车位预约管理</div>
+      <div class="lf">{{ t('menu.parkingSpaceReservation') }}</div>
     </div>
     <div class="form_box_p">
       <div class="form_box">
         <div class="form_item_box">
-          <div>车场名：</div>
-          <el-select v-model="searchParams.modelName" clearable placeholder="请选择车场名" style="width: 100%">
-            <el-option v-for="item in parkingSpaceModelNameList" :key="item.value" :label="item.label"
+          <div>{{ t('parking.fields.modelName') }}：</div>
+          <el-select v-model="searchParams.modelName" clearable :placeholder="t('parking.placeholders.modelName')" style="width: 100%">
+            <el-option v-for="item in parkingSpaceModelNameListLocal" :key="item.value" :label="item.label"
               :value="item.value" />
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>楼层：</div>
-          <el-select v-model="searchParams.fnum" clearable placeholder="请选择楼层" style="width: 100%">
-            <el-option v-for="item in parkingSpaceFNumList" :key="item.value" :label="item.label" :value="item.value" />
+          <div>{{ t('parking.fields.floor') }}：</div>
+          <el-select v-model="searchParams.fnum" clearable :placeholder="t('parking.placeholders.floor')" style="width: 100%">
+            <el-option v-for="item in parkingSpaceFNumListLocal" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>车位ID：</div>
-          <el-input v-model="searchParams.parkingSpaceId" clearable placeholder="请输入车位ID" />
+          <div>{{ t('parking.fields.parkingSpaceId') }}：</div>
+          <el-input v-model="searchParams.parkingSpaceId" clearable :placeholder="t('parking.placeholders.parkingSpaceId')" />
         </div>
         <div class="form_item_box">
-          <div>车牌号：</div>
-          <el-input v-model="searchParams.licensePlate" clearable placeholder="请输入车牌号" />
+          <div>{{ t('parking.fields.licensePlate') }}：</div>
+          <el-input v-model="searchParams.licensePlate" clearable :placeholder="t('parking.placeholders.licensePlate')" />
         </div>
         <div class="form_item_box">
-          <div>预约时间段：</div>
+          <div>{{ t('parking.fields.reservationRange') }}：</div>
           <div class="time_picker_date">
-            <el-date-picker v-model="time" end-placeholder="结束时间" range-separator="To" start-placeholder="开始时间"
+            <el-date-picker v-model="time" :end-placeholder="t('parking.placeholders.endTime')" :range-separator="t('device.placeholders.rangeSeparator')" :start-placeholder="t('parking.placeholders.startTime')"
               type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss"
               @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')" />
           </div>
         </div>
       </div>
-      <el-button type="primary" @click="getData">搜索</el-button>
+      <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
     </div>
     <el-table ref="tableRef" :data="dataList" :height="tableHeight" :tooltip-options="tooltipOptions"
       show-overflow-tooltip>
-      <el-table-column :index="indexMethod" :show-overflow-tooltip="false" align="center" label="序号" min-width="60"
+      <el-table-column :index="indexMethod" :show-overflow-tooltip="false" align="center" :label="t('journal.warehousing.serialNumber')" min-width="60"
         type="index" />
-      <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" label="车位名称" min-width="100px">
+      <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" :label="t('parking.fields.name')" min-width="100px">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" id="form_item_box" :ref="setItemRef" :model="scope.row"
             class="row_edit" :rules="rules">
             <el-form-item prop="parkingSpace.name">
-              <el-input v-model="scope.row.parkingSpace.name" placeholder="车位名称" />
+              <el-input v-model="scope.row.parkingSpace.name" :placeholder="t('parking.placeholders.name')" />
             </el-form-item>
           </el-form>
           <template v-else>
@@ -243,12 +248,12 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="车牌号" min-width="150px">
+      <el-table-column align="center" :label="t('parking.fields.licensePlate')" min-width="150px">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" class="row_edit"
             :rules="rules">
             <el-form-item prop="licensePlate">
-              <el-input v-model="scope.row.licensePlate" clearable placeholder="车牌号" />
+              <el-input v-model="scope.row.licensePlate" clearable :placeholder="t('parking.placeholders.licensePlate')" />
             </el-form-item>
           </el-form>
           <template v-else>
@@ -256,30 +261,30 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="预约状态" width="150">
+      <el-table-column align="center" :label="t('parking.fields.reservationStatus')" width="150">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules"
             class="row_edit">
             <el-form-item prop="reservationStatus">
-              <el-select v-model="scope.row.reservationStatus" placeholder="请选择预约状态" style="width: 100%">
-                <el-option v-for="item in parkingSpaceReservationStatus" :key="item.value" :label="item.label"
+              <el-select v-model="scope.row.reservationStatus" :placeholder="t('parking.placeholders.status')" style="width: 100%">
+                <el-option v-for="item in parkingSpaceReservationStatusLocal" :key="item.value" :label="item.label"
                   :value="item.value" />
               </el-select>
             </el-form-item>
           </el-form>
           <template v-else>
             {{
-              parkingSpaceReservationStatus.find(item => item.value == scope.row.reservationStatus)?.label
+              parkingSpaceReservationStatusLocal.find(item => item.value == scope.row.reservationStatus)?.label
             }}
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="预约开始时间" width="250">
+      <el-table-column align="center" :label="t('parking.fields.reservationStart')" width="250">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules"
             class="row_edit">
             <el-form-item prop="reservationStart">
-              <el-date-picker v-model="scope.row.reservationStart" placeholder="开始时间" type="datetime"
+              <el-date-picker v-model="scope.row.reservationStart" :placeholder="t('parking.placeholders.startTime')" type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss" @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')" />
             </el-form-item>
           </el-form>
@@ -290,12 +295,12 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="预约结束时间" width="250">
+      <el-table-column align="center" :label="t('parking.fields.reservationEnd')" width="250">
         <template #default="scope">
           <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules"
             class="row_edit">
             <el-form-item prop="reservationEnd">
-              <el-date-picker v-model="scope.row.reservationEnd" placeholder="结束时间" type="datetime"
+              <el-date-picker v-model="scope.row.reservationEnd" :placeholder="t('parking.placeholders.endTime')" type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss" @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')" />
             </el-form-item>
           </el-form>
@@ -307,29 +312,29 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" prop="createdAt" width="200" />
-      <el-table-column align="center" label="更新时间" prop="updatedAt" width="200">
+      <el-table-column align="center" :label="t('label.created')" prop="createdAt" width="200" />
+      <el-table-column align="center" :label="t('label.updated')" prop="updatedAt" width="200">
         <template #default="{ row }">
           {{ row.updatedAt || '--' }}
         </template>
       </el-table-column>
 
-      <el-table-column align="center" fixed="right" label="操作" width="200">
+      <el-table-column align="center" fixed="right" :label="t('label.operation')" width="200">
         <template #default="scope">
           <template v-if="scope.$index != editIndex">
             <el-button icon="Delete" size="small" type="danger" @click="deleteFn(scope.row.id)">
-              删除
+              {{ t('button.delete') }}
             </el-button>
             <el-button icon="Edit" size="small" @click="editIndex = scope.$index">
-              编辑
+              {{ t('button.edit') }}
             </el-button>
           </template>
           <div v-else class="row_edit" style="margin-bottom: 20px">
             <el-button icon="FolderChecked" size="small" type="primary" @click="saveFn(scope)">
-              保存
+              {{ t('button.save') }}
             </el-button>
             <el-button icon="Close" size="small" @click="cancellation">
-              取消
+              {{ t('button.cancel') }}
             </el-button>
           </div>
         </template>
@@ -340,7 +345,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
         :page-sizes="[10, 50, 100, 150]" :small="false" :total="params.total"
         layout="total, sizes, prev, pager, next, jumper" @size-change="getData" @current-change="getData" />
       <el-button icon="Plus" size="small" type="primary" @click="addData">
-        新增
+        {{ t('button.add') }}
       </el-button>
     </div>
   </div>

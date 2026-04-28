@@ -6,7 +6,7 @@ export default {
   redirect: "/system/outboundOrder",
   meta: {
     icon: "ep:van",
-    title: "车场管理",
+    title: "menu.vehicle",
     rank: 2
   },
   children: [
@@ -25,7 +25,7 @@ export default {
       name: "CarRentalSpace",
       component: () => import("@/views/vehicle/carRentalSpace/index.vue"),
       meta: {
-        title: "商家停车券管理",
+        title: "menu.carRentalSpace",
         roles: ["4", "3"]
       }
     },
@@ -34,7 +34,7 @@ export default {
       name: "VipCar",
       component: () => import("@/views/vehicle/vipCar/index.vue"),
       meta: {
-        title: "内部车辆",
+        title: "menu.vipCar",
         roles: ["4", "3"]
       }
     },
@@ -43,7 +43,7 @@ export default {
       name: "ZombieCar",
       component: () => import("@/views/costManagement/zombieCar/index.vue"),
       meta: {
-        title: "访客车辆",
+        title: "menu.zombieCar",
         roles: ["4", "3"]
       }
     },
@@ -52,7 +52,7 @@ export default {
       name: "Journal",
       component: () => import("@/views/vehicle/journal/index.vue"),
       meta: {
-        title: "车辆出入库记录",
+        title: "menu.journal",
         roles: ["4", "3"]
       }
     },
@@ -61,7 +61,7 @@ export default {
       name: "ParkingSpaceManagement",
       component: () => import("@/views/vehicle/parkingSpace/management/index.vue"),
       meta: {
-        title: "车位管理",
+        title: "menu.parkingSpaceManagement",
         roles: ["4", "3"]
       }
     },
@@ -70,7 +70,7 @@ export default {
       name: "ParkingSpaceReservation",
       component: () => import("@/views/vehicle/parkingSpace/reservation/index.vue"),
       meta: {
-        title: "车位预约管理",
+        title: "menu.parkingSpaceReservation",
         roles: ["4", "3"]
       }
     }

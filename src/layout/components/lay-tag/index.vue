@@ -16,6 +16,8 @@ import {
   useResizeObserver
 } from "@pureadmin/utils";
 
+import { useI18n } from "vue-i18n";
+
 import ExitFullscreen from "@iconify-icons/ri/fullscreen-exit-fill";
 import Fullscreen from "@iconify-icons/ri/fullscreen-fill";
 import ArrowDown from "@iconify-icons/ri/arrow-down-s-line";
@@ -62,6 +64,12 @@ const fixedTags = [
   ...routerArrays,
   ...usePermissionStoreHook().flatteningRoutes.filter(v => v?.meta?.fixedTag)
 ];
+
+const { t } = useI18n();
+
+const getTitle = (title: string) => {
+  return t(title);
+};
 
 const dynamicTagView = async () => {
   await nextTick();
@@ -583,7 +591,7 @@ onBeforeUnmount(() => {
           <span
             class="tag-title dark:!text-text_color_primary dark:hover:!text-primary"
           >
-            {{ item.meta.title }}
+            {{ getTitle(item.meta.title) }}
           </span>
           <span
             v-if="

@@ -6,7 +6,7 @@ export default {
   redirect: "/welcome",
   meta: {
     icon: "ep:house",
-    title: "首页",
+    title: "menu.home",
     rank: 0
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "Welcome",
       component: () => import("@/views/welcome/index.vue"),
       meta: {
-        title: "首页"
+        title: "menu.home"
       }
     }
   ]

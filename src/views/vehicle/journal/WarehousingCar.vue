@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import { getInventoryPageList, InventoryPageList } from "@/api";
 import { warehousingTableColumn } from "@/views/data";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "WarehousingCar"
 });
 
+const { t } = useI18n();
+const warehousingTableColumnData = computed(() => warehousingTableColumn(t));
 const dataList = ref<InventoryPageList[]>([]);
 const editIndex = ref(-1);
 const params = reactive({
@@ -60,26 +63,26 @@ const changeFnTime = (e: any, start: string, end: string) => {
   <div class="bg-white dark:bg-[#141414] content">
     <div class="c_box">
       <div class="title">
-        <div class="lf">车辆入库记录</div>
+        <div class="lf">{{ t("journal.warehousing.title") }}</div>
       </div>
       <div class="form_box_p">
         <div class="form_box">
           <div class="form_item_box">
-            <div>内地车牌号码：</div>
+            <div>{{ t("journal.warehousing.mainlandLicensePlates") }}：</div>
             <el-input
               v-model="searchParams.mainlandLicensePlates"
               clearable
-              placeholder="请输入内地车牌号码"
+              :placeholder="t('journal.warehousing.mainlandLicensePlatesPlaceholder')"
             />
           </div>
           <div class="form_item_box">
-            <div>进库时间段：</div>
+            <div>{{ t("journal.warehousing.warehousingTimeRange") }}：</div>
             <div class="time_picker_date">
               <el-date-picker
                 v-model="time"
-                end-placeholder="结束时间"
-                range-separator="To"
-                start-placeholder="开始时间"
+                :end-placeholder="t('journal.warehousing.endTime')"
+                  :range-separator="t('device.placeholders.rangeSeparator')"
+                  :start-placeholder="t('journal.warehousing.startTime')"
                 type="datetimerange"
                 value-format="YYYY-MM-DD HH:mm:ss"
                 @change="(e: any) => changeFnTime(e, 'startTime1', 'endTime')"
@@ -87,7 +90,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
             </div>
           </div>
         </div>
-        <el-button type="primary" @click="getData">搜索</el-button>
+        <el-button type="primary" @click="getData">{{ t("journal.warehousing.search") }}</el-button>
       </div>
       <el-table
         ref="tableRef"
@@ -100,12 +103,12 @@ const changeFnTime = (e: any, start: string, end: string) => {
           :index="indexMethod"
           :show-overflow-tooltip="false"
           align="center"
-          label="序号"
+          :label="t('journal.warehousing.serialNumber')"
           min-width="60"
           type="index"
         />
         <el-table-column
-          v-for="(item, index) in warehousingTableColumn"
+          v-for="(item, index) in warehousingTableColumnData"
           :key="index"
           :label="item.label"
           :min-width="item.width ?? 100"

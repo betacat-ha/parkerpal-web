@@ -2,6 +2,7 @@
 import { useECharts } from "@pureadmin/utils";
 import { countOrder } from "@/api";
 import { useUserStore } from "@/store/modules/user";
+import { useI18n } from "vue-i18n";
 
 const isAdmin = useUserStore().isAdmin;
 const chartRef = ref<HTMLDivElement | null>(null);
@@ -11,25 +12,14 @@ const userId = useUserStore().userInfo.id;
 const data1 = ref([]);
 const data2 = ref([]);
 const data3 = ref([]);
+const { t, tm } = useI18n();
+const months = computed(() => tm("home.trendChart.months") as string[]);
 const init = () => {
   setOptions({
     legend: {},
     xAxis: {
       type: "category",
-      data: [
-        "一月",
-        "二月",
-        "三月",
-        "四月",
-        "五月",
-        "六月",
-        "七月",
-        "八月",
-        "九月",
-        "十月",
-        "十一月",
-        "十二月"
-      ],
+      data: months.value,
       axisTick: {
         alignWithLabel: true
       }
@@ -54,7 +44,7 @@ const init = () => {
     series: [
       {
         data: data1.value,
-        name: isAdmin ? "收益" : "支出",
+        name: isAdmin ? t("home.trendChart.income") : t("home.trendChart.expense"),
         type: "bar",
         stack: "Ad",
         barWidth: "60%",
@@ -63,7 +53,7 @@ const init = () => {
         }
       },
       {
-        name: "优惠",
+        name: t("home.trendChart.discount"),
         type: "bar",
         stack: "Ad",
         emphasis: {
@@ -72,7 +62,7 @@ const init = () => {
         data: data2.value
       },
       {
-        name: "总金额",
+        name: t("home.trendChart.totalAmount"),
         type: "bar",
         barWidth: 10,
         stack: "Search Engine",
@@ -106,10 +96,10 @@ onBeforeMount(() => getData(year.value));
 <template>
   <div class="bg-white mt-[20px] rounded-[4px] dark:bg-[#141414]">
     <div class="font-bold px-[20px] w-[100%] text-[20px] leading-[60px] flex justify-between items-center">
-      <div>月收费统计</div>
-      <el-date-picker v-model="year" :clearable="false" placeholder="请选择年份" type="year" @change="getData" />
+      <div>{{ t("home.trendChart.title") }}</div>
+      <el-date-picker v-model="year" :clearable="false" :placeholder="t('home.trendChart.yearPlaceholder')" type="year" @change="getData" />
     </div>
-    <el-empty v-show="data3.length == 0" description="暂无数据" />
+    <el-empty v-show="data3.length == 0" :description="t('home.trendChart.noData')" />
     <div v-if="data3.length > 0" ref="chartRef" class="h-[400px] w-[100%]"></div>
   </div>
 </template>

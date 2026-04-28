@@ -4,10 +4,12 @@ import { computed } from "vue";
 import { tableColumn, typeCode } from "@/views/data";
 import { useRoute } from "vue-router";
 import { useUserStore } from "@/store/modules/user";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "MonthlyRent"
 });
+const { t } = useI18n();
 const isAdmin = useUserStore().isAdmin;
 const userId = useUserStore().userInfo.id;
 const dataList = ref<totalPageListType[]>([]);
@@ -63,6 +65,8 @@ const tableHeight = computed(() => {
     document.documentElement.clientHeight || document.body.clientHeight;
   return windowHeight - 460;
 });
+const tableColumnLocal = computed(() => tableColumn(t));
+const typeCodeLocal = computed(() => typeCode(t));
 </script>
 <template>
   <div class="bg-white dark:bg-[#141414] content">
@@ -105,7 +109,7 @@ const tableHeight = computed(() => {
               style="width: 100%"
             >
               <el-option
-                v-for="item in typeCode"
+                v-for="item in typeCodeLocal"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -192,7 +196,7 @@ const tableHeight = computed(() => {
           type="index"
         />
         <el-table-column
-          v-for="(item, index) in tableColumn"
+          v-for="(item, index) in tableColumnLocal"
           :key="index"
           :label="item.label"
           :width="item.width"

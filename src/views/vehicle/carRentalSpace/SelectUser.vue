@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { TableType } from "@/views/system/setRole/index.vue";
 import { pageUserList } from "@/api";
+import { useI18n } from "vue-i18n";
 
 interface Props {
   modelValue: boolean;
@@ -14,6 +15,7 @@ interface Emits {
 
 const props = defineProps<Props>();
 const emits = defineEmits<Emits>();
+const { t } = useI18n();
 const dataList = ref<TableType[]>([]);
 const params = reactive({
   pageNumber: 1,
@@ -22,9 +24,9 @@ const params = reactive({
   totalNumber: 0
 });
 const statusList = {
-  1: "正常",
-  2: "锁定",
-  3: "禁用"
+  1: t('vehicle.carRentalSpace.userStatus.normal'),
+  2: t('vehicle.carRentalSpace.userStatus.locked'),
+  3: t('vehicle.carRentalSpace.userStatus.disabled')
 };
 const getData = () => {
   const { pageSize, pageNumber } = params;
@@ -50,7 +52,7 @@ const handleCurrentChange = (val: TableType | undefined) => {
   <el-dialog
     :destroy-on-close="true"
     :modelValue="modelValue"
-    title="选择商家"
+    :title="t('vehicle.carRentalSpace.selectUserTitle')"
     width="1000px"
     @update:modelValue="$emit('update:modelValue', false)"
   >
@@ -63,17 +65,17 @@ const handleCurrentChange = (val: TableType | undefined) => {
     >
       <el-table-column type="index" />
 
-      <el-table-column align="center" label="账号">
+      <el-table-column align="center" :label="t('vehicle.carRentalSpace.userColumns.account')">
         <template #default="scope">
           <div class="text_box">{{ scope.row.account ?? "--" }}</div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="单位名称">
+      <el-table-column align="center" :label="t('vehicle.carRentalSpace.userColumns.userName')">
         <template #default="scope">
           <div class="text_box">{{ scope.row.userName ?? "--" }}</div>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="角色">
+      <el-table-column align="center" :label="t('vehicle.carRentalSpace.userColumns.role')">
         <template #default="scope">
           <div class="text_box">
             {{ scope.row.roleName ?? "--" }}
@@ -81,7 +83,7 @@ const handleCurrentChange = (val: TableType | undefined) => {
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="联系电话">
+      <el-table-column align="center" :label="t('vehicle.carRentalSpace.userColumns.phone')">
         <template #default="scope">
           <div class="text_box">
             {{ scope.row.phoneNumber ?? "--" }}
@@ -89,7 +91,7 @@ const handleCurrentChange = (val: TableType | undefined) => {
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="状态">
+      <el-table-column align="center" :label="t('vehicle.carRentalSpace.userColumns.status')">
         <template #default="scope">
           <div class="text_box">
             {{ statusList[scope.row.status] ?? "--" }}

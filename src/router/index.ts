@@ -18,6 +18,7 @@ import {
 import {createRouter, type RouteComponent, type Router, type RouteRecordRaw} from "vue-router";
 import {type DataInfo, removeToken, userKey} from "@/utils/auth";
 import {useUserStoreHook} from "@/store/modules/user";
+import { i18n } from "@/i18n";
 
 /** 自动导入全部静态路由，无需再手动引入！匹配 src/router/modules 目录（任何嵌套级别）中具有 .ts 扩展名的所有文件，除了 remaining.ts 文件
  * 如何匹配所有文件请看：https://github.com/mrmlnc/fast-glob#basic-syntax
@@ -108,8 +109,9 @@ router.beforeEach((to: ToRouteType, _from, next) => {
     to.matched.some(item => {
       if (!item.meta.title) return "";
       const Title = getConfig().Title;
-      if (Title) document.title = `${item.meta.title} | ${Title}`;
-      else document.title = item.meta.title as string;
+      const routeTitle = i18n.global.t(item.meta.title as string) as string;
+      if (Title) document.title = `${routeTitle} | ${Title}`;
+      else document.title = routeTitle;
     });
   }
 

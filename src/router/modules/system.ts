@@ -6,7 +6,7 @@ export default {
   redirect: "/system/setRole",
   meta: {
     icon: "ep:setting",
-    title: "系统管理",
+    title: "menu.system",
     rank: 99
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "SetRole",
       component: () => import("@/views/system/setRole/index.vue"),
       meta: {
-        title: "后台账号管理",
+        title: "menu.setRole",
         roles: ["4", "3"]
       }
     }, {
@@ -23,7 +23,7 @@ export default {
       name: "CustomerManagement",
       component: () => import("@/views/system/customerManagement/index.vue"),
       meta: {
-        title: "车主账号管理",
+        title: "menu.customerManagement",
         roles: ["4", "3"]
       }
     //   path: "/system/wxManage",

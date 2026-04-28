@@ -6,6 +6,7 @@ import LaySidebarFullScreen from "../lay-sidebar/components/SidebarFullScreen.vu
 import LaySidebarBreadCrumb from "../lay-sidebar/components/SidebarBreadCrumb.vue";
 import LaySidebarTopCollapse from "../lay-sidebar/components/SidebarTopCollapse.vue";
 import SetPassword from "../set-password/index.vue";
+import LanguageSwitcher from "@/components/LanguageSwitcher.vue";
 
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import { useUserStoreHook } from "@/store/modules/user";
@@ -47,6 +48,8 @@ const isChangePassword = ref(false); //修改密码
       <LaySearch id="header-search" />
       <!-- 全屏 -->
       <LaySidebarFullScreen id="full-screen" />
+      <!-- 语言切换器 -->
+      <LanguageSwitcher />
       <!-- 消息通知 -->
       <!--      <LayNotice id="header-notice" />-->
       <!-- 退出登录 -->
@@ -108,6 +111,10 @@ const isChangePassword = ref(false); //修改密码
     height: 48px;
     color: #000000d9;
 
+    :deep(.dark) & {
+      color: #ffffffd9;
+    }
+
     .el-dropdown-link {
       display: flex;
       align-items: center;
@@ -116,6 +123,10 @@ const isChangePassword = ref(false); //修改密码
       padding: 10px;
       color: #000000d9;
       cursor: pointer;
+
+      :deep(.dark) & {
+        color: #ffffffd9;
+      }
 
       p {
         font-size: 14px;

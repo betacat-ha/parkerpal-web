@@ -6,7 +6,7 @@ export default {
   redirect: "/management/feeRules",
   meta: {
     icon: "ep:wallet",
-    title: "费用管理",
+    title: "menu.costManagement",
     rank: 5
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "FeeRules",
       component: () => import("@/views/costManagement/feeRules/index.vue"),
       meta: {
-        title: "收费规则",
+        title: "menu.feeRules",
         roles: ["4", "3"]
       }
     },
@@ -24,7 +24,7 @@ export default {
       name: "Record",
       component: () => import("@/views/costManagement/record/index.vue"),
       meta: {
-        title: "月保记录",
+        title: "menu.record",
         roles: ["4", "3"]
       }
     },
@@ -34,7 +34,7 @@ export default {
       component: () =>
         import("@/views/costManagement/reconciliation/index.vue"),
       meta: {
-        title: "商家对账",
+        title: "menu.reconciliation",
         roles: ["4", "3"]
       }
     }

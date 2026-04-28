@@ -6,7 +6,7 @@ export default {
   redirect: "/business/couponIssuance",
   meta: {
     icon: "solar:shop-2-linear",
-    title: "商户总览",
+    title: "menu.business",
     rank: 1
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "CouponIssuance",
       component: () => import("@/views/business/couponIssuance/index.vue"),
       meta: {
-        title: "停车领券",
+        title: "menu.couponIssuance",
         roles: ["1", "2"]
       }
     }

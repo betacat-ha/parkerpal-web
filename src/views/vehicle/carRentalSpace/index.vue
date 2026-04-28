@@ -11,12 +11,14 @@ import {
   ParkingDetailListType,
   parkingDetailSum
 } from "@/api";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "ZombieCar"
 });
+const { t } = useI18n();
 const isShowSelect = ref(false);
 
 let refList = ref<FormInstance[]>([]);
@@ -26,11 +28,11 @@ let backups: ParkingDetailListType[] = [];
 const editIndex = ref(-1);
 const rules = reactive<FormRules<any>>({
   assignedNumber: [
-    { required: true, message: "请输入发放数量", trigger: "blur" }
+    { required: true, message: t('vehicle.carRentalSpace.rules.assignedNumber'), trigger: "blur" }
   ],
-  userName: [{ required: true, message: "绑定商家", trigger: "blur" }],
-  startTime: [{ required: true, message: "请选择时间段", trigger: "blur" }],
-  assignedStatus: [{ required: true, message: "请选择状态", trigger: "blur" }]
+  userName: [{ required: true, message: t('vehicle.carRentalSpace.rules.userName'), trigger: "blur" }],
+  startTime: [{ required: true, message: t('vehicle.carRentalSpace.rules.startTime'), trigger: "blur" }],
+  assignedStatus: [{ required: true, message: t('vehicle.carRentalSpace.rules.assignedStatus'), trigger: "blur" }]
 });
 const params = reactive({
   pageNumber: 1,
@@ -65,7 +67,7 @@ const saveFn = (data: { row: ParkingDetailListType }) => {
     .then(() => {
       editIndex.value = -1;
       getData();
-      ElMessage.success(data.row.id ? "编辑成功" : "新增成功");
+      ElMessage.success(t('message.saveSuccess'));
     });
 };
 //取消
@@ -75,16 +77,16 @@ const cancellation = () => {
 };
 //删除
 const deleteFn = (id: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认删除？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.warning'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
     type: "warning"
   })
     .then(() => {
       return parkingDetailDelete({ ids: [id] });
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('message.deleteSuccess'));
       if (dataList.value.length == 1 && params.pageNumber > 1) {
         params.pageNumber = params.pageNumber - 1;
       }
@@ -147,7 +149,7 @@ const addData = () => {
     editIndex.value = 0;
     tableRef.value.$refs.scrollBarRef.setScrollTop(0);
   } else {
-    ElMessage.warning("编辑状态不可新增！");
+    ElMessage.warning(t('message.warning'));
   }
 };
 const changeFnTime = (e: any, start: string, end: string) => {
@@ -188,68 +190,68 @@ const freeTimePeriod = computed<any>({
     dataList.value[editIndex.value].endTime = value[1];
   }
 });
-const statusList = [
+const statusList = computed(() => [
   {
-    label: "有效",
+    label: t('vehicle.carRentalSpace.status.valid'),
     value: "1"
   },
   {
-    label: "失效",
+    label: t('vehicle.carRentalSpace.status.invalid'),
     value: "2"
   }
-];
+]);
 </script>
 <template>
   <div class="content bg-white dark:bg-[#141414]">
     <div class="c_box">
       <div class="title">
-        <div class="lf">商家停车券管理</div>
+        <div class="lf">{{ t('vehicle.carRentalSpace.title') }}</div>
         <div class="form_box_p">
           <div class="form_box">
             <div class="form_item_box">
-              已发放停车券：{{ statistics ?? "--" }}
+              {{ t('vehicle.carRentalSpace.stats.issued') }}：{{ statistics ?? "--" }}
             </div>
             <div class="form_item_box">
-              可发放停车券：{{ parkingData?.disposableNumber ?? "--" }}
+              {{ t('vehicle.carRentalSpace.stats.disposable') }}：{{ parkingData?.disposableNumber ?? "--" }}
             </div>
             <div class="form_item_box">
-              总车位：{{ parkingData?.parkingNumber ?? "--" }}
+              {{ t('vehicle.carRentalSpace.stats.parkingNumber') }}：{{ parkingData?.parkingNumber ?? "--" }}
             </div>
           </div>
           <el-button type="primary" @click="
               () => {
                 isShow = true;
               }
-            ">编辑
+            ">{{ t('button.edit') }}
           </el-button>
         </div>
       </div>
       <div class="form_box_p">
         <div class="form_box form_box2">
           <div class="form_item_box">
-            <div>商家：</div>
-            <el-input v-model="searchParams.userName" clearable placeholder="请输入商家" />
+            <div>{{ t('vehicle.carRentalSpace.fields.userName') }}：</div>
+            <el-input v-model="searchParams.userName" clearable :placeholder="t('vehicle.carRentalSpace.placeholders.userName')" />
           </div>
           <div class="form_item_box">
-            <div>额度状态：</div>
-            <el-select v-model="searchParams.assignedStatus" clearable placeholder="请选择额度状态" style="width: 100%">
+            <div>{{ t('vehicle.carRentalSpace.fields.assignedStatus') }}：</div>
+            <el-select v-model="searchParams.assignedStatus" clearable :placeholder="t('vehicle.carRentalSpace.placeholders.assignedStatus')" style="width: 100%">
               <el-option v-for="item in statusList" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </div>
           <div class="form_item_box">
-            <div>免收费时间段：</div>
+            <div>{{ t('vehicle.carRentalSpace.fields.timeRange') }}：</div>
             <div class="time_picker_date">
-              <el-date-picker v-model="freeTimePeriod2" end-placeholder="结束时间" range-separator="To"
-                start-placeholder="开始时间" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss" />
+              <el-date-picker v-model="freeTimePeriod2" :end-placeholder="t('vehicle.carRentalSpace.placeholders.endTime')" :range-separator="t('device.placeholders.rangeSeparator')"
+                :start-placeholder="t('vehicle.carRentalSpace.placeholders.startTime')" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss" />
             </div>
           </div>
         </div>
-        <el-button type="primary" @click="getData">搜索</el-button>
+        <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
       </div>
       <el-table ref="tableRef" :data="dataList" :height="tableHeight">
-        <el-table-column :index="indexMethod" :show-overflow-tooltip="false" align="center" label="序号" min-width="60"
+        <el-table-column :index="indexMethod" :show-overflow-tooltip="false" align="center" :label="t('journal.warehousing.serialNumber')" min-width="60"
           type="index" />
-        <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" label="商家" min-width="200px">
+        <el-table-column :show-overflow-tooltip="editIndex < 0" align="center" :label="t('vehicle.carRentalSpace.fields.userName')" min-width="200px">
           <template #default="scope">
             <el-form v-if="scope.$index == editIndex" id="form_item_box" :ref="setItemRef" :model="scope.row"
               :rules="rules">
@@ -260,7 +262,7 @@ const statusList = [
                         isShowSelect = true;
                       }
                     ">
-                    {{ scope.row.userName ? "更改商家" : "绑定商家" }}
+                    {{ scope.row.userName ? t('vehicle.carRentalSpace.actions.changeUser') : t('vehicle.carRentalSpace.actions.bindUser') }}
                   </el-button>
                   {{ scope.row.userName }}
                 </div>
@@ -271,12 +273,12 @@ const statusList = [
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="停车券数量" min-width="200px" prop="freePoints">
+        <el-table-column align="center" :label="t('vehicle.carRentalSpace.fields.assignedNumber')" min-width="200px" prop="freePoints">
           <template #default="scope">
             <el-form v-if="scope.$index == editIndex" id="form_item_box" :ref="setItemRef" :model="scope.row"
               :rules="rules">
               <el-form-item prop="assignedNumber">
-                <el-input v-model="scope.row.assignedNumber" clearable placeholder="请输入停车券数量" type="number" />
+                <el-input v-model="scope.row.assignedNumber" clearable :placeholder="t('vehicle.carRentalSpace.placeholders.assignedNumber')" type="number" />
               </el-form-item>
             </el-form>
             <template v-else>
@@ -284,12 +286,12 @@ const statusList = [
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="有效时间段" min-width="250px">
+        <el-table-column align="center" :label="t('vehicle.carRentalSpace.fields.timeRange')" min-width="250px">
           <template #default="scope">
             <el-form v-if="scope.$index == editIndex" :ref="setItemRef" :model="scope.row" :rules="rules">
               <el-form-item prop="startTime">
-                <el-date-picker v-model="freeTimePeriod" end-placeholder="结束时间" range-separator="To"
-                  start-placeholder="开始时间" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss"
+                <el-date-picker v-model="freeTimePeriod" :end-placeholder="t('vehicle.carRentalSpace.placeholders.endTime')" :range-separator="t('device.placeholders.rangeSeparator')"
+                  :start-placeholder="t('vehicle.carRentalSpace.placeholders.startTime')" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss"
                   @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')" />
               </el-form-item>
             </el-form>
@@ -298,28 +300,28 @@ const statusList = [
             </template>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="额度状态" width="200">
+        <el-table-column align="center" :label="t('vehicle.carRentalSpace.fields.assignedStatus')" width="200">
           <template #default="scope">
-            {{ scope.row?.assignedStatus }}
+            {{ statusList.find(item => item.value == scope.row?.assignedStatus)?.label ?? scope.row?.assignedStatus ?? '--' }}
           </template>
         </el-table-column>
 
-        <el-table-column align="center" fixed="right" label="操作" min-width="100">
+        <el-table-column align="center" fixed="right" :label="t('label.operation')" min-width="100">
           <template #default="scope">
             <template v-if="scope.$index != editIndex">
               <el-button icon="Delete" size="small" type="danger" @click="deleteFn(scope.row.id)">
-                删除
+                {{ t('button.delete') }}
               </el-button>
               <el-button icon="Edit" size="small" @click="editIndex = scope.$index">
-                编辑
+                {{ t('button.edit') }}
               </el-button>
             </template>
             <div v-else style="margin-bottom: 20px">
               <el-button icon="FolderChecked" size="small" type="primary" @click="saveFn(scope)">
-                保存
+                {{ t('button.save') }}
               </el-button>
               <el-button icon="Close" size="small" @click="cancellation">
-                取消
+                {{ t('button.cancel') }}
               </el-button>
             </div>
           </template>
@@ -327,7 +329,7 @@ const statusList = [
       </el-table>
       <div class="pagination_box">
         <el-button icon="Plus" size="small" type="primary" @click="addData">
-          新增
+          {{ t('button.add') }}
         </el-button>
         <el-pagination v-if="params.total" v-model:current-page="params.pageNumber" v-model:page-size="params.pageSize"
           :page-sizes="[10, 50, 100, 150]" :small="false" :total="params.total"

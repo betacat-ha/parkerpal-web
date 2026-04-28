@@ -6,7 +6,7 @@ export default {
   redirect: "/orderForm/outboundOrder",
   meta: {
     icon: "ep:tickets",
-    title: "订单管理",
+    title: "menu.orderForm",
     rank: 2
   },
   children: [
@@ -15,7 +15,7 @@ export default {
       name: "OutboundOrder",
       component: () => import("@/views/orderForm/outboundOrder/index.vue"),
       meta: {
-        title: "订单流水"
+        title: "menu.outboundOrder"
       }
     }
   ]

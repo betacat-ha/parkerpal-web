@@ -5,11 +5,19 @@ import { ref, watch, onMounted, toRaw } from "vue";
 import { getParentPaths, findRouteByPath } from "@/router/utils";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 
+import { useI18n } from "vue-i18n";
+
 const route = useRoute();
 const levelList = ref<RouteConfigsTable[]>([]);
 const router = useRouter();
 const routes: any = router.options.routes;
 const multiTags: any = useMultiTagsStoreHook().multiTags;
+
+const { t } = useI18n();
+
+const getTitle = (title: string) => {
+  return t(title);
+};
 
 const getBreadcrumb = (): void => {
   // 当前路由信息
@@ -110,7 +118,7 @@ watch(
         class="!inline !items-stretch"
       >
         <a @click.prevent="handleLink(item)">
-          {{ item.meta.title }}
+          {{ getTitle(item.meta.title) }}
         </a>
       </el-breadcrumb-item>
     </transition-group>

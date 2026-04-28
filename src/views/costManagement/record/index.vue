@@ -10,10 +10,12 @@ import {
 import { ElMessage } from "element-plus";
 import { computed } from "vue";
 import { carTypeList, monthlyStatusList } from "@/views/data";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "ZombieCar"
 });
+const { t } = useI18n();
 const isShow = ref(false);
 
 let refList = ref<FormInstance[]>([]);
@@ -106,6 +108,8 @@ const tableHeight = computed(() => {
     document.documentElement.clientHeight || document.body.clientHeight;
   return windowHeight - 464;
 });
+const carTypeListLocal = computed(() => carTypeList(t));
+const monthlyStatusListLocal = computed(() => monthlyStatusList(t));
 const initData = {
   carTypeCode: "",
   cardId: "",
@@ -194,7 +198,7 @@ const openFn = (e: any) => {
               style="width: 100%"
             >
               <el-option
-                v-for="item in carTypeList"
+                v-for="item in carTypeListLocal"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -210,7 +214,7 @@ const openFn = (e: any) => {
               style="width: 100%"
             >
               <el-option
-                v-for="item in monthlyStatusList"
+                v-for="item in monthlyStatusListLocal"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -290,7 +294,7 @@ const openFn = (e: any) => {
         >
           <template #default="scope">
             {{
-              monthlyStatusList.find(v => v.value == scope.row.monthlyStatus)
+              monthlyStatusListLocal.find(v => v.value == scope.row.monthlyStatus)
                 ?.label || "--"
             }}
           </template>

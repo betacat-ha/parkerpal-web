@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from "element-plus/es/components/form";
 import { updateParking } from "@/api";
+import { ElMessage } from "element-plus";
+import { useI18n } from "vue-i18n";
 
 interface Props {
   modelValue: boolean;
@@ -19,6 +21,7 @@ interface Emits {
 
 const props = defineProps<Props>();
 const emits = defineEmits<Emits>();
+const { t } = useI18n();
 const form = ref<any>({
   disposableNumber: 0,
   id: "",
@@ -38,16 +41,16 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
       return updateParking(form.value);
     })
     .then(() => {
-      ElMessage.success("编辑成功");
+      ElMessage.success(t('message.saveSuccess'));
       emits("updateFn");
       emits("update:modelValue", false);
     });
 };
 const rules = reactive<FormRules<any>>({
   disposableNumber: [
-    { required: true, message: "请输入发放停车券数量", trigger: "blur" }
+    { required: true, message: t('parkingRental.rules.disposableNumber'), trigger: "blur" }
   ],
-  parkingNumber: [{ required: true, message: "请输入总车位", trigger: "blur" }]
+  parkingNumber: [{ required: true, message: t('parkingRental.rules.parkingNumber'), trigger: "blur" }]
 });
 const closeFn = () => {
   ruleFormRef.value?.resetFields(); // 重置表单验证器
@@ -55,21 +58,21 @@ const closeFn = () => {
 </script>
 
 <template>
-  <el-dialog :destroy-on-close="true" :modelValue="modelValue" title="编辑车场配置" width="500px" @close="closeFn"
+  <el-dialog :destroy-on-close="true" :modelValue="modelValue" :title="t('parkingRental.title')" width="500px" @close="closeFn"
     @update:modelValue="$emit('update:modelValue', false)">
     <el-form ref="ruleFormRef" :model="form" :rules="rules" label-position="top" label-width="120px">
-      <el-form-item label="可发放停车券数" prop="disposableNumber">
-        <el-input v-model="form.disposableNumber" clearable placeholder="请输入可发放停车券数" type="number" />
+      <el-form-item :label="t('parkingRental.fields.disposableNumber')" prop="disposableNumber">
+        <el-input v-model="form.disposableNumber" clearable :placeholder="t('parkingRental.placeholders.disposableNumber')" type="number" />
       </el-form-item>
-      <el-form-item label="总车位" prop="parkingNumber">
-        <el-input v-model="form.parkingNumber" clearable placeholder="请输入总车位" type="number" />
+      <el-form-item :label="t('parkingRental.fields.parkingNumber')" prop="parkingNumber">
+        <el-input v-model="form.parkingNumber" clearable :placeholder="t('parkingRental.placeholders.parkingNumber')" type="number" />
       </el-form-item>
 
       <el-form-item>
         <el-row justify="center" style="width: 100%">
           <el-col :span="12">
             <el-button size="large" style="width: 100%" type="primary" @click="onSubmit(ruleFormRef)">
-              保存
+              {{ t('button.save') }}
             </el-button>
           </el-col>
         </el-row>

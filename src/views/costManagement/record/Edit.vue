@@ -3,6 +3,7 @@ import { FormInstance, FormRules } from "element-plus/es/components/form";
 import { countMoney, createOrUpdate, getChargeRules } from "@/api";
 import Carnumber from "@/components/Carnumber.vue";
 import { carTypeList } from "@/views/data";
+import { useI18n } from "vue-i18n";
 
 interface Props {
   modelValue: boolean;
@@ -17,6 +18,7 @@ interface Emits {
 
 const props = defineProps<Props>();
 const emits = defineEmits<Emits>();
+const { t } = useI18n();
 const form = ref({
   carTypeCode: "",
   cardId: "",
@@ -115,7 +117,13 @@ const changeValue = (item: string) => {
   carVisible.value = true;
 };
 
-const options = ref(carTypeList);
+const chargeMap = ref<Record<string, number>>({});
+const options = computed(() =>
+  carTypeList(t).map(item => ({
+    ...item,
+    charge: chargeMap.value[item.key] ?? 0
+  }))
+);
 const freeTimePeriod = computed<any>({
   get() {
     return [form.value.monthlyStartTime, form.value.monthlyEndTime];
@@ -127,9 +135,7 @@ const freeTimePeriod = computed<any>({
 });
 onBeforeMount(() => {
   getChargeRules().then(res => {
-    options.value.forEach(item => {
-      item.charge = res.data[item.key];
-    });
+    chargeMap.value = res.data;
   });
 });
 watchEffect(() => {
