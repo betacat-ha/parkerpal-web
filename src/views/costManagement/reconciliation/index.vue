@@ -6,10 +6,12 @@ import {
 } from "@/api";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "MonthlyRent"
 });
+const { t } = useI18n();
 const router = useRouter();
 const dataList = ref<merchantReconciliationPageListType[]>([]);
 const editIndex = ref(-1);
@@ -54,16 +56,16 @@ const tableHeight = computed(() => {
   return windowHeight - 340;
 });
 const grant = (id: string) => {
-  ElMessageBox.confirm("请先财务打款后，再点击确定发放按钮！", "确定发放？", {
-    confirmButtonText: "确定发放",
-    cancelButtonText: "取消发放",
+  ElMessageBox.confirm(t("costManagement.reconciliation.confirmText"), t("costManagement.reconciliation.confirmTitle"), {
+    confirmButtonText: t("costManagement.reconciliation.actions.grant"),
+    cancelButtonText: t("costManagement.reconciliation.actions.cancelGrant"),
     type: "warning"
   })
     .then(() => {
       return merchantReconciliationUpdateStatus({ id });
     })
     .then(() => {
-      ElMessage.success("发放成功");
+      ElMessage.success(t("costManagement.reconciliation.messages.grantSuccess"));
       getData();
     });
 };
@@ -72,18 +74,18 @@ const grant = (id: string) => {
   <div class="bg-white dark:bg-[#141414] content">
     <div class="c_box">
       <div class="title">
-        <div class="lf">出库订单流水</div>
+        <div class="lf">{{ t('menu.reconciliation') }}</div>
       </div>
       <div class="form_box_p">
         <div class="form_box">
           <div></div>
           <div></div>
           <div class="form_item_box">
-            <div>账单月份：</div>
+            <div>{{ t('costManagement.reconciliation.fields.yearNumber') }}：</div>
             <div class="time_picker_date">
               <el-date-picker
                 v-model="searchParams.yearNumber"
-                placeholder="请选择账单月份"
+                :placeholder="t('costManagement.reconciliation.placeholders.yearNumber')"
                 type="month"
                 value-format="YYYY-MM"
                 @change="getData"
@@ -103,51 +105,51 @@ const grant = (id: string) => {
           :index="indexMethod"
           :show-overflow-tooltip="false"
           align="center"
-          label="序号"
+          :label="t('journal.warehousing.serialNumber')"
           min-width="60"
           type="index"
         />
-        <el-table-column align="center" label="商家">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.userName')">
           <template #default="scope">
             {{ scope.row.userName ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="租赁车位">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.assignedNumber')">
           <template #default="scope">
             {{ scope.row.assignedNumber ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="总停车时长（小时）">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.totalDuration')">
           <template #default="scope">
             {{ scope.row.totalDuration ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="总计金额（元）">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.totalAmount')">
           <template #default="scope">
             {{ scope.row.totalAmount ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="总计优惠金额（元）">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.totalDiscountAmount')">
           <template #default="scope">
             {{ scope.row.totalDiscountAmount ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="总收入金额（元）">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.totalIncomeAmount')">
           <template #default="scope">
             {{ scope.row.totalIncomeAmount ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="订单时间">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.orderTime')">
           <template #default="scope">
             {{ scope.row.yearNumber ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="发放状态">
+        <el-table-column align="center" :label="t('costManagement.reconciliation.fields.status')">
           <template #default="scope">
             {{ scope.row.status ?? "--" }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" width="220">
+        <el-table-column align="center" :label="t('label.operation')" width="220">
           <template #default="scope">
             <el-form-item prop="url">
               <el-button
@@ -160,7 +162,7 @@ const grant = (id: string) => {
                     )
                 "
               >
-                查看流水
+                    {{ t('costManagement.reconciliation.actions.viewFlow') }}
               </el-button>
               <el-button
                 v-if="scope.row.status == '未发放'"
@@ -169,7 +171,7 @@ const grant = (id: string) => {
                 type="primary"
                 @click="grant(scope.row.id)"
               >
-                确定发放
+                    {{ t('costManagement.reconciliation.actions.grant') }}
               </el-button>
             </el-form-item>
           </template>

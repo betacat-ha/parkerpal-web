@@ -37,7 +37,7 @@ const monthlyMoney = ref(0);
 
 const phoneNumberValidator = (rule: any, value: any, callback: any) => {
   if (value && !/^(?:(?:\+|00)86)?1\d{10}$/.test(value)) {
-    callback(new Error("手机号格式错误"));
+    callback(new Error(t("costManagement.record.errors.phoneNumber")));
   } else {
     callback();
   }
@@ -49,7 +49,7 @@ const cardIdValidator = (rule: any, value: any, callback: any) => {
       value
     )
   ) {
-    callback(new Error("身份证格式错误"));
+    callback(new Error(t("costManagement.record.errors.cardId")));
   } else {
     callback();
   }
@@ -64,7 +64,7 @@ const mainlandLicensePlatesValidator = (
       value
     )
   ) {
-    callback(new Error("车牌号格式错误"));
+    callback(new Error(t("costManagement.record.errors.licensePlate")));
   } else {
     callback();
   }
@@ -72,12 +72,12 @@ const mainlandLicensePlatesValidator = (
 const rules = reactive<FormRules<any>>({
   phoneNumber: [{ validator: phoneNumberValidator, trigger: "blur" }],
   cardId: [{ required: false, validator: cardIdValidator, trigger: "blur" }],
-  carTypeCode: [{ required: true, message: "请选择车辆类型", trigger: "blur" }],
+  carTypeCode: [{ required: true, message: t("costManagement.record.rules.carTypeCode"), trigger: "blur" }],
   monthlyStartTime: [
-    { required: true, message: "请选择购买月保月份", trigger: "blur" }
+    { required: true, message: t("costManagement.record.rules.monthlyStartTime"), trigger: "blur" }
   ],
   mainlandLicensePlates: [
-    { required: true, message: "请输入车牌号", trigger: "blur" },
+    { required: true, message: t("costManagement.record.rules.mainlandLicensePlates"), trigger: "blur" },
     { validator: mainlandLicensePlatesValidator, trigger: "blur" }
   ]
 });
@@ -90,7 +90,7 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
     })
     .then(() => {
       ruleFormRef.value.resetFields();
-      ElMessage.success(form.value.id ? "编辑成功" : "月保成功！");
+      ElMessage.success(form.value.id ? t("costManagement.record.messages.editSuccess") : t("costManagement.record.messages.addSuccess"));
       emits("update:modelValue", false);
       emits("updateFn");
     });
@@ -178,13 +178,13 @@ watch(
   <el-dialog
     :destroy-on-close="true"
     :modelValue="modelValue"
-    :title="form.id ? '编辑月保缴费' : '新增月保缴费'"
+    :title="form.id ? t('costManagement.record.dialog.editTitle') : t('costManagement.record.dialog.addTitle')"
     width="600px"
     @close="closeFn"
     @update:modelValue="$emit('update:modelValue', false)"
   >
     <el-form ref="ruleFormRef" :model="form" :rules="rules" label-width="135px">
-      <el-form-item label="车牌号" prop="mainlandLicensePlates">
+      <el-form-item :label="t('costManagement.record.fields.mainlandLicensePlates')" prop="mainlandLicensePlates">
         <el-popover
           v-model="carVisible"
           placement="bottom"
@@ -201,14 +201,14 @@ watch(
               v-model="form.mainlandLicensePlates"
               :maxlength="8"
               :validate-event="carVisible"
-              placeholder="请输入车牌号"
+              :placeholder="t('costManagement.record.placeholders.mainlandLicensePlates')"
               @input="changeValue(form.mainlandLicensePlates)"
             />
           </template>
         </el-popover>
       </el-form-item>
-      <el-form-item label="车辆类型" prop="carTypeCode">
-        <el-select v-model="form.carTypeCode" placeholder="请选择车辆类型">
+        <el-form-item :label="t('vehicle.vehicleType')" prop="carTypeCode">
+          <el-select v-model="form.carTypeCode" :placeholder="t('costManagement.record.placeholders.carTypeCode')">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -219,16 +219,16 @@ watch(
       </el-form-item>
       <el-form-item
         :required="!form.longTerm"
-        label="选择购买月保月份"
+        :label="t('costManagement.record.fields.monthlyTimeRange')"
         prop="monthlyStartTime"
       >
         <div class="flex gap-[20px] items-center w-[100%]">
           <el-date-picker
             v-model="freeTimePeriod"
             :disabled="!!form.longTerm"
-            end-placeholder="请选择结束月份"
-            range-separator="To"
-            start-placeholder="请选择开始月份"
+            :end-placeholder="t('costManagement.record.placeholders.endMonth')"
+            :range-separator="t('device.placeholders.rangeSeparator')"
+            :start-placeholder="t('costManagement.record.placeholders.startMonth')"
             style="flex: 1"
             type="monthrange"
             value-format="YYYY-MM"
@@ -237,44 +237,34 @@ watch(
             v-model="form.longTerm"
             :false-value="0"
             :true-value="1"
-            label="长期"
+            :label="t('costManagement.record.labels.longTerm')"
             size="large"
           />
         </div>
       </el-form-item>
-      <el-form-item label="月保费用" prop="monthlyFree">
+      <el-form-item :label="t('costManagement.record.fields.monthlyFree')" prop="monthlyFree">
         <el-input v-model="form.monthlyFree" disabled type="number">
-          <template #append>元/月</template>
+          <template #append>{{ t('costManagement.record.units.month') }}</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="车位编号" prop="parkingLotCode">
-        <el-input
-          v-model="form.parkingLotCode"
-          placeholder="请输入车位编号"
-        />
+      <el-form-item :label="t('costManagement.record.fields.parkingLotCode')" prop="parkingLotCode">
+        <el-input v-model="form.parkingLotCode" :placeholder="t('costManagement.record.placeholders.parkingLotCode')" />
       </el-form-item>
-      <el-form-item label="姓名" prop="userName">
-        <el-input
-          v-model="form.userName"
-          placeholder="请输入姓名"
-        />
+      <el-form-item :label="t('costManagement.record.fields.userName')" prop="userName">
+        <el-input v-model="form.userName" :placeholder="t('costManagement.record.placeholders.userName')" />
       </el-form-item>
-      <el-form-item label="手机号码" prop="phoneNumber">
+      <el-form-item :label="t('costManagement.record.fields.phoneNumber')" prop="phoneNumber">
         <el-input
           v-model="form.phoneNumber"
           maxlength="11"
-          placeholder="请输入手机号码"
+          :placeholder="t('costManagement.record.placeholders.phoneNumber')"
           type="number"
         />
       </el-form-item>
-      <el-form-item label="身份证号" prop="cardId">
-        <el-input
-          v-model="form.cardId"
-          maxlength="18"
-          placeholder="请输入身份证号"
-        />
+      <el-form-item :label="t('costManagement.record.fields.cardId')" prop="cardId">
+        <el-input v-model="form.cardId" maxlength="18" :placeholder="t('costManagement.record.placeholders.cardId')" />
       </el-form-item>
-      <el-form-item label="收费">
+      <el-form-item :label="t('costManagement.record.fields.charge')">
         <div class="font-bold text-[16px] text-[#e4393c]">
           ￥<span class="ml-1 text-[20px]">{{ monthlyMoney }}</span>
         </div>
@@ -287,7 +277,7 @@ watch(
             type="primary"
             @click="onSubmit(ruleFormRef)"
           >
-            保存
+            {{ t('button.save') }}
           </el-button>
         </el-col>
       </el-row>

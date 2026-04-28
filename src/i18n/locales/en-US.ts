@@ -9,7 +9,7 @@ export default {
     vehicle: 'Parking Management',
     carRentalSpace: 'Rental Space Management',
     vipCar: 'Internal Vehicles',
-    zombieCar: 'Guest Vehicles',
+    visitorCar: 'Guest Vehicles',
     journal: 'Vehicle In/Out Records',
     parkingSpaceManagement: 'Space Management',
     parkingSpaceReservation: 'Reservation Management',
@@ -156,6 +156,19 @@ export default {
         locked: 'Locked',
         disabled: 'Disabled'
       }
+    },
+    visitor: {
+      fields: {
+        isFree: 'Invalid Status',
+        timeRange: 'Free Charging Time Range'
+      },
+      placeholders: {
+        isFree: 'Please select invalid status'
+      },
+      status: {
+        valid: 'Valid',
+        invalid: 'Invalid'
+      }
     }
   },
   // Parking Space Management
@@ -216,6 +229,189 @@ export default {
       deviceIp: 'Please enter device IP',
       devicePort: 'Please enter device port',
       deviceRole: 'Please select device role'
+    },
+    management: {
+      title: 'IOT Device Management',
+      fields: {
+        name: 'Device Name',
+        location: 'Device Location',
+        macAddress: 'Device MAC Address',
+        role: 'Device Type',
+        groupId: 'Device Group',
+        createRange: 'Created Time Range'
+      },
+      placeholders: {
+        name: 'Please enter device name',
+        location: 'Please enter device location',
+        macAddress: 'Please enter device MAC address',
+        role: 'Please select device type',
+        groupId: 'Please select device group'
+      },
+      rules: {
+        id: 'Please enter device ID',
+        macAddress: 'Please enter MAC address',
+        macAddressPattern: 'MAC address format is incorrect',
+        name: 'Please enter device name',
+        location: 'Please enter device location',
+        role: 'Please select device role',
+        groupId: 'Please select device group',
+        createUserId: 'Please select the creating user'
+      },
+      messages: {
+        cannotAddWhileEditing: 'Cannot add while editing!'
+      }
+    }
+  },
+  // System Management
+  system: {
+    setRole: {
+      title: 'Account Management',
+      fields: {
+        account: 'Login Account',
+        userName: 'Company Name',
+        phoneNumber: 'Phone Number',
+        roleId: 'Role',
+        status: 'Status',
+        freeTime: 'Free Parking Duration (Minutes)',
+        frontBusinessLicense: 'Business License',
+        headSculpture: 'Company Logo'
+      },
+      placeholders: {
+        account: 'Please enter login account',
+        userName: 'Please enter company name',
+        phoneNumber: 'Please enter phone number',
+        roleId: 'Please select role',
+        status: 'Please select status',
+        freeTime: 'Please enter free parking duration'
+      },
+      columns: {
+        account: 'Account',
+        userName: 'Company Name',
+        role: 'Role',
+        phoneNumber: 'Phone Number',
+        freeTime: 'Free Parking Duration (Minutes)'
+      },
+      actions: {
+        resetPassword: 'Reset Password',
+        known: 'Got it'
+      },
+      dialog: {
+        addTitle: 'Add Account',
+        editTitle: 'Edit Account'
+      },
+      status: {
+        normal: 'Normal',
+        locked: 'Locked',
+        disabled: 'Disabled'
+      },
+      rules: {
+        account: 'Please enter account',
+        userName: 'Please enter company name',
+        roleId: 'Please select role',
+        status: 'Please select status',
+        phoneNumber: 'Please enter phone number',
+        phoneNumberPattern: 'Invalid phone number format',
+        freeTime: 'Please enter free parking duration',
+        frontBusinessLicense: 'Please upload business license',
+        unitAddress: 'Please enter unit address',
+        headSculpture: 'Please upload company logo'
+      },
+      messages: {
+        createSuccess: 'Account created successfully',
+        defaultPassword: 'The default password for new accounts is 123456'
+      }
+    },
+    customerManagement: {
+      title: 'Customer Account Management',
+      fields: {
+        account: 'Login Account',
+        userName: 'License Plate',
+        phoneNumber: 'Phone Number',
+        roleId: 'Role',
+        status: 'Status',
+        freeTime: 'Free Parking Duration (Minutes)',
+        frontBusinessLicense: 'Business License',
+        headSculpture: 'Company Logo'
+      },
+      placeholders: {
+        account: 'Please enter login account',
+        userName: 'Please enter license plate',
+        phoneNumber: 'Please enter phone number',
+        roleId: 'Please select role',
+        status: 'Please select status',
+        freeTime: 'Please enter free parking duration'
+      },
+      columns: {
+        account: 'Account',
+        userName: 'License Plate',
+        phoneNumber: 'Phone Number',
+        freeTime: 'Free Parking Duration (Minutes)'
+      },
+      actions: {
+        known: 'Got it'
+      },
+      dialog: {
+        addTitle: 'Add Account',
+        editTitle: 'Edit Account'
+      },
+      status: {
+        normal: 'Normal',
+        locked: 'Locked',
+        disabled: 'Disabled'
+      },
+      rules: {
+        account: 'Please enter account',
+        userName: 'Please enter license plate',
+        roleId: 'Please select role',
+        status: 'Please select status',
+        phoneNumber: 'Please enter phone number',
+        phoneNumberPattern: 'Invalid phone number format',
+        freeTime: 'Please enter free parking duration',
+        frontBusinessLicense: 'Please upload business license',
+        unitAddress: 'Please enter unit address',
+        headSculpture: 'Please upload company logo'
+      },
+      messages: {
+        createSuccess: 'Account created successfully',
+        defaultPassword: 'The default password for new accounts is 123456'
+      }
+    },
+    wxManage: {
+      title: 'WeChat Pay Configuration',
+      fields: {
+        appId: 'WeChat Official Account AppID',
+        currency: 'Currency',
+        apiV3Key: 'Merchant APIv3 Key',
+        macId: 'Merchant ID',
+        macSerialNo: 'Merchant API Certificate Serial Number',
+        secret: 'Official Account Secret',
+        privateKeyPath: 'Merchant Private Key Upload'
+      },
+      placeholders: {
+        appId: 'Please enter WeChat official account AppID',
+        currency: 'Please enter currency',
+        apiV3Key: 'Please enter merchant APIv3 key',
+        macId: 'Please enter merchant ID',
+        macSerialNo: 'Please enter merchant API certificate serial number',
+        secret: 'Please enter official account secret'
+      },
+      rules: {
+        appId: 'WeChat official account AppID',
+        currency: 'Please enter currency',
+        apiV3Key: 'Please enter merchant APIv3 key',
+        macId: 'Please enter merchant ID',
+        macSerialNo: 'Please enter merchant API certificate serial number',
+        secret: 'Please enter official account secret',
+        privateKeyPath: 'Please upload merchant private key file'
+      },
+      actions: {
+        upload: 'Click to Upload'
+      },
+      messages: {
+        uploadFailed: 'Upload failed!',
+        uploadSuccess: 'Upload successful!',
+        loading: 'Loading'
+      }
     }
   },
   // Home
@@ -354,10 +550,123 @@ export default {
     }
   },
   costManagement: {
+    feeRules: {
+      title: 'Fee Rules Settings',
+      monthlyFeeTitle: 'Monthly Parking Fee',
+      fields: {
+        freeDuration: 'Free Entry Duration',
+        tollStandard: 'Temporary Parking Fee',
+        feeCap: 'Daily Temporary Parking Cap',
+        monthlyInternalCar: 'Internal Vehicle Fee',
+        monthlyEnterpriseCar: 'Company Fleet Vehicle Fee',
+        monthlyExternalCarMachinery: 'External Vehicle Fee (Mechanical Space)',
+        monthlyInternalCarNoMachinery: 'External Vehicle Fee (Non-mechanical Space)'
+      },
+      placeholders: {
+        freeDuration: 'Please enter free entry duration',
+        tollStandard: 'Please enter temporary parking fee',
+        feeCap: 'Please enter daily temporary parking cap',
+        monthlyInternalCar: 'Please enter internal vehicle fee',
+        monthlyEnterpriseCar: 'Please enter company fleet vehicle fee',
+        monthlyExternalCarMachinery: 'Please enter external vehicle fee (mechanical space)',
+        monthlyInternalCarNoMachinery: 'Please enter external vehicle fee (non-mechanical space)'
+      },
+      units: {
+        minute: 'Minutes',
+        hour: 'CNY/Hour',
+        day: 'Days',
+        month: 'CNY/Month'
+      },
+      rules: {
+        freeDuration: 'Please enter free entry duration',
+        tollStandard: 'Please enter temporary parking fee',
+        monthlyInternalCar: 'Please enter internal vehicle fee',
+        monthlyEnterpriseCar: 'Please enter company fleet vehicle fee',
+        monthlyExternalCarMachinery: 'Please enter external vehicle fee (mechanical space)',
+        feeCap: 'Please enter daily temporary parking cap',
+        monthlyInternalCarNoMachinery: 'Please enter external vehicle fee (non-mechanical space)'
+      }
+    },
     record: {
+      fields: {
+        mainlandLicensePlates: 'License Plate',
+        monthlyFree: 'Monthly Fee',
+        parkingLotCode: 'Space Code',
+        userName: 'Name',
+        phoneNumber: 'Phone Number',
+        cardId: 'ID Number',
+        monthlyTimeRange: 'Monthly Parking Period',
+        charge: 'Charge',
+        assignedNumber: 'Rental Spaces',
+        totalDuration: 'Total Parking Duration (Hours)',
+        totalAmount: 'Total Amount (CNY)',
+        totalDiscountAmount: 'Total Discount Amount (CNY)',
+        totalIncomeAmount: 'Total Income Amount (CNY)',
+        orderTime: 'Order Time',
+        status: 'Publish Status'
+      },
+      placeholders: {
+        mainlandLicensePlates: 'Please enter license plate',
+        monthlyFree: 'Please enter monthly fee',
+        parkingLotCode: 'Please enter space code',
+        userName: 'Please enter name',
+        phoneNumber: 'Please enter phone number',
+        cardId: 'Please enter ID number',
+        carTypeCode: 'Please select vehicle type',
+        monthlyStatus: 'Please select status',
+        startMonth: 'Please select start month',
+        endMonth: 'Please select end month'
+      },
+      labels: {
+        longTerm: 'Long Term'
+      },
+      rules: {
+        carTypeCode: 'Please select vehicle type',
+        monthlyStartTime: 'Please select monthly parking month',
+        mainlandLicensePlates: 'Please enter license plate'
+      },
+      messages: {
+        editSuccess: 'Edited successfully',
+        addSuccess: 'Monthly parking saved successfully!'
+      },
+      dialog: {
+        editTitle: 'Edit Monthly Parking Fee',
+        addTitle: 'Add Monthly Parking Fee'
+      },
+      errors: {
+        phoneNumber: 'Invalid phone number format',
+        cardId: 'Invalid ID number format',
+        licensePlate: 'Invalid license plate format'
+      },
       monthlyStatus: {
-        inWarranty: 'In Warranty',
-        outWarranty: 'Expired'
+        valid: 'Valid',
+        expired: 'Expired'
+      }
+    },
+    reconciliation: {
+      confirmTitle: 'Confirm Distribution?',
+      confirmText: 'Please make the finance payment first, then click the confirm distribution button.',
+      fields: {
+        yearNumber: 'Billing Month',
+        userName: 'Merchant',
+        assignedNumber: 'Rental Spaces',
+        totalDuration: 'Total Parking Duration (Hours)',
+        totalAmount: 'Total Amount (CNY)',
+        totalDiscountAmount: 'Total Discount Amount (CNY)',
+        totalIncomeAmount: 'Total Income Amount (CNY)',
+        orderTime: 'Order Time',
+        status: 'Distribution Status'
+      },
+      placeholders: {
+        yearNumber: 'Please select billing month'
+      },
+      actions: {
+        viewFlow: 'View Flow',
+        grant: 'Confirm Distribution',
+        cancelGrant: 'Cancel Distribution'
+      },
+      messages: {
+        grantSuccess: 'Distributed successfully'
       }
     }
   },

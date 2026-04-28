@@ -9,7 +9,7 @@ export default {
     vehicle: '车场管理',
     carRentalSpace: '商家停车券管理',
     vipCar: '内部车辆',
-    zombieCar: '访客车辆',
+    visitorCar: '访客车辆',
     journal: '车辆出入库记录',
     parkingSpaceManagement: '车位管理',
     parkingSpaceReservation: '车位预约管理',
@@ -156,6 +156,19 @@ export default {
         locked: '锁定',
         disabled: '禁用'
       }
+    },
+    visitor: {
+      fields: {
+        isFree: '是否失效',
+        timeRange: '免收费时间段'
+      },
+      placeholders: {
+        isFree: '请选择是否失效'
+      },
+      status: {
+        valid: '有效',
+        invalid: '失效'
+      }
     }
   },
   // 停车位管理
@@ -216,6 +229,189 @@ export default {
       deviceIp: '请输入设备IP地址',
       devicePort: '请输入设备IP端口',
       deviceRole: '请选择设备作用'
+    },
+    management: {
+      title: 'IOT设备管理',
+      fields: {
+        name: '设备名称',
+        location: '设备所在位置',
+        macAddress: '设备MAC地址',
+        role: '设备类型',
+        groupId: '设备组号',
+        createRange: '创建时间段'
+      },
+      placeholders: {
+        name: '请输入设备名称',
+        location: '请输入设备所在位置',
+        macAddress: '请输入设备MAC地址',
+        role: '请选择设备类型',
+        groupId: '请选择设备组号'
+      },
+      rules: {
+        id: '请输入设备ID',
+        macAddress: '请输入MAC地址',
+        macAddressPattern: 'MAC地址格式不正确',
+        name: '请输入设备名称',
+        location: '请输入设备所在位置',
+        role: '请选择设备角色',
+        groupId: '请选择设备所属组',
+        createUserId: '请选择创建用户'
+      },
+      messages: {
+        cannotAddWhileEditing: '编辑状态不可新增！'
+      }
+    }
+  },
+  // 系统管理
+  system: {
+    setRole: {
+      title: '账号管理',
+      fields: {
+        account: '登录账号',
+        userName: '单位名称',
+        phoneNumber: '联系电话',
+        roleId: '角色',
+        status: '状态',
+        freeTime: '免费停车时长（分钟）',
+        frontBusinessLicense: '营业执照',
+        headSculpture: '单位logo'
+      },
+      placeholders: {
+        account: '请输入登录账号',
+        userName: '请输入单位名称',
+        phoneNumber: '请输入联系电话',
+        roleId: '请选择角色',
+        status: '请选择状态',
+        freeTime: '请输入免费停车时长'
+      },
+      columns: {
+        account: '账号',
+        userName: '单位名称',
+        role: '角色',
+        phoneNumber: '联系电话',
+        freeTime: '免费停车时长（分钟）'
+      },
+      actions: {
+        resetPassword: '重置密码',
+        known: '知道了'
+      },
+      dialog: {
+        addTitle: '新增账户',
+        editTitle: '编辑账户'
+      },
+      status: {
+        normal: '正常',
+        locked: '锁定',
+        disabled: '禁用'
+      },
+      rules: {
+        account: '请输入账户',
+        userName: '请输入单位名称',
+        roleId: '请选择角色',
+        status: '请选择状态',
+        phoneNumber: '请输入联系电话',
+        phoneNumberPattern: '手机号格式错误',
+        freeTime: '请输入免费停车时长',
+        frontBusinessLicense: '请上传营业执照',
+        unitAddress: '请输入单位地址',
+        headSculpture: '请上传单位logo'
+      },
+      messages: {
+        createSuccess: '新建账号成功',
+        defaultPassword: '新建账号密码默认是123456'
+      }
+    },
+    customerManagement: {
+      title: '车主账号管理',
+      fields: {
+        account: '登录账号',
+        userName: '车牌号',
+        phoneNumber: '联系电话',
+        roleId: '角色',
+        status: '状态',
+        freeTime: '免费停车时长（分钟）',
+        frontBusinessLicense: '营业执照',
+        headSculpture: '单位logo'
+      },
+      placeholders: {
+        account: '请输入登录账号',
+        userName: '请输入车牌号',
+        phoneNumber: '请输入联系电话',
+        roleId: '请选择角色',
+        status: '请选择状态',
+        freeTime: '请输入免费停车时长'
+      },
+      columns: {
+        account: '账号',
+        userName: '车牌号',
+        phoneNumber: '联系电话',
+        freeTime: '免费停车时长（分钟）'
+      },
+      actions: {
+        known: '知道了'
+      },
+      dialog: {
+        addTitle: '新增账户',
+        editTitle: '编辑账户'
+      },
+      status: {
+        normal: '正常',
+        locked: '锁定',
+        disabled: '禁用'
+      },
+      rules: {
+        account: '请输入账户',
+        userName: '请输入车牌号',
+        roleId: '请选择角色',
+        status: '请选择状态',
+        phoneNumber: '请输入联系电话',
+        phoneNumberPattern: '手机号格式错误',
+        freeTime: '请输入免费停车时长',
+        frontBusinessLicense: '请上传营业执照',
+        unitAddress: '请输入单位地址',
+        headSculpture: '请上传单位logo'
+      },
+      messages: {
+        createSuccess: '新建账号成功',
+        defaultPassword: '新建账号密码默认是123456'
+      }
+    },
+    wxManage: {
+      title: '微信支付配置',
+      fields: {
+        appId: '微信公众号appid',
+        currency: '币种',
+        apiV3Key: '商户APIv3密钥',
+        macId: '商户号',
+        macSerialNo: '商户API证书序列号',
+        secret: '公众号密钥',
+        privateKeyPath: '商户私钥文件上传'
+      },
+      placeholders: {
+        appId: '请输入微信公众号appid',
+        currency: '请输入币种',
+        apiV3Key: '请输入商户APIv3密钥',
+        macId: '请输入商户号',
+        macSerialNo: '请输入商户API证书序列号',
+        secret: '请输入公众号密钥'
+      },
+      rules: {
+        appId: '微信公众号appid',
+        currency: '请输入币种',
+        apiV3Key: '请输入商户APIv3密钥',
+        macId: '请输入商户号',
+        macSerialNo: '请输入商户API证书序列号',
+        secret: '请输入公众号密钥',
+        privateKeyPath: '请上传商户私钥文件'
+      },
+      actions: {
+        upload: '点击上传'
+      },
+      messages: {
+        uploadFailed: '上传失败！',
+        uploadSuccess: '上传成功！',
+        loading: 'Loading'
+      }
     }
   },
   // 首页
@@ -407,10 +603,123 @@ export default {
     }
   },
   costManagement: {
+    feeRules: {
+      title: '收费规则设置',
+      monthlyFeeTitle: '月保收费',
+      fields: {
+        freeDuration: '进场免费时长',
+        tollStandard: '临保收费',
+        feeCap: '临保日收费上限',
+        monthlyInternalCar: '内部收费',
+        monthlyEnterpriseCar: '所属企业公车',
+        monthlyExternalCarMachinery: '外部车辆（机械车位）',
+        monthlyInternalCarNoMachinery: '外部车辆（非机械车位）'
+      },
+      placeholders: {
+        freeDuration: '请输入进场免费时长',
+        tollStandard: '请输入临保收费',
+        feeCap: '请输入临保日收费上限',
+        monthlyInternalCar: '请输入内部收费',
+        monthlyEnterpriseCar: '请输入所属企业公车',
+        monthlyExternalCarMachinery: '请输入外部车辆（机械车位）',
+        monthlyInternalCarNoMachinery: '请输入外部车辆（非机械车位）'
+      },
+      units: {
+        minute: '分钟',
+        hour: '元/小时',
+        day: '天',
+        month: '元/月'
+      },
+      rules: {
+        freeDuration: '请输入进场免费时长',
+        tollStandard: '请输入临保收费',
+        monthlyInternalCar: '请输入内部收费',
+        monthlyEnterpriseCar: '请输入所属企业公车',
+        monthlyExternalCarMachinery: '请输入外部车辆（机械车位）',
+        feeCap: '请输入临保日收费上限',
+        monthlyInternalCarNoMachinery: '请输入外部车辆（非机械车位）'
+      }
+    },
     record: {
+      fields: {
+        mainlandLicensePlates: '车牌号码',
+        monthlyFree: '月保费用',
+        parkingLotCode: '车位编号',
+        userName: '姓名',
+        phoneNumber: '手机号码',
+        cardId: '身份证号',
+        monthlyTimeRange: '月保时间段',
+        charge: '收费',
+        assignedNumber: '租赁车位',
+        totalDuration: '总停车时长（小时）',
+        totalAmount: '总计金额（元）',
+        totalDiscountAmount: '总计优惠金额（元）',
+        totalIncomeAmount: '总收入金额（元）',
+        orderTime: '订单时间',
+        status: '发放状态'
+      },
+      placeholders: {
+        mainlandLicensePlates: '请输入车牌号码',
+        monthlyFree: '请输入月保费用',
+        parkingLotCode: '请输入车位编号',
+        userName: '请输入姓名',
+        phoneNumber: '请输入手机号码',
+        cardId: '请输入身份证号',
+        carTypeCode: '请选择车辆类型',
+        monthlyStatus: '请选择状态',
+        startMonth: '请选择开始月份',
+        endMonth: '请选择结束月份'
+      },
+      labels: {
+        longTerm: '长期'
+      },
+      rules: {
+        carTypeCode: '请选择车辆类型',
+        monthlyStartTime: '请选择购买月保月份',
+        mainlandLicensePlates: '请输入车牌号'
+      },
+      messages: {
+        editSuccess: '编辑成功',
+        addSuccess: '月保成功！'
+      },
+      dialog: {
+        editTitle: '编辑月保缴费',
+        addTitle: '新增月保缴费'
+      },
+      errors: {
+        phoneNumber: '手机号格式错误',
+        cardId: '身份证格式错误',
+        licensePlate: '车牌号格式错误'
+      },
       monthlyStatus: {
-        inWarranty: '在保',
-        outWarranty: '过保'
+        valid: '有效',
+        expired: '过期'
+      }
+    },
+    reconciliation: {
+      confirmTitle: '确定发放？',
+      confirmText: '请先财务打款后，再点击确定发放按钮！',
+      fields: {
+        yearNumber: '账单月份',
+        userName: '商家',
+        assignedNumber: '租赁车位',
+        totalDuration: '总停车时长（小时）',
+        totalAmount: '总计金额（元）',
+        totalDiscountAmount: '总计优惠金额（元）',
+        totalIncomeAmount: '总收入金额（元）',
+        orderTime: '订单时间',
+        status: '发放状态'
+      },
+      placeholders: {
+        yearNumber: '请选择账单月份'
+      },
+      actions: {
+        viewFlow: '查看流水',
+        grant: '确定发放',
+        cancelGrant: '取消发放'
+      },
+      messages: {
+        grantSuccess: '发放成功'
       }
     }
   }

@@ -310,11 +310,11 @@ export const carTypeList = (t: (key: string) => string) => [
 export const monthlyStatusList = (t: (key: string) => string) => [
   {
     value: "1",
-    label: t("costManagement.record.monthlyStatus.inWarranty")
+    label: t("costManagement.record.monthlyStatus.valid")
   },
   {
     value: "2",
-    label: t("costManagement.record.monthlyStatus.outWarranty")
+    label: t("costManagement.record.monthlyStatus.expired")
   }
 ];
 

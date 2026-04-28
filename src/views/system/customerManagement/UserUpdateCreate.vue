@@ -3,6 +3,7 @@ import type { FormInstance, FormRules } from "element-plus/es/components/form";
 import UploadImage from "@/components/UploadImage.vue";
 import { pageRoleListUser, userCreateOrUpdate } from "@/api";
 import { TableType } from "@/views/system/setRole/index.vue";
+import { useI18n } from "vue-i18n";
 
 interface Props {
   modelValue: boolean;
@@ -11,12 +12,12 @@ interface Props {
 
 interface Emits {
   (e: "update:modelValue", isShow: boolean): void;
-
   (e: "updateFn"): void;
 }
 
 const props = defineProps<Props>();
 const emits = defineEmits<Emits>();
+const { t } = useI18n();
 const form = ref<TableType>({
   account: "",
   freeTime: 15,
@@ -29,7 +30,7 @@ const form = ref<TableType>({
   status: 1,
   userName: ""
 });
-const roleList = ref([]);
+const roleList = ref<any[]>([]);
 
 watchEffect(() => {
   form.value = JSON.parse(JSON.stringify(props.fromData));
@@ -52,15 +53,15 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
     })
     .then(() => {
       if (!form.value.id) {
-        ElMessageBox.alert("新建账号密码默认是123456", "新建账号成功", {
-          confirmButtonText: "知道了",
+        ElMessageBox.alert(t('system.customerManagement.messages.defaultPassword'), t('system.customerManagement.messages.createSuccess'), {
+          confirmButtonText: t('system.customerManagement.actions.known'),
           callback: () => {
             emits("updateFn");
             emits("update:modelValue", false);
           }
         });
       } else {
-        ElMessage.success("编辑成功");
+        ElMessage.success(t('message.saveSuccess'));
         emits("updateFn");
         emits("update:modelValue", false);
       }
@@ -68,80 +69,76 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 };
 const urlValidator = (rule: any, value: any, callback: any) => {
   if (!/^(?:(?:\+|00)86)?1\d{10}$/.test(value)) {
-    callback(new Error("手机号格式错误"));
+    callback(new Error(t('system.customerManagement.rules.phoneNumberPattern')));
   } else {
     callback();
   }
 };
 const rules = reactive<FormRules<any>>({
-  account: [{ required: true, message: "请输入账户", trigger: "blur" }],
-  userName: [{ required: true, message: "请输入车牌号", trigger: "blur" }],
-  roleId: [{ required: true, message: "请选择角色", trigger: "blur" }],
-  status: [{ required: true, message: "请选择状态", trigger: "blur" }],
+  account: [{ required: true, message: t('system.customerManagement.rules.account'), trigger: "blur" }],
+  userName: [{ required: true, message: t('system.customerManagement.rules.userName'), trigger: "blur" }],
+  roleId: [{ required: true, message: t('system.customerManagement.rules.roleId'), trigger: "blur" }],
+  status: [{ required: true, message: t('system.customerManagement.rules.status'), trigger: "blur" }],
   phoneNumber: [
-    { required: true, message: "请输入联系电话", trigger: "blur" },
+    { required: true, message: t('system.customerManagement.rules.phoneNumber'), trigger: "blur" },
     { validator: urlValidator, trigger: "blur" }
   ],
   freeTime: [
-    { required: true, message: "请输入免费停车时长", trigger: "blur" }
+    { required: true, message: t('system.customerManagement.rules.freeTime'), trigger: "blur" }
   ],
   frontBusinessLicense: [
-    { required: false, message: "请上传营业执照", trigger: "blur" }
+    { required: false, message: t('system.customerManagement.rules.frontBusinessLicense'), trigger: "blur" }
   ]
 });
 const closeFn = () => {
-  ruleFormRef.value?.resetFields(); // 重置表单验证器
+  ruleFormRef.value?.resetFields();
 };
 const statusList = [
-  {
-    value: 1,
-    label: "正常"
-  },
-  {
-    value: 2,
-    label: "锁定"
-  },
-  {
-    value: 3,
-    label: "禁用"
-  }
+  { value: 1, label: t('system.customerManagement.status.normal') },
+  { value: 2, label: t('system.customerManagement.status.locked') },
+  { value: 3, label: t('system.customerManagement.status.disabled') }
 ];
 </script>
 
 <template>
-  <el-dialog :destroy-on-close="true" :modelValue="modelValue" :title="fromData.id ? '编辑账户' : '新增账户'" @close="closeFn"
-    @update:modelValue="$emit('update:modelValue', false)">
+  <el-dialog
+    :destroy-on-close="true"
+    :modelValue="modelValue"
+    :title="fromData.id ? t('system.customerManagement.dialog.editTitle') : t('system.customerManagement.dialog.addTitle')"
+    @close="closeFn"
+    @update:modelValue="$emit('update:modelValue', false)"
+  >
     <el-form ref="ruleFormRef" :model="form" :rules="rules" label-position="top" label-width="120px">
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="账户" prop="account">
-            <el-input v-model="form.account" placeholder="请输入账户" :disabled="fromData.id ? true : false" />
+          <el-form-item :label="t('system.customerManagement.fields.account')" prop="account">
+            <el-input v-model="form.account" :placeholder="t('system.customerManagement.placeholders.account')" :disabled="fromData.id ? true : false" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="车牌号" prop="userName">
-            <el-input v-model="form.userName" placeholder="请输入车牌号" />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="联系电话" prop="phoneNumber">
-            <el-input v-model="form.phoneNumber" maxlength="11" placeholder="请输入联系电话" />
+          <el-form-item :label="t('system.customerManagement.fields.userName')" prop="userName">
+            <el-input v-model="form.userName" :placeholder="t('system.customerManagement.placeholders.userName')" />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="角色" prop="roleId">
-            <el-select v-model="form.roleId" placeholder="请选择角色" disabled>
+          <el-form-item :label="t('system.customerManagement.fields.phoneNumber')" prop="phoneNumber">
+            <el-input v-model="form.phoneNumber" maxlength="11" :placeholder="t('system.customerManagement.placeholders.phoneNumber')" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item :label="t('system.customerManagement.fields.roleId')" prop="roleId">
+            <el-select v-model="form.roleId" :placeholder="t('system.customerManagement.placeholders.roleId')" disabled>
               <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
-            <el-select v-model="form.status" placeholder="请选择状态">
+          <el-form-item :label="t('label.status')" prop="status">
+            <el-select v-model="form.status" :placeholder="t('system.customerManagement.placeholders.status')">
               <el-option v-for="item in statusList" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -149,17 +146,16 @@ const statusList = [
       </el-row>
       <el-row v-if="form.roleId !== '3'" :gutter="20">
         <el-col :span="12">
-          <el-form-item label="免费停车时长（分钟）" prop="freeTime">
-            <el-input v-model="form.freeTime" placeholder="请输入免费停车时长" />
+          <el-form-item :label="t('system.customerManagement.fields.freeTime')" prop="freeTime">
+            <el-input v-model="form.freeTime" :placeholder="t('system.customerManagement.placeholders.freeTime')" />
           </el-form-item>
         </el-col>
       </el-row>
-
       <el-form-item>
         <el-row justify="center" style="width: 100%">
           <el-col :span="12">
             <el-button size="large" style="width: 100%" type="primary" @click="onSubmit(ruleFormRef)">
-              保存
+              {{ t('button.save') }}
             </el-button>
           </el-col>
         </el-row>

@@ -2,6 +2,8 @@
 import { deleteUser, pageCustomerList, resettingPassword } from "@/api";
 import md5 from "js-md5";
 import UserUpdateCreate from "./UserUpdateCreate.vue";
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 export type TableType = {
   account: string;
@@ -16,6 +18,7 @@ export type TableType = {
   unitAddress: string;
 };
 const isShow = ref(false);
+const { t } = useI18n();
 const dataList = ref<TableType[]>([]);
 const params = reactive({
   pageNumber: 1,
@@ -48,31 +51,32 @@ const openFn = (e: any) => {
 
 //删除
 const resetting = (userId: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认重置密码？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
-    type: "warning"
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.info'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
+    type: 'warning'
   })
     .then(() => {
-      return resettingPassword({ ids: [userId], password: md5("123456") });
+      const defaultPassword = (md5 as unknown as (value: string) => string)("123456");
+      return resettingPassword({ ids: [userId], password: defaultPassword });
     })
     .then(() => {
-      ElMessage.success("密码已重置成功，默认密码是123456");
+      ElMessage.success(t('system.customerManagement.messages.createSuccess'));
       getData();
     });
 };
 //删除
 const delteFn = (userId: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认删除？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
-    type: "warning"
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.info'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
+    type: 'warning'
   })
     .then(() => {
       return deleteUser({ ids: [userId] });
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('message.deleteSuccess'));
       getData();
     });
 };
@@ -104,82 +108,82 @@ const tableHeight = computed(() => {
     document.documentElement.clientHeight || document.body.clientHeight;
   return windowHeight - 380;
 });
-const statusList = {
-  1: "正常",
-  2: "锁定",
-  3: "禁用"
-};
+const statusList = computed(() => [
+  { value: 1, label: t('system.customerManagement.status.normal') },
+  { value: 2, label: t('system.customerManagement.status.locked') },
+  { value: 3, label: t('system.customerManagement.status.disabled') }
+]);
 </script>
 
 <template>
   <div class="bg-white dark:bg-[#141414] content">
     <div class="c_box">
       <div class="title">
-        <div class="lf">账号管理</div>
+        <div class="lf">{{ t('system.customerManagement.title') }}</div>
       </div>
       <div class="form_box_p">
         <div class="form_box">
           <div class="form_item_box">
-            <div>登录账号：</div>
-            <el-input v-model="searchParams.account" clearable placeholder="请输入登录账号" />
+            <div>{{ t('system.customerManagement.fields.account') }}：</div>
+            <el-input v-model="searchParams.account" clearable :placeholder="t('system.customerManagement.placeholders.account')" />
           </div>
           <div class="form_item_box">
-            <div>车牌号：</div>
-            <el-input v-model="searchParams.userName" clearable placeholder="请输入车牌号" />
+            <div>{{ t('system.customerManagement.fields.userName') }}：</div>
+            <el-input v-model="searchParams.userName" clearable :placeholder="t('system.customerManagement.placeholders.userName')" />
           </div>
         </div>
-        <el-button type="primary" @click="getData">搜索</el-button>
+        <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
       </div>
 
-      <el-table :data="dataList" :height="tableHeight" style="width: 100%">
+      <el-table :data="dataList" :height="tableHeight" :style="{ width: '100%' }">
         <el-table-column type="index" />
 
-        <el-table-column align="center" label="账号">
+        <el-table-column align="center" :label="t('system.customerManagement.columns.account')">
           <template #default="scope">
             <div class="text_box">{{ scope.row.account ?? "--" }}</div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="车牌号">
+        <el-table-column align="center" :label="t('system.customerManagement.columns.userName')">
           <template #default="scope">
             <div class="text_box">{{ scope.row.userName ?? "--" }}</div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="联系电话">
+        <el-table-column align="center" :label="t('system.customerManagement.columns.phoneNumber')">
           <template #default="scope">
             <div class="text_box">
               {{ scope.row.phoneNumber ?? "--" }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="免费停车时长（分钟）">
+        <el-table-column align="center" :label="t('system.customerManagement.columns.freeTime')">
           <template #default="scope">
             <div class="text_box">
               {{ scope.row.freeTime ?? "--" }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="状态">
+        <el-table-column align="center" :label="t('label.status')">
           <template #default="scope">
             <div class="text_box">
-              {{ statusList[scope.row.status] ?? "--" }}
+              {{ statusList.find(item => item.value === scope.row.status)?.label ?? "--" }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="创建时间">
+        <el-table-column align="center" :label="t('label.created')">
           <template #default="scope">
             <div class="text_box">
               {{ scope.row.createTime ?? "--" }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作" width="265">
+        <el-table-column align="center" :label="t('label.operation')" width="265">
           <template #default="scope">
             <el-form-item prop="url">
               <el-button icon="Delete" size="small" type="danger" @click="delteFn(scope.row.id)">
-                删除
+                {{ t('button.delete') }}
               </el-button>
               <el-button icon="Edit" size="small" @click="openFn(scope.row)">
-                编辑
+                {{ t('button.edit') }}
               </el-button>
               <!-- <el-button icon="Edit" size="small" @click="resetting(scope.row.id)">
                 重置密码
@@ -194,7 +198,7 @@ const statusList = {
           layout="total, sizes, prev, pager, next, jumper" @size-change="getData" @current-change="getData" />
       </div>
       <el-button icon="Plus" size="small" style="margin-top: 20px" type="primary" @click="addData">
-        新增
+        {{ t('button.add') }}
       </el-button>
     </div>
     <UserUpdateCreate v-model="isShow" :from-data="data" @update-fn="getData" />

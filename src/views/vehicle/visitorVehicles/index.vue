@@ -5,7 +5,7 @@ const { t } = useI18n();
 </script>
 
 <template>
-<div>{{ t('menu.zombieCar') }}</div>
+<div>{{ t('menu.visitorCar') }}</div>
 </template>
 
 <style scoped lang="scss">

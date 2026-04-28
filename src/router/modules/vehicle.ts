@@ -39,11 +39,11 @@ export default {
       }
     },
     {
-      path: "/vehicle/zombieCar",
-      name: "ZombieCar",
-      component: () => import("@/views/costManagement/zombieCar/index.vue"),
+      path: "/vehicle/visitorCar",
+      name: "VisitorCar",
+      component: () => import("@/views/costManagement/visitorCar/index.vue"),
       meta: {
-        title: "menu.zombieCar",
+        title: "menu.visitorCar",
         roles: ["4", "3"]
       }
     },

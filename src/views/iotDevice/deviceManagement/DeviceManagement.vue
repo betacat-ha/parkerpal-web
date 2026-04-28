@@ -2,12 +2,14 @@
 import type { FormInstance, FormRules } from "element-plus/es/components/form";
 import { deleteIotDevice, getIotDeviceList, newOrUpdateIotDevice } from "@/api";
 import { ElMessage } from "element-plus";
-import { iotRoleList, groupNumberList, tollList } from "@/views/data";
+import { iotRoleList, groupNumberList } from "@/views/data";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 defineOptions({
   name: "DeviceManagement"
 });
+const { t } = useI18n();
 type DataListType = {
   id: string;
   macAddress: string;
@@ -34,30 +36,30 @@ const params = reactive({
 const editIndex = ref(-1);
 const rules = reactive<FormRules<any>>({
   id: [
-    { required: true, message: '请输入设备ID', trigger: 'blur' },
+    { required: true, message: t('device.management.rules.id'), trigger: 'blur' },
   ],
   macAddress: [
-    { required: true, message: '请输入MAC地址', trigger: 'blur' },
+    { required: true, message: t('device.management.rules.macAddress'), trigger: 'blur' },
     {
       pattern: /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/,
-      message: 'MAC地址格式不正确',
+      message: t('device.management.rules.macAddressPattern'),
       trigger: 'blur',
     },
   ],
   name: [
-    { required: true, message: '请输入设备名称', trigger: 'blur' },
+    { required: true, message: t('device.management.rules.name'), trigger: 'blur' },
   ],
   location: [
-    { required: true, message: '请输入设备所在位置', trigger: 'blur' },
+    { required: true, message: t('device.management.rules.location'), trigger: 'blur' },
   ],
   role: [
-    { required: true, message: '请选择设备角色', trigger: 'change' },
+    { required: true, message: t('device.management.rules.role'), trigger: 'change' },
   ],
   groupId: [
-    { required: true, message: '请选择设备所属组', trigger: 'change' },
+    { required: true, message: t('device.management.rules.groupId'), trigger: 'change' },
   ],
   createUserId: [
-    { required: true, message: '请选择创建用户', trigger: 'change' },
+    { required: true, message: t('device.management.rules.createUserId'), trigger: 'change' },
   ],
   // isDisabled: [
   //   { required: true, message: '请选择设备状态', trigger: 'change' },
@@ -74,6 +76,8 @@ const tableHeight = computed(() => {
     document.documentElement.clientHeight || document.body.clientHeight;
   return windowHeight - 420;
 });
+const iotRoleListLocal = computed(() => iotRoleList(t));
+const groupNumberListLocal = computed(() => groupNumberList(t));
 //保存
 const saveFn = (data: any) => {
   Promise.all(refList.value.map(v => v.validate()))
@@ -83,7 +87,7 @@ const saveFn = (data: any) => {
     .then(() => {
       editIndex.value = -1;
       getData();
-      ElMessage.success(data.row.id ? "编辑成功" : "新增成功");
+      ElMessage.success(t('message.saveSuccess'));
     });
 };
 //取消
@@ -93,16 +97,16 @@ const cancellation = () => {
 };
 //删除
 const deleteFn = (id: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认删除？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.info'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
     type: "warning"
   })
     .then(() => {
       return deleteIotDevice({ ids: [id] });
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('message.deleteSuccess'));
       getData();
     });
 };
@@ -125,7 +129,6 @@ const getData = () => {
     editIndex.value = -1;
     const { pageNumber, pageSize, total, totalNumber, list } = res.data;
     dataList.value = list;
-    console.log(dataList);
     Object.assign(params, { pageNumber, pageSize, total, totalNumber });
     backups = JSON.parse(JSON.stringify(list));
   });
@@ -160,12 +163,11 @@ const addData = () => {
     editIndex.value = 0;
     tableRef.value.$refs.scrollBarRef.setScrollTop(0);
   } else {
-    ElMessage.warning("编辑状态不可新增！");
+    ElMessage.warning(t('device.management.messages.cannotAddWhileEditing'));
   }
 };
 const time = ref("");
 const changeFnTime = (e: any, start: string, end: string) => {
-  console.log(e, start, end);
   if (e) {
     searchParams[start] = e[0];
     searchParams[end] = e[1];
@@ -178,44 +180,44 @@ const changeFnTime = (e: any, start: string, end: string) => {
 <template>
   <div class="content bg-white dark:bg-[#141414]">
     <div class="title">
-      <div class="lf">IOT设备管理</div>
+      <div class="lf">{{ t('device.management.title') }}</div>
     </div>
     <div class="form_box_p">
       <div class="form_box">
         <div class="form_item_box">
-          <div>设备名称：</div>
+          <div>{{ t('device.management.fields.name') }}：</div>
           <el-input
             v-model="searchParams.name"
             clearable
-            placeholder="请输入设备名称"
+            :placeholder="t('device.management.placeholders.name')"
           />
         </div>
         <div class="form_item_box">
-          <div>设备所在位置：</div>
+          <div>{{ t('device.management.fields.location') }}：</div>
           <el-input
             v-model="searchParams.location"
             clearable
-            placeholder="请输入设备所在位置"
+            :placeholder="t('device.management.placeholders.location')"
           />
         </div>
         <div class="form_item_box">
-          <div>设备MAC地址：</div>
+          <div>{{ t('device.management.fields.macAddress') }}：</div>
           <el-input
             v-model="searchParams.macAddress"
             clearable
-            placeholder="请输入设备IP地址"
+            :placeholder="t('device.management.placeholders.macAddress')"
           />
         </div>
         <div class="form_item_box">
-          <div>设备类型：</div>
+          <div>{{ t('device.management.fields.role') }}：</div>
           <el-select
             v-model="searchParams.role"
             clearable
-            placeholder="请选择设备类型"
+            :placeholder="t('device.management.placeholders.role')"
             style="width: 100%"
           >
             <el-option
-              v-for="item in iotRoleList"
+              v-for="item in iotRoleListLocal"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -223,15 +225,15 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>设备组号：</div>
+          <div>{{ t('device.management.fields.groupId') }}：</div>
           <el-select
             v-model="searchParams.groupId"
             clearable
-            placeholder="请选择设备组号"
+            :placeholder="t('device.management.placeholders.groupId')"
             style="width: 100%"
           >
             <el-option
-              v-for="item in groupNumberList"
+              v-for="item in groupNumberListLocal"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -239,13 +241,13 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-select>
         </div>
         <div class="form_item_box">
-          <div>创建时间段：</div>
+          <div>{{ t('device.management.fields.createRange') }}：</div>
           <div class="time_picker_date">
             <el-date-picker
               v-model="time"
-              end-placeholder="结束时间"
-              range-separator="To"
-              start-placeholder="开始时间"
+              :end-placeholder="t('device.placeholders.endTime')"
+              :range-separator="t('device.placeholders.rangeSeparator')"
+              :start-placeholder="t('device.placeholders.startTime')"
               type="datetimerange"
               value-format="YYYY-MM-DD HH:mm:ss"
               @change="(e: any) => changeFnTime(e, 'startTime', 'endTime')"
@@ -253,7 +255,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </div>
         </div>
       </div>
-      <el-button type="primary" @click="getData">搜索</el-button>
+      <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
     </div>
     <el-table
       ref="tableRef"
@@ -266,14 +268,14 @@ const changeFnTime = (e: any, start: string, end: string) => {
         :index="indexMethod"
         :show-overflow-tooltip="false"
         align="center"
-        label="序号"
+        :label="t('journal.warehousing.serialNumber')"
         min-width="60"
         type="index"
       />
       <el-table-column
         :show-overflow-tooltip="editIndex < 0"
         align="center"
-        label="设备名称"
+        :label="t('device.management.fields.name')"
         min-width="200px"
       >
         <template #default="scope">
@@ -287,7 +289,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
             <el-form-item prop="name">
               <el-input
                 v-model="scope.row.name"
-                placeholder="请输入设备名称"
+                :placeholder="t('device.management.placeholders.name')"
               />
             </el-form-item>
           </el-form>
@@ -296,7 +298,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="设备所在位置" min-width="200px">
+      <el-table-column align="center" :label="t('device.management.fields.location')" min-width="200px">
         <template #default="scope">
           <el-form
             v-if="scope.$index == editIndex"
@@ -308,7 +310,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
               <el-input
                 v-model="scope.row.location"
                 clearable
-                placeholder="请输入设备所在位置"
+                :placeholder="t('device.management.placeholders.location')"
               />
             </el-form-item>
           </el-form>
@@ -359,7 +361,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </template>
         </template>
       </el-table-column> -->
-      <el-table-column align="center" label="设备MAC地址" width="200">
+      <el-table-column align="center" :label="t('device.management.fields.macAddress')" width="200">
         <template #default="scope">
           <el-form
             v-if="scope.$index == editIndex"
@@ -371,7 +373,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
               <el-input
                 v-model="scope.row.macAddress"
                 clearable
-                placeholder="请输入设备MAC地址"
+                :placeholder="t('device.management.placeholders.macAddress')"
               />
             </el-form-item>
           </el-form>
@@ -380,7 +382,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="设备类型" width="180">
+      <el-table-column align="center" :label="t('device.management.fields.role')" width="180">
         <template #default="scope">
           <el-form
             v-if="scope.$index == editIndex"
@@ -392,11 +394,11 @@ const changeFnTime = (e: any, start: string, end: string) => {
               <el-select
                 v-model="scope.row.role"
                 clearable
-                placeholder="请选择设备类型"
+                :placeholder="t('device.management.placeholders.role')"
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in iotRoleList"
+                  v-for="item in iotRoleListLocal"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -406,12 +408,12 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-form>
           <template v-else>
             {{
-              iotRoleList.find(item => item.value == scope.row.role)?.label
+              iotRoleListLocal.find(item => item.value == scope.row.role)?.label
             }}
           </template>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="设备组号" width="180">
+      <el-table-column align="center" :label="t('device.management.fields.groupId')" width="180">
         <template #default="scope">
           <el-form
             v-if="scope.$index == editIndex"
@@ -423,11 +425,11 @@ const changeFnTime = (e: any, start: string, end: string) => {
               <el-select
                 v-model="scope.row.groupId"
                 clearable
-                placeholder="请选择设备组号"
+                :placeholder="t('device.management.placeholders.groupId')"
                 style="width: 100%"
               >
                 <el-option
-                  v-for="item in groupNumberList"
+                  v-for="item in groupNumberListLocal"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -437,7 +439,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           </el-form>
           <template v-else>
             {{
-              groupNumberList.find(item => item.value == scope.row.groupId)
+              groupNumberListLocal.find(item => item.value == scope.row.groupId)
                 ?.label
             }}
           </template>
@@ -445,12 +447,12 @@ const changeFnTime = (e: any, start: string, end: string) => {
       </el-table-column>
       <el-table-column
         align="center"
-        label="创建时间"
+        :label="t('label.created')"
         prop="createTime"
         width="200"
       />
 
-      <el-table-column align="center" fixed="right" label="操作" width="200">
+      <el-table-column align="center" fixed="right" :label="t('label.operation')" width="200">
         <template #default="scope">
           <template v-if="scope.$index != editIndex">
             <el-button
@@ -459,14 +461,14 @@ const changeFnTime = (e: any, start: string, end: string) => {
               type="danger"
               @click="deleteFn(scope.row.id)"
             >
-              删除
+              {{ t('button.delete') }}
             </el-button>
             <el-button
               icon="Edit"
               size="small"
               @click="editIndex = scope.$index"
             >
-              编辑
+              {{ t('button.edit') }}
             </el-button>
           </template>
           <div v-else style="margin-bottom: 20px">
@@ -476,10 +478,10 @@ const changeFnTime = (e: any, start: string, end: string) => {
               type="primary"
               @click="saveFn(scope)"
             >
-              保存
+              {{ t('button.save') }}
             </el-button>
             <el-button icon="Close" size="small" @click="cancellation">
-              取消
+              {{ t('button.cancel') }}
             </el-button>
           </div>
         </template>
@@ -498,7 +500,7 @@ const changeFnTime = (e: any, start: string, end: string) => {
           @current-change="getData"
         />
       <el-button icon="Plus" size="small" type="primary" @click="addData">
-        新增
+        {{ t('button.add') }}
       </el-button>
     </div>
   </div>

@@ -37,21 +37,21 @@ const saveFn = (data: { row: MonthlyInsurancePageListType }) => {
     .then(() => {
       editIndex.value = -1;
       getData();
-      ElMessage.success(data.row.id ? "编辑成功" : "新增成功");
+      ElMessage.success(t('message.saveSuccess'));
     });
 };
 //删除
 const deleteFn = (id: string) => {
-  ElMessageBox.confirm("此操作不可恢复，是否确认删除？", "提示", {
-    confirmButtonText: "确认",
-    cancelButtonText: "取消",
+  ElMessageBox.confirm(t('message.confirmDelete'), t('message.info'), {
+    confirmButtonText: t('button.confirm'),
+    cancelButtonText: t('button.cancel'),
     type: "warning"
   })
     .then(() => {
       return monthlyInsuranceDelete({ ids: [id] });
     })
     .then(() => {
-      ElMessage.success("删除成功");
+      ElMessage.success(t('message.deleteSuccess'));
       if (dataList.value.length == 1 && params.pageNumber > 1) {
         params.pageNumber = params.pageNumber - 1;
       }
@@ -137,64 +137,64 @@ const openFn = (e: any) => {
   <div class="content bg-white dark:bg-[#141414]">
     <div class="c_box">
       <div class="title">
-        <div class="lf">月保记录</div>
+        <div class="lf">{{ t('menu.record') }}</div>
       </div>
       <div class="form_box_p">
         <div class="form_box form_box2">
           <div class="form_item_box">
-            <div>车牌号码：</div>
+            <div>{{ t('vehicle.fields.mainlandLicensePlates') }}：</div>
             <el-input
               v-model="searchParams.mainlandLicensePlates"
               clearable
-              placeholder="请输入车牌号码"
+              :placeholder="t('costManagement.record.placeholders.mainlandLicensePlates')"
             />
           </div>
           <div class="form_item_box">
-            <div>月保费用：</div>
+            <div>{{ t('costManagement.record.fields.monthlyFree') }}：</div>
             <el-input
               v-model="searchParams.monthlyFree"
               clearable
-              placeholder="请输入月保费用"
+              :placeholder="t('costManagement.record.placeholders.monthlyFree')"
             />
           </div>
           <div class="form_item_box">
-            <div>车位编号：</div>
+            <div>{{ t('costManagement.record.fields.parkingLotCode') }}：</div>
             <el-input
               v-model="searchParams.parkingLotCode"
               clearable
-              placeholder="请输入车位编号"
+              :placeholder="t('costManagement.record.placeholders.parkingLotCode')"
             />
           </div>
           <div class="form_item_box">
-            <div>姓名：</div>
+            <div>{{ t('costManagement.record.fields.userName') }}：</div>
             <el-input
               v-model="searchParams.userName"
               clearable
-              placeholder="请输入姓名"
+              :placeholder="t('costManagement.record.placeholders.userName')"
             />
           </div>
           <div class="form_item_box">
-            <div>手机号码：</div>
+            <div>{{ t('costManagement.record.fields.phoneNumber') }}：</div>
             <el-input
               v-model="searchParams.phoneNumber"
               clearable
-              placeholder="请输入手机号码"
+              :placeholder="t('costManagement.record.placeholders.phoneNumber')"
             />
           </div>
           <div class="form_item_box">
-            <div>身份证号：</div>
+            <div>{{ t('costManagement.record.fields.cardId') }}：</div>
             <el-input
               v-model="searchParams.cardId"
               clearable
-              placeholder="请输入身份证号"
+              :placeholder="t('costManagement.record.placeholders.cardId')"
             />
           </div>
           <div class="form_item_box">
-            <div>车辆类型：</div>
+            <div>{{ t('vehicle.vehicleType') }}：</div>
             <el-select
               v-model="searchParams.carTypeCode"
               clearable
-              placeholder="请选择车辆类型"
+              :placeholder="t('costManagement.record.placeholders.carTypeCode')"
               style="width: 100%"
             >
               <el-option
@@ -206,11 +206,11 @@ const openFn = (e: any) => {
             </el-select>
           </div>
           <div class="form_item_box">
-            <div>状态：</div>
+            <div>{{ t('label.status') }}：</div>
             <el-select
               v-model="searchParams.monthlyStatus"
               clearable
-              placeholder="请选择状态"
+              :placeholder="t('costManagement.record.placeholders.monthlyStatus')"
               style="width: 100%"
             >
               <el-option
@@ -222,20 +222,20 @@ const openFn = (e: any) => {
             </el-select>
           </div>
           <div class="form_item_box">
-            <div>月保时间段：</div>
+            <div>{{ t('costManagement.record.fields.monthlyTimeRange') }}：</div>
             <div class="time_picker_date">
               <el-date-picker
                 v-model="freeTimePeriod2"
-                end-placeholder="结束时间"
-                range-separator="To"
-                start-placeholder="开始时间"
+                :end-placeholder="t('vehicle.placeholders.endTime')"
+                :range-separator="t('device.placeholders.rangeSeparator')"
+                :start-placeholder="t('vehicle.placeholders.startTime')"
                 type="datetimerange"
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
             </div>
           </div>
         </div>
-        <el-button type="primary" @click="getData">搜索</el-button>
+        <el-button type="primary" @click="getData">{{ t('button.search') }}</el-button>
       </div>
       <el-table
         ref="tableRef"
@@ -247,14 +247,14 @@ const openFn = (e: any) => {
           :index="indexMethod"
           :show-overflow-tooltip="false"
           align="center"
-          label="序号"
+          :label="t('journal.warehousing.serialNumber')"
           min-width="60"
           type="index"
         />
         <el-table-column
           :show-overflow-tooltip="editIndex < 0"
           align="center"
-          label="车牌号码"
+          :label="t('vehicle.fields.mainlandLicensePlates')"
           min-width="100px"
         >
           <template #default="scope">
@@ -263,7 +263,7 @@ const openFn = (e: any) => {
         </el-table-column>
         <el-table-column
           align="center"
-          label="车辆类型"
+          :label="t('vehicle.vehicleType')"
           min-width="200px"
           prop="freePoints"
         >
@@ -271,25 +271,25 @@ const openFn = (e: any) => {
             {{ scope.row.carTypeName }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="月保时间段" min-width="250px">
+        <el-table-column align="center" :label="t('costManagement.record.fields.monthlyTimeRange')" min-width="250px">
           <template #default="scope">
             {{
               scope.row.longTerm == 1
-                ? "长期"
+                ? t('costManagement.record.labels.longTerm')
                 : `${scope.row.monthlyStartTime} / ${scope.row.monthlyEndTime}`
             }}
           </template>
         </el-table-column>
         <el-table-column
           align="center"
-          label="月保费用（元/月）"
+          :label="t('costManagement.record.fields.monthlyFree')"
           min-width="200"
           prop="monthlyFree"
         />
         <el-table-column
           :show-overflow-tooltip="editIndex < 0"
           align="center"
-          label="状态"
+          :label="t('label.status')"
           min-width="100px"
         >
           <template #default="scope">
@@ -302,7 +302,7 @@ const openFn = (e: any) => {
         <el-table-column
           :show-overflow-tooltip="editIndex < 0"
           align="center"
-          label="车位编号"
+          :label="t('costManagement.record.fields.parkingLotCode')"
           min-width="100px"
         >
           <template #default="scope">
@@ -312,7 +312,7 @@ const openFn = (e: any) => {
         <el-table-column
           :show-overflow-tooltip="editIndex < 0"
           align="center"
-          label="姓名"
+          :label="t('costManagement.record.fields.userName')"
           min-width="100px"
         >
           <template #default="scope">
@@ -322,7 +322,7 @@ const openFn = (e: any) => {
         <el-table-column
           :show-overflow-tooltip="editIndex < 0"
           align="center"
-          label="手机号码"
+          :label="t('costManagement.record.fields.phoneNumber')"
           min-width="100px"
         >
           <template #default="scope">
@@ -332,7 +332,7 @@ const openFn = (e: any) => {
         <el-table-column
           :show-overflow-tooltip="editIndex < 0"
           align="center"
-          label="身份证号码"
+          :label="t('costManagement.record.fields.cardId')"
           min-width="100px"
         >
           <template #default="scope">
@@ -343,7 +343,7 @@ const openFn = (e: any) => {
         <el-table-column
           align="center"
           fixed="right"
-          label="操作"
+          :label="t('label.operation')"
           min-width="200"
         >
           <template #default="scope">
@@ -353,10 +353,10 @@ const openFn = (e: any) => {
               type="danger"
               @click="deleteFn(scope.row.id)"
             >
-              删除
+              {{ t('button.delete') }}
             </el-button>
             <el-button icon="Edit" size="small" @click="openFn(scope.row)">
-              编辑
+              {{ t('button.edit') }}
             </el-button>
           </template>
         </el-table-column>
@@ -381,7 +381,7 @@ const openFn = (e: any) => {
         type="primary"
         @click="addData"
       >
-        新增
+        {{ t('button.add') }}
       </el-button>
     </div>
     <Edit v-model="isShow" :from-data="data" @update-fn="getData" />

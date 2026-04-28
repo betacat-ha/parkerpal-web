@@ -3,6 +3,9 @@ import { ref, reactive, onBeforeMount } from "vue";
 import { FormInstance, FormRules } from "element-plus/es/components/form";
 import { getChargeRules, updateChargeRules } from "@/api";
 import { ElMessage } from "element-plus";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 // 初始化表单数据
 const form = ref({
@@ -22,25 +25,25 @@ const ruleFormRef = ref<FormInstance>();
 // 表单验证规则
 const rules = reactive<FormRules<any>>({
   freeDuration: [
-    { required: true, message: "请输入进场免费时长", trigger: "blur" }
+    { required: true, message: t("costManagement.feeRules.rules.freeDuration"), trigger: "blur" }
   ],
   tollStandard: [
-    { required: true, message: "请输入临保收费", trigger: "blur" }
+    { required: true, message: t("costManagement.feeRules.rules.tollStandard"), trigger: "blur" }
   ],
   monthlyInternalCar: [
-    { required: true, message: "请输入内部收费", trigger: "blur" }
+    { required: true, message: t("costManagement.feeRules.rules.monthlyInternalCar"), trigger: "blur" }
   ],
   monthlyEnterpriseCar: [
-    { required: true, message: "请输入所属企业公车", trigger: "blur" }
+    { required: true, message: t("costManagement.feeRules.rules.monthlyEnterpriseCar"), trigger: "blur" }
   ],
   monthlyExternalCarMachinery: [
-    { required: true, message: "请输入外部车辆（机械车位）", trigger: "blur" }
+    { required: true, message: t("costManagement.feeRules.rules.monthlyExternalCarMachinery"), trigger: "blur" }
   ],
   feeCap: [
-    { required: true, message: "请输入临保日收费上限", trigger: "blur" }
+    { required: true, message: t("costManagement.feeRules.rules.feeCap"), trigger: "blur" }
   ],
   monthlyInternalCarNoMachinery: [
-    { required: true, message: "请输入外部车辆（非机械车位）", trigger: "blur" }
+    { required: true, message: t("costManagement.feeRules.rules.monthlyInternalCarNoMachinery"), trigger: "blur" }
   ]
 });
 
@@ -50,14 +53,10 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
   formEl
     .validate()
     .then(() => {
-      console.log("提交的数据:", form.value); // 调试输出
       return updateChargeRules(form.value);
     })
     .then(() => {
-      ElMessage.success("保存成功");
-    })
-    .catch((error) => {
-      console.error("提交失败:", error); // 调试输出
+      ElMessage.success(t("message.saveSuccess"));
     });
 };
 
@@ -73,7 +72,7 @@ onBeforeMount(() => {
   <div class="content bg-white dark:bg-[#141414]">
     <div class="max-w-[600px]">
       <div class="title">
-        <div class="lf">收费规则设置</div>
+        <div class="lf">{{ t('costManagement.feeRules.title') }}</div>
       </div>
       <el-form
         ref="ruleFormRef"
@@ -81,76 +80,76 @@ onBeforeMount(() => {
         :rules="rules"
         label-width="176px"
       >
-        <el-form-item label="进场免费时长" prop="freeDuration">
+        <el-form-item :label="t('costManagement.feeRules.fields.freeDuration')" prop="freeDuration">
           <el-input
             v-model="form.freeDuration"
-            placeholder="请输入进场免费时长"
+            :placeholder="t('costManagement.feeRules.placeholders.freeDuration')"
             type="number"
           >
-            <template #append>分钟</template>
+            <template #append>{{ t('costManagement.feeRules.units.minute') }}</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="临保收费" prop="tollStandard">
+        <el-form-item :label="t('costManagement.feeRules.fields.tollStandard')" prop="tollStandard">
           <el-input
             v-model="form.tollStandard"
-            placeholder="请输入临保收费"
+            :placeholder="t('costManagement.feeRules.placeholders.tollStandard')"
             type="number"
           >
-            <template #append>元/小时</template>
+            <template #append>{{ t('costManagement.feeRules.units.hour') }}</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="临保日收费上限" prop="feeCap">
+        <el-form-item :label="t('costManagement.feeRules.fields.feeCap')" prop="feeCap">
           <el-input
             v-model="form.feeCap"
-            placeholder="请输入临保日收费上限"
+            :placeholder="t('costManagement.feeRules.placeholders.feeCap')"
             type="number"
           >
-            <template #append>天</template>
+            <template #append>{{ t('costManagement.feeRules.units.day') }}</template>
           </el-input>
         </el-form-item>
         <div class="title">
-          <div class="lf">月保收费</div>
+          <div class="lf">{{ t('costManagement.feeRules.monthlyFeeTitle') }}</div>
         </div>
-        <el-form-item label="内部收费" prop="monthlyInternalCar">
+        <el-form-item :label="t('costManagement.feeRules.fields.monthlyInternalCar')" prop="monthlyInternalCar">
           <el-input
             v-model="form.monthlyInternalCar"
-            placeholder="请输入内部收费"
+            :placeholder="t('costManagement.feeRules.placeholders.monthlyInternalCar')"
             type="number"
           >
-            <template #append>元/月</template>
+            <template #append>{{ t('costManagement.feeRules.units.month') }}</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="所属企业公车" prop="monthlyEnterpriseCar">
+        <el-form-item :label="t('costManagement.feeRules.fields.monthlyEnterpriseCar')" prop="monthlyEnterpriseCar">
           <el-input
             v-model="form.monthlyEnterpriseCar"
-            placeholder="请输入所属企业公车"
+            :placeholder="t('costManagement.feeRules.placeholders.monthlyEnterpriseCar')"
             type="number"
           >
-            <template #append>元/月</template>
+            <template #append>{{ t('costManagement.feeRules.units.month') }}</template>
           </el-input>
         </el-form-item>
         <el-form-item
-          label="外部车辆（机械车位）"
+          :label="t('costManagement.feeRules.fields.monthlyExternalCarMachinery')"
           prop="monthlyExternalCarMachinery"
         >
           <el-input
             v-model="form.monthlyExternalCarMachinery"
-            placeholder="请输入外部车辆（机械车位）"
+            :placeholder="t('costManagement.feeRules.placeholders.monthlyExternalCarMachinery')"
             type="number"
           >
-            <template #append>元/月</template>
+            <template #append>{{ t('costManagement.feeRules.units.month') }}</template>
           </el-input>
         </el-form-item>
         <el-form-item
-          label="外部车辆（非机械车位）"
+          :label="t('costManagement.feeRules.fields.monthlyInternalCarNoMachinery')"
           prop="monthlyInternalCarNoMachinery"
         >
           <el-input
             v-model="form.monthlyInternalCarNoMachinery"
-            placeholder="请输入外部车辆（非机械车位）"
+            :placeholder="t('costManagement.feeRules.placeholders.monthlyInternalCarNoMachinery')"
             type="number"
           >
-            <template #append>元/月</template>
+            <template #append>{{ t('costManagement.feeRules.units.month') }}</template>
           </el-input>
         </el-form-item>
         <el-form-item>
@@ -162,7 +161,7 @@ onBeforeMount(() => {
                 type="primary"
                 @click="onSubmit(ruleFormRef)"
               >
-                保存
+                {{ t('button.save') }}
               </el-button>
             </el-col>
           </el-row>
