@@ -31,6 +31,8 @@ export default {
     delete: 'Delete',
     save: 'Save',
     cancel: 'Cancel',
+    changePassword: 'Change Password',
+    logout: 'Log Out',
     search: 'Search',
     reset: 'Reset',
     submit: 'Submit',
@@ -41,6 +43,17 @@ export default {
     close: 'Close',
     confirm: 'Confirm',
     detail: 'Detail'
+  },
+  // Tag Context Menu
+  tag: {
+    reload: 'Reload',
+    closeCurrent: 'Close Current Tab',
+    closeLeft: 'Close Tabs to the Left',
+    closeRight: 'Close Tabs to the Right',
+    closeOther: 'Close Other Tabs',
+    closeAll: 'Close All Tabs',
+    contentFullScreen: 'Full Screen Content Area',
+    exitContentFullScreen: 'Exit Full Screen'
   },
   // Common Labels
   label: {
@@ -75,6 +88,20 @@ export default {
     register: 'Register',
     forgetPassword: 'Forgot Password',
     rememberMe: 'Remember Me'
+  },
+  // Other Pages
+  remaining: {
+    loading: 'Loading...'
+  },
+  error: {
+    title: 'Error Pages',
+    '403': '403',
+    '404': '404',
+    '500': '500'
+  },
+  // App Title
+  app: {
+    title: 'ParkerPal SPMS'
   },
   // Vehicle Management
   vehicle: {
@@ -318,6 +345,7 @@ export default {
       },
       messages: {
         createSuccess: 'Account created successfully',
+        resetSuccess: 'Password reset successfully',
         defaultPassword: 'The default password for new accounts is 123456'
       }
     },
@@ -348,6 +376,7 @@ export default {
         freeTime: 'Free Parking Duration (Minutes)'
       },
       actions: {
+        resetPassword: 'Reset Password',
         known: 'Got it'
       },
       dialog: {
@@ -373,6 +402,7 @@ export default {
       },
       messages: {
         createSuccess: 'Account created successfully',
+        resetSuccess: 'Password reset successfully',
         defaultPassword: 'The default password for new accounts is 123456'
       }
     },

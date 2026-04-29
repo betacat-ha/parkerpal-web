@@ -145,6 +145,7 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       ) {
         usePermissionStoreHook().handleWholeMenus([]);
         addPathMatch();
+        useMultiTagsStoreHook().syncTagsTitle(router.options.routes);
         if (!useMultiTagsStoreHook().getMultiTagsCache) {
           const { path } = to;
           const route = findRouteByPath(

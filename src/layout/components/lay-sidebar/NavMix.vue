@@ -114,7 +114,7 @@ watch(
                 :icon="LogoutCircleRLine"
                 style="margin: 5px"
               />
-              退出系统
+              {{ t('button.logout') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -136,7 +136,7 @@ watch(
 }
 
 .logout {
-  width: 120px;
+  width: 180px;
 
   ::v-deep(.el-dropdown-menu__item) {
     display: inline-flex;

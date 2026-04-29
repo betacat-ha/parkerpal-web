@@ -11,6 +11,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher.vue";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import { useUserStoreHook } from "@/store/modules/user";
 import Setting from "@iconify-icons/ri/settings-3-line";
+import { useI18n } from "vue-i18n";
 
 const {
   layout,
@@ -23,6 +24,7 @@ const {
   avatarsStyle,
   toggleSideBar
 } = useNav();
+const { t } = useI18n();
 const store = useUserStoreHook();
 const isChangePassword = ref(false); //修改密码
 </script>
@@ -66,14 +68,14 @@ const isChangePassword = ref(false); //修改密码
               <el-icon style="margin: 5px">
                 <Edit />
               </el-icon>
-              修改密码
+              {{ t('button.changePassword') }}
             </el-dropdown-item>
             <el-dropdown-item @click="logout">
               <IconifyIconOffline
                 :icon="LogoutCircleRLine"
                 style="margin: 5px"
               />
-              退出系统
+              {{ t('button.logout') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -147,7 +149,7 @@ const isChangePassword = ref(false); //修改密码
 }
 
 .logout {
-  width: 120px;
+  width: 180px;
 
   ::v-deep(.el-dropdown-menu__item) {
     display: inline-flex;

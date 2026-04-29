@@ -78,7 +78,7 @@ onBeforeMount(() => {
         ref="ruleFormRef"
         :model="form"
         :rules="rules"
-        label-width="176px"
+        label-width="auto"
       >
         <el-form-item :label="t('costManagement.feeRules.fields.freeDuration')" prop="freeDuration">
           <el-input

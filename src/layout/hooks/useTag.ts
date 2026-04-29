@@ -3,6 +3,7 @@ import {
   unref,
   computed,
   reactive,
+  watch,
   onMounted,
   type CSSProperties,
   getCurrentInstance
@@ -27,12 +28,14 @@ import CloseRightTags from "@iconify-icons/ri/text-direction-l";
 import CloseLeftTags from "@iconify-icons/ri/text-direction-r";
 import RefreshRight from "@iconify-icons/ep/refresh-right";
 import Close from "@iconify-icons/ep/close";
+import { useI18n } from "vue-i18n";
 
 export function useTags() {
   const route = useRoute();
   const router = useRouter();
   const instance = getCurrentInstance();
   const pureSetting = useSettingStoreHook();
+  const { t, locale } = useI18n();
 
   const buttonTop = ref(0);
   const buttonLeft = ref(0);
@@ -63,54 +66,75 @@ export function useTags() {
   const tagsViews = reactive<Array<tagsViewsType>>([
     {
       icon: RefreshRight,
-      text: "重新加载",
+      text: "",
       divided: false,
       disabled: false,
       show: true
     },
     {
       icon: Close,
-      text: "关闭当前标签页",
+      text: "",
       divided: false,
       disabled: multiTags.value.length > 1 ? false : true,
       show: true
     },
     {
       icon: CloseLeftTags,
-      text: "关闭左侧标签页",
+      text: "",
       divided: true,
       disabled: multiTags.value.length > 1 ? false : true,
       show: true
     },
     {
       icon: CloseRightTags,
-      text: "关闭右侧标签页",
+      text: "",
       divided: false,
       disabled: multiTags.value.length > 1 ? false : true,
       show: true
     },
     {
       icon: CloseOtherTags,
-      text: "关闭其他标签页",
+      text: "",
       divided: true,
       disabled: multiTags.value.length > 2 ? false : true,
       show: true
     },
     {
       icon: CloseAllTags,
-      text: "关闭全部标签页",
+      text: "",
       divided: false,
       disabled: multiTags.value.length > 1 ? false : true,
       show: true
     },
     {
       icon: Fullscreen,
-      text: "内容区全屏",
+      text: "",
       divided: true,
       disabled: false,
       show: true
     }
   ]);
+
+  const syncTagsViewsText = () => {
+    tagsViews[0].text = t("tag.reload");
+    tagsViews[1].text = t("tag.closeCurrent");
+    tagsViews[2].text = t("tag.closeLeft");
+    tagsViews[3].text = t("tag.closeRight");
+    tagsViews[4].text = t("tag.closeOther");
+    tagsViews[5].text = t("tag.closeAll");
+    tagsViews[6].text = pureSetting.hiddenSideBar
+      ? t("tag.exitContentFullScreen")
+      : t("tag.contentFullScreen");
+    tagsViews[6].icon = pureSetting.hiddenSideBar ? ExitFullscreen : Fullscreen;
+  };
+
+  watch(
+    [locale, () => pureSetting.hiddenSideBar],
+    () => {
+      syncTagsViewsText();
+    },
+    { immediate: true }
+  );
 
   function conditionHandle(item, previous, next) {
     if (isBoolean(route?.meta?.showLink) && route?.meta?.showLink === false) {

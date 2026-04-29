@@ -61,7 +61,7 @@ const resetting = (userId: string) => {
       return resettingPassword({ ids: [userId], password: defaultPassword });
     })
     .then(() => {
-      ElMessage.success(t('system.customerManagement.messages.createSuccess'));
+      ElMessage.success(t('system.customerManagement.messages.resetSuccess'));
       getData();
     });
 };
@@ -185,9 +185,9 @@ const statusList = computed(() => [
               <el-button icon="Edit" size="small" @click="openFn(scope.row)">
                 {{ t('button.edit') }}
               </el-button>
-              <!-- <el-button icon="Edit" size="small" @click="resetting(scope.row.id)">
-                重置密码
-              </el-button> -->
+              <el-button icon="Edit" size="small" @click="resetting(scope.row.id)">
+                {{ t('system.customerManagement.actions.resetPassword') }}
+              </el-button>
             </el-form-item>
           </template>
         </el-table-column>

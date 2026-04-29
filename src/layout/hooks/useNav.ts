@@ -15,12 +15,14 @@ import { usePermissionStoreHook } from "@/store/modules/permission";
 import ExitFullscreen from "@iconify-icons/ri/fullscreen-exit-fill";
 import Fullscreen from "@iconify-icons/ri/fullscreen-fill";
 import { _src } from "@/utils";
+import { useI18n } from "vue-i18n";
 
 const errorInfo =
   "The current routing configuration is incorrect, please check the configuration";
 
 export function useNav() {
   const route = useRoute();
+  const { t } = useI18n();
   const pureApp = useAppStoreHook();
   const routers = useRouter()?.options?.routes;
   const { isFullscreen, toggle } = useFullscreen();
@@ -70,7 +72,7 @@ export function useNav() {
   });
 
   const title = computed(() => {
-    return $config.Title;
+    return t("app.title") || $config.Title;
   });
 
   /** 动态title */

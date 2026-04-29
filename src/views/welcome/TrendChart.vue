@@ -12,7 +12,7 @@ const userId = useUserStore().userInfo.id;
 const data1 = ref([]);
 const data2 = ref([]);
 const data3 = ref([]);
-const { t, tm } = useI18n();
+const { t, tm, locale } = useI18n();
 const months = computed(() => tm("home.trendChart.months") as string[]);
 const init = () => {
   setOptions({
@@ -91,6 +91,17 @@ const getData = (year: any) => {
   });
 };
 onBeforeMount(() => getData(year.value));
+
+watch(
+  () => locale.value,
+  () => {
+    if (data3.value.length > 0) {
+      nextTick(() => {
+        init();
+      });
+    }
+  }
+);
 </script>
 
 <template>

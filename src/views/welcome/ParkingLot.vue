@@ -7,7 +7,7 @@ import { useI18n } from "vue-i18n";
 
 const userId = useUserStore().userInfo.id;
 const isAdmin = useUserStore().isAdmin;
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const chartRef = ref<HTMLDivElement | null>(null);
 const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 const data = ref<any>({
@@ -137,6 +137,17 @@ const getData = () => {
   });
 };
 onBeforeMount(getData);
+
+watch(
+  () => locale.value,
+  () => {
+    if (data.value?.totalParkingSpaces > 0) {
+      nextTick(() => {
+        init();
+      });
+    }
+  }
+);
 </script>
 
 <template>

@@ -40,6 +40,35 @@ export const useMultiTagsStore = defineStore({
     }
   },
   actions: {
+    syncTagsTitle(routes: readonly any[]) {
+      const titleMap = new Map<string, string>();
+
+      const collectTitles = (routeList: readonly any[]) => {
+        routeList?.forEach(route => {
+          if (route?.path && route?.meta?.title) {
+            titleMap.set(route.path, route.meta.title);
+          }
+          if (route?.children?.length) {
+            collectTitles(route.children);
+          }
+        });
+      };
+
+      collectTitles(routes);
+
+      this.multiTags = this.multiTags.map(tag => {
+        const title = titleMap.get(tag.path);
+        if (!title) return tag;
+        return {
+          ...tag,
+          meta: {
+            ...tag.meta,
+            title
+          }
+        };
+      });
+      this.tagsCache(this.multiTags);
+    },
     multiTagsCacheChange(multiTagsCache: boolean) {
       this.multiTagsCache = multiTagsCache;
       if (multiTagsCache) {

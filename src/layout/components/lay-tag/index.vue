@@ -345,15 +345,6 @@ function onClickDrop(key, item, selectRoute?: RouteConfigs) {
     case 6:
       // 内容区全屏
       onContentFullScreen();
-      setTimeout(() => {
-        if (pureSetting.hiddenSideBar) {
-          tagsViews[6].icon = ExitFullscreen;
-          tagsViews[6].text = "内容区退出全屏";
-        } else {
-          tagsViews[6].icon = Fullscreen;
-          tagsViews[6].text = "内容区全屏";
-        }
-      }, 100);
       break;
   }
   setTimeout(() => {

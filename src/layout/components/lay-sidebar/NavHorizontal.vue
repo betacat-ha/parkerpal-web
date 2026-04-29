@@ -2,6 +2,7 @@
 import { isAllEmpty } from "@pureadmin/utils";
 import { computed, nextTick, ref } from "vue";
 import { useNav } from "@/layout/hooks/useNav";
+import { useI18n } from "vue-i18n";
 import LaySearch from "../lay-search/index.vue";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import LaySidebarItem from "../lay-sidebar/components/SidebarItem.vue";
@@ -12,6 +13,7 @@ import { useUserStoreHook } from "@/store/modules/user";
 import Setting from "@iconify-icons/ri/settings-3-line";
 
 const menuRef = ref();
+const { t } = useI18n();
 
 const {
   route,
@@ -80,7 +82,7 @@ const store = useUserStoreHook();
                 :icon="LogoutCircleRLine"
                 style="margin: 5px"
               />
-              退出系统
+              {{ t('button.logout') }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -102,7 +104,7 @@ const store = useUserStoreHook();
 }
 
 .logout {
-  width: 120px;
+  width: 180px;
 
   ::v-deep(.el-dropdown-menu__item) {
     display: inline-flex;

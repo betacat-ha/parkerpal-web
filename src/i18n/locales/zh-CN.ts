@@ -31,6 +31,8 @@ export default {
     delete: '删除',
     save: '保存',
     cancel: '取消',
+    changePassword: '修改密码',
+    logout: '退出系统',
     search: '搜索',
     reset: '重置',
     submit: '提交',
@@ -41,6 +43,17 @@ export default {
     close: '关闭',
     confirm: '确认',
     detail: '详情'
+  },
+  // 标签页右键菜单
+  tag: {
+    reload: '重新加载',
+    closeCurrent: '关闭当前标签页',
+    closeLeft: '关闭左侧标签页',
+    closeRight: '关闭右侧标签页',
+    closeOther: '关闭其他标签页',
+    closeAll: '关闭全部标签页',
+    contentFullScreen: '内容区全屏',
+    exitContentFullScreen: '内容区退出全屏'
   },
   // 通用标签
   label: {
@@ -75,6 +88,20 @@ export default {
     register: '注册',
     forgetPassword: '忘记密码',
     rememberMe: '记住我'
+  },
+  // 其它页面
+  remaining: {
+    loading: '加载中...'
+  },
+  error: {
+    title: '异常页面',
+    '403': '403',
+    '404': '404',
+    '500': '500'
+  },
+  // 应用标题
+  app: {
+    title: '智泊无忧管理系统'
   },
   // 车辆管理
   vehicle: {
@@ -318,6 +345,7 @@ export default {
       },
       messages: {
         createSuccess: '新建账号成功',
+        resetSuccess: '重置密码成功',
         defaultPassword: '新建账号密码默认是123456'
       }
     },
@@ -348,6 +376,7 @@ export default {
         freeTime: '免费停车时长（分钟）'
       },
       actions: {
+        resetPassword: '重置密码',
         known: '知道了'
       },
       dialog: {
@@ -373,6 +402,7 @@ export default {
       },
       messages: {
         createSuccess: '新建账号成功',
+        resetSuccess: '重置密码成功',
         defaultPassword: '新建账号密码默认是123456'
       }
     },

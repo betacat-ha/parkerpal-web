@@ -61,7 +61,7 @@ const resetting = (userId: string) => {
       return resettingPassword({ ids: [userId], password: defaultPassword });
     })
     .then(() => {
-      ElMessage.success(t('system.setRole.messages.createSuccess'));
+      ElMessage.success(t('system.setRole.messages.resetSuccess'));
       getData();
     });
 };
