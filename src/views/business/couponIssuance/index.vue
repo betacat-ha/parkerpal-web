@@ -5,6 +5,9 @@ import { useUserStore } from "@/store/modules/user";
 import { assignedNumber, createParkCollect, generateQRCode } from "@/api";
 import Details from "@/views/business/couponIssuance/Details.vue";
 import { _src } from "@/utils";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const ruleFormRef = ref<FormInstance>();
 const isShow = ref(false);
@@ -27,7 +30,7 @@ const mainlandLicensePlatesValidator = (
       value
     )
   ) {
-    callback(new Error("请输入正确的车牌号或手机号格"));
+    callback(new Error(t("couponIssuance.rules.platesPattern")));
   } else {
     callback();
   }
@@ -36,7 +39,7 @@ const rules = reactive<FormRules<any>>({
   plates: [
     {
       required: true,
-      message: "请输入您的车牌号码/手机号码（无牌车）",
+      message: t("couponIssuance.rules.platesRequired"),
       trigger: "blur"
     },
     { validator: mainlandLicensePlatesValidator, trigger: "blur" }
@@ -98,32 +101,32 @@ onBeforeUnmount(() => clearTimeout(time));
 <template>
   <div class="content bg-white dark:bg-[#141414] h-[calc(100vh-155px)]">
     <div class="title">
-      <div class="lf">停车领券-电脑端</div>
+      <div class="lf">{{ t("couponIssuance.desktop.title") }}</div>
     </div>
     <div class="w-[500px] mx-auto">
       <el-form ref="ruleFormRef" :model="form" :rules="rules">
-        <div class="text-center mb-[20px]">电脑端领券</div>
+        <div class="text-center mb-[20px]">{{ t("couponIssuance.desktop.subtitle") }}</div>
         <el-form-item prop="plates">
           <el-popover v-model="carVisible" placement="bottom" trigger="click" width="600">
             <Carnumber ref="carNumber" v-model="form.plates" @fatherMethod="carVisibleChange" />
             <template #reference>
               <el-input v-model="form.plates" :validate-event="carVisible" maxlength="11"
-                placeholder="请输入您的车牌号码/手机号码（无牌车）" @input="changeValue(form.plates)" />
+                :placeholder="t('couponIssuance.placeholders.plates')" @input="changeValue(form.plates)" />
             </template>
           </el-popover>
         </el-form-item>
         <div class="flex justify-between mb-[20px]">
-          <div>商家抵用券：</div>
+          <div>{{ t("couponIssuance.labels.merchantCoupon") }}：</div>
           <div>{{ user.userName }}</div>
         </div>
         <div class="flex justify-between mb-[20px]">
-          <div>剩余抵用券：</div>
-          <div>{{ num }}张</div>
+          <div>{{ t("couponIssuance.labels.remainingCoupon") }}：</div>
+          <div>{{ num }}{{ t("couponIssuance.units.sheet") }}</div>
         </div>
         <el-row justify="center" style="width: 100%">
           <el-col :span="12">
             <el-button size="large" style="width: 100%" type="primary" @click="onSubmit(ruleFormRef)">
-              点击领券
+              {{ t("couponIssuance.buttons.receive") }}
             </el-button>
           </el-col>
         </el-row>
@@ -131,15 +134,15 @@ onBeforeUnmount(() => clearTimeout(time));
     </div>
     <el-divider />
     <div class="w-[500px] mx-auto">
-      <div class="text-center mb-[20px]">出场二维码</div>
+      <div class="text-center mb-[20px]">{{ t("couponIssuance.desktop.qrTitle") }}</div>
       <img :src="_src(url)" alt="二维码" class="w-[200px] h-[200px] mx-auto block mb-[20px]" />
       <div class="text-center">
-        动态码，仅可使用一次，30分钟内有效。
+        {{ t("couponIssuance.desktop.qrNotice") }}
       </div>
       <el-row justify="center" style="width: 100%">
         <el-col :span="12">
           <el-button size="large" style="width: 100%; margin-top: 20px" type="primary" @click="getCode">
-            刷新二维码
+            {{ t("couponIssuance.buttons.refreshQr") }}
           </el-button>
         </el-col>
       </el-row>

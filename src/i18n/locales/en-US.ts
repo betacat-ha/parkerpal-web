@@ -86,9 +86,54 @@ export default {
     username: 'Username',
     password: 'Password',
     login: 'Login',
+    usernameRequired: 'Please enter username',
+    passwordRequired: 'Please enter password',
+    success: 'Login successful',
     register: 'Register',
     forgetPassword: 'Forgot Password',
     rememberMe: 'Remember Me'
+  },
+  couponIssuance: {
+    desktop: {
+      title: 'Parking Coupon Issuance - Desktop',
+      subtitle: 'Desktop Coupon Issuance',
+      qrTitle: 'Exit QR Code',
+      qrNotice: 'Dynamic code, can only be used once and is valid for 30 minutes.'
+    },
+    placeholders: {
+      plates: 'Please enter your license plate number / phone number (no plate vehicle)'
+    },
+    labels: {
+      merchantCoupon: 'Merchant Coupon',
+      remainingCoupon: 'Remaining Coupon'
+    },
+    units: {
+      sheet: ' coupons'
+    },
+    buttons: {
+      receive: 'Receive Coupon',
+      refreshQr: 'Refresh QR Code'
+    },
+    rules: {
+      platesRequired: 'Please enter your license plate number / phone number (no plate vehicle)',
+      platesPattern: 'Please enter a valid license plate number or phone number'
+    },
+    dialog: {
+      title: 'Coupon Details',
+      parkingLot: 'Parking Lot',
+      licensePlate: 'License Plate',
+      startTime: 'Entry Time',
+      endTime: 'Exit Time',
+      totalDuration: 'Parking Duration',
+      totalAmount: 'Total Amount',
+      discountAmount: 'Discount Amount',
+      discountInfo: 'Discount Info',
+      payableAmount: 'Amount Due',
+      success: 'Coupon received successfully',
+      noticePrefix: 'Please leave within',
+      noticeHighlight: '30 minutes',
+      noticeSuffix: 'after receiving the coupon, otherwise parking fees must be paid.'
+    }
   },
   // Other Pages
   remaining: {

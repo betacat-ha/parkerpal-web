@@ -2,7 +2,6 @@
 import Motion from "./utils/motion";
 import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
-import { loginRules } from "./utils/rule";
 import { useNav } from "@/layout/hooks/useNav";
 import { useLayout } from "@/layout/hooks/useLayout";
 import { useUserStoreHook } from "@/store/modules/user";
@@ -17,13 +16,18 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
 import { FormInstance } from "element-plus/es/components/form";
+import { useI18n } from "vue-i18n";
+import { createLoginRules } from "./utils/rule";
+import LanguageSwitcher from "@/components/LanguageSwitcher.vue";
 
 defineOptions({
   name: "Login"
 });
+const { t } = useI18n();
 const router = useRouter();
 const loading = ref(false);
 const ruleFormRef = ref<FormInstance>();
+const loginRules = createLoginRules(t);
 
 const { initStorage } = useLayout();
 initStorage();
@@ -51,7 +55,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           if (res.code == 200) {
             usePermissionStoreHook().handleWholeMenus([]);
             router.push("/").then(() => {
-              message("登录成功", { type: "success" });
+              message(t("login.success"), { type: "success" });
             });
           }
         })
@@ -79,7 +83,8 @@ onBeforeUnmount(() => {
 <template>
   <div class="select-none">
     <img :src="bg" class="wave" />
-    <div class="flex-c absolute right-5 top-3">
+    <div class="flex-c absolute right-5 top-3 gap-2">
+      <LanguageSwitcher />
       <!-- 主题 -->
       <el-switch
         v-model="dataTheme"
@@ -111,7 +116,7 @@ onBeforeUnmount(() => {
                 :rules="[
                   {
                     required: true,
-                    message: '请输入账号',
+                      message: t('login.usernameRequired'),
                     trigger: 'blur'
                   }
                 ]"
@@ -121,7 +126,7 @@ onBeforeUnmount(() => {
                   v-model="ruleForm.account"
                   :prefix-icon="useRenderIcon(User)"
                   clearable
-                  placeholder="账号"
+                  :placeholder="t('login.username')"
                 />
               </el-form-item>
             </Motion>
@@ -132,7 +137,7 @@ onBeforeUnmount(() => {
                   v-model="ruleForm.password"
                   :prefix-icon="useRenderIcon(Lock)"
                   clearable
-                  placeholder="密码"
+                  :placeholder="t('login.password')"
                   show-password
                 />
               </el-form-item>
@@ -146,7 +151,7 @@ onBeforeUnmount(() => {
                 type="primary"
                 @click="onLogin(ruleFormRef)"
               >
-                登录
+                {{ t("login.login") }}
               </el-button>
             </Motion>
           </el-form>

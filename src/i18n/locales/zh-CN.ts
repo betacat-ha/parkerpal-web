@@ -86,9 +86,54 @@ export default {
     username: '用户名',
     password: '密码',
     login: '登录',
+    usernameRequired: '请输入用户名',
+    passwordRequired: '请输入密码',
+    success: '登录成功',
     register: '注册',
     forgetPassword: '忘记密码',
     rememberMe: '记住我'
+  },
+  couponIssuance: {
+    desktop: {
+      title: '停车领券-电脑端',
+      subtitle: '电脑端领券',
+      qrTitle: '出场二维码',
+      qrNotice: '动态码，仅可使用一次，30分钟内有效。'
+    },
+    placeholders: {
+      plates: '请输入您的车牌号码/手机号码（无牌车）'
+    },
+    labels: {
+      merchantCoupon: '商家抵用券',
+      remainingCoupon: '剩余抵用券'
+    },
+    units: {
+      sheet: '张'
+    },
+    buttons: {
+      receive: '点击领券',
+      refreshQr: '刷新二维码'
+    },
+    rules: {
+      platesRequired: '请输入您的车牌号码/手机号码（无牌车）',
+      platesPattern: '请输入正确的车牌号或手机号'
+    },
+    dialog: {
+      title: '领券详情',
+      parkingLot: '停车场',
+      licensePlate: '车牌号码',
+      startTime: '进场时间',
+      endTime: '出场时间',
+      totalDuration: '停车时长',
+      totalAmount: '总计金额',
+      discountAmount: '优惠金额',
+      discountInfo: '优惠信息',
+      payableAmount: '需付金额',
+      success: '领券成功',
+      noticePrefix: '请于领券后',
+      noticeHighlight: '30分钟内',
+      noticeSuffix: '离场，超时需要补缴停车费'
+    }
   },
   // 其它页面
   remaining: {

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useI18n } from "vue-i18n";
+
 interface Props {
   modelValue: boolean;
   data: any;
@@ -24,6 +26,7 @@ const form = ref({
 });
 const props = defineProps<Props>();
 const emits = defineEmits<Emits>();
+const { t } = useI18n();
 watchEffect(() => {
   form.value = JSON.parse(JSON.stringify(props.data));
 });
@@ -33,52 +36,52 @@ watchEffect(() => {
   <el-dialog
     :destroy-on-close="true"
     :modelValue="modelValue"
-    title="领券详情"
+    :title="t('couponIssuance.dialog.title')"
     width="400px"
     @update:modelValue="$emit('update:modelValue', false)"
   >
     <div>
-      <div class="mb-[20px]">停车场</div>
+      <div class="mb-[20px]">{{ t('couponIssuance.dialog.parkingLot') }}</div>
       <div class="flex justify-between mb-[20px]">
-        <div>车牌号码：</div>
+        <div>{{ t('couponIssuance.dialog.licensePlate') }}：</div>
         <div>{{ form.mainlandLicensePlates ?? "--" }}</div>
       </div>
       <div class="flex justify-between mb-[20px]">
-        <div>进场时间：</div>
+        <div>{{ t('couponIssuance.dialog.startTime') }}：</div>
         <div>{{ form.startTime ?? "--" }}</div>
       </div>
       <div class="flex justify-between mb-[20px]">
-        <div>出场时间：</div>
+        <div>{{ t('couponIssuance.dialog.endTime') }}：</div>
         <div>{{ form.endTime ?? "--" }}</div>
       </div>
       <div class="flex justify-between mb-[20px]">
-        <div>停车时长：</div>
+        <div>{{ t('couponIssuance.dialog.totalDuration') }}：</div>
         <div>{{ form.totalDuration ?? "--" }}</div>
       </div>
       <el-divider />
       <div class="flex justify-between mb-[20px]">
-        <div>总计金额：</div>
+        <div>{{ t('couponIssuance.dialog.totalAmount') }}：</div>
         <div>{{ form.totalAmount ?? "--" }}元</div>
       </div>
       <div class="flex justify-between mb-[20px]">
-        <div>优惠金额：</div>
+        <div>{{ t('couponIssuance.dialog.discountAmount') }}：</div>
         <div>{{ form.totalDiscountAmount ?? "--" }}元</div>
       </div>
       <div class="flex justify-between mb-[20px]">
-        <div>优惠信息：</div>
+        <div>{{ t('couponIssuance.dialog.discountInfo') }}：</div>
         <div>{{ form.discount ?? "--" }}</div>
       </div>
       <div class="flex justify-between mb-[20px]">
-        <div>需付金额：</div>
+        <div>{{ t('couponIssuance.dialog.payableAmount') }}：</div>
         <div>{{ form.totalIncomeAmount ?? "--" }}元</div>
       </div>
       <div class="mt-[40px] text-[#e4393c] text-[30px] text-center">
-        领券成功
+        {{ t('couponIssuance.dialog.success') }}
       </div>
       <div class="mt-[20px] text-center">
-        请于领劵后
-        <span class="text-[#e4393c]">30分钟内</span>
-        离场，超时需要补缴停车费
+        {{ t('couponIssuance.dialog.noticePrefix') }}
+        <span class="text-[#e4393c]">{{ t('couponIssuance.dialog.noticeHighlight') }}</span>
+        {{ t('couponIssuance.dialog.noticeSuffix') }}
       </div>
     </div>
   </el-dialog>
