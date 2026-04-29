@@ -4,8 +4,10 @@ import { updatePassword } from "@/api";
 import { useUserStoreHook } from "@/store/modules/user";
 import { ElMessage } from "element-plus";
 import md5 from "js-md5";
+import { useI18n } from "vue-i18n";
 
 const store = useUserStoreHook();
+const { t } = useI18n();
 
 interface Props {
   modelValue: boolean;
@@ -36,24 +38,24 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
     })
     .then(res => {
       store.userInfo = res.data;
-      ElMessage.success("修改成功");
+      ElMessage.success(t("passwordModal.success"));
       emits("update:modelValue", false);
     });
 };
 const urlValidator = (rule: any, value: any, callback: any) => {
   if (value != form.value.password) {
-    callback(new Error("两次密码不一致！"));
+    callback(new Error(t("passwordModal.rules.passwordMismatch")));
   } else {
     callback();
   }
 };
 const rules = reactive<FormRules<any>>({
-  password: [{ required: true, message: "请输入新密码", trigger: "blur" }],
+  password: [{ required: true, message: t("passwordModal.rules.passwordRequired"), trigger: "blur" }],
   confirmPassword: [
-    { required: true, message: "请确认新密码", trigger: "blur" },
+    { required: true, message: t("passwordModal.rules.confirmPasswordRequired"), trigger: "blur" },
     { validator: urlValidator, trigger: "blur" }
   ],
-  oldPassword: [{ required: true, message: "请输入原密码", trigger: "blur" }]
+  oldPassword: [{ required: true, message: t("passwordModal.rules.oldPasswordRequired"), trigger: "blur" }]
 });
 
 const closeFn = () => {
@@ -66,7 +68,7 @@ const closeFn = () => {
     :destroy-on-close="true"
     :modelValue="modelValue"
     append-to-body
-    title="修改密码"
+    :title="t('passwordModal.title')"
     width="400px"
     @close="closeFn"
     @update:modelValue="$emit('update:modelValue', false)"
@@ -78,26 +80,26 @@ const closeFn = () => {
       label-position="top"
       label-width="120px"
     >
-      <el-form-item label="原密码" prop="oldPassword">
+      <el-form-item :label="t('passwordModal.fields.oldPassword')" prop="oldPassword">
         <el-input
           v-model="form.oldPassword"
-          placeholder="请输入原密码"
+          :placeholder="t('passwordModal.placeholders.oldPassword')"
           show-password
           type="password"
         />
       </el-form-item>
-      <el-form-item label="新密码" prop="password">
+      <el-form-item :label="t('passwordModal.fields.password')" prop="password">
         <el-input
           v-model="form.password"
-          placeholder="请输入新密码"
+          :placeholder="t('passwordModal.placeholders.password')"
           show-password
           type="password"
         />
       </el-form-item>
-      <el-form-item label="确认新密码" prop="confirmPassword">
+      <el-form-item :label="t('passwordModal.fields.confirmPassword')" prop="confirmPassword">
         <el-input
           v-model="form.confirmPassword"
-          placeholder="请确认新密码"
+          :placeholder="t('passwordModal.placeholders.confirmPassword')"
           show-password
           type="password"
         />
@@ -111,7 +113,7 @@ const closeFn = () => {
               style="width: 100%"
               type="primary"
               @click="onSubmit(ruleFormRef)"
-              >保存
+              >{{ t('button.save') }}
             </el-button>
           </el-col>
         </el-row>

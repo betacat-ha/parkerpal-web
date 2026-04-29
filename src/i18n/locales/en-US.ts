@@ -93,6 +93,26 @@ export default {
     forgetPassword: 'Forgot Password',
     rememberMe: 'Remember Me'
   },
+  passwordModal: {
+    title: 'Change Password',
+    fields: {
+      oldPassword: 'Old Password',
+      password: 'New Password',
+      confirmPassword: 'Confirm New Password'
+    },
+    placeholders: {
+      oldPassword: 'Please enter your old password',
+      password: 'Please enter your new password',
+      confirmPassword: 'Please confirm your new password'
+    },
+    rules: {
+      oldPasswordRequired: 'Please enter your old password',
+      passwordRequired: 'Please enter your new password',
+      confirmPasswordRequired: 'Please confirm your new password',
+      passwordMismatch: 'The two passwords do not match!'
+    },
+    success: 'Updated successfully'
+  },
   couponIssuance: {
     desktop: {
       title: 'Parking Coupon Issuance - Desktop',

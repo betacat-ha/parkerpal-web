@@ -93,6 +93,26 @@ export default {
     forgetPassword: '忘记密码',
     rememberMe: '记住我'
   },
+  passwordModal: {
+    title: '修改密码',
+    fields: {
+      oldPassword: '原密码',
+      password: '新密码',
+      confirmPassword: '确认新密码'
+    },
+    placeholders: {
+      oldPassword: '请输入原密码',
+      password: '请输入新密码',
+      confirmPassword: '请确认新密码'
+    },
+    rules: {
+      oldPasswordRequired: '请输入原密码',
+      passwordRequired: '请输入新密码',
+      confirmPasswordRequired: '请确认新密码',
+      passwordMismatch: '两次密码不一致！'
+    },
+    success: '修改成功'
+  },
   couponIssuance: {
     desktop: {
       title: '停车领券-电脑端',
