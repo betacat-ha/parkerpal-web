@@ -204,7 +204,7 @@ export default {
     },
     rules: {
       mainlandLicensePlates: 'Please enter mainland license plate',
-      startTime: 'Please select a free charging time range'
+      startTime: 'Please select a time range'
     },
     carRentalSpace: {
       title: 'Merchant Parking Coupon Management',
@@ -217,7 +217,7 @@ export default {
         userName: 'Merchant',
         assignedStatus: 'Quota Status',
         assignedNumber: 'Allocation Amount',
-        timeRange: 'Free Charging Time Range'
+        timeRange: 'Time Range'
       },
       placeholders: {
         userName: 'Please enter merchant',
@@ -257,7 +257,7 @@ export default {
     visitor: {
       fields: {
         isFree: 'Invalid Status',
-        timeRange: 'Free Charging Time Range'
+        timeRange: 'Time Range'
       },
       placeholders: {
         isFree: 'Please select invalid status'
