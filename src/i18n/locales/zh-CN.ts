@@ -118,6 +118,7 @@ export default {
       title: '停车领券-电脑端',
       subtitle: '电脑端领券',
       qrTitle: '出场二维码',
+      qrAlt: '出场二维码',
       qrNotice: '动态码，仅可使用一次，30分钟内有效。'
     },
     placeholders: {
@@ -133,6 +134,9 @@ export default {
     buttons: {
       receive: '点击领券',
       refreshQr: '刷新二维码'
+    },
+    messages: {
+      noCouponLeft: '已无多余优惠券可以领取，请稍后再试！'
     },
     rules: {
       platesRequired: '请输入您的车牌号码/手机号码（无牌车）',

@@ -118,6 +118,7 @@ export default {
       title: 'Parking Coupon Issuance - Desktop',
       subtitle: 'Desktop Coupon Issuance',
       qrTitle: 'Exit QR Code',
+      qrAlt: 'Exit QR Code',
       qrNotice: 'Dynamic code, can only be used once and is valid for 30 minutes.'
     },
     placeholders: {
@@ -131,11 +132,14 @@ export default {
       sheet: ' coupons'
     },
     buttons: {
-      receive: 'Receive Coupon',
+      receive: 'Issue Coupon',
       refreshQr: 'Refresh QR Code'
     },
+    messages: {
+      noCouponLeft: ': No more coupons are available. Please contact the property manager.'
+    },
     rules: {
-      platesRequired: 'Please enter your license plate number / phone number (no plate vehicle)',
+      platesRequired: 'Please enter the license plate number / phone number (no plate vehicle)',
       platesPattern: 'Please enter a valid license plate number or phone number'
     },
     dialog: {

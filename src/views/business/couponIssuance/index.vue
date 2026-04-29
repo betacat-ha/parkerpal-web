@@ -68,7 +68,7 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
         data.value = res.data;
       });
   } else {
-    ElMessage.error(user.userName + "已无多余优惠卷可以领取，请稍后再试！");
+    ElMessage.error(`${user.userName}${t("couponIssuance.messages.noCouponLeft")}`);
   }
 };
 const num = ref(0);
@@ -135,7 +135,7 @@ onBeforeUnmount(() => clearTimeout(time));
     <el-divider />
     <div class="w-[500px] mx-auto">
       <div class="text-center mb-[20px]">{{ t("couponIssuance.desktop.qrTitle") }}</div>
-      <img :src="_src(url)" alt="二维码" class="w-[200px] h-[200px] mx-auto block mb-[20px]" />
+      <img :src="_src(url)" :alt="t('couponIssuance.desktop.qrAlt')" class="w-[200px] h-[200px] mx-auto block mb-[20px]" />
       <div class="text-center">
         {{ t("couponIssuance.desktop.qrNotice") }}
       </div>
