@@ -54,6 +54,30 @@ const tooltipOptions: any = {
   popperClass: "tool-tip",
   placement: "bottom"
 };
+const outboundOrderFields = computed(() => ({
+  mainlandLicensePlates: t("orderForm.outboundOrder.fields.mainlandLicensePlates"),
+  orderNumber: t("orderForm.outboundOrder.fields.orderNumber"),
+  userName: t("orderForm.outboundOrder.fields.userName"),
+  typeCode: t("orderForm.outboundOrder.fields.typeCode"),
+  startTime: t("orderForm.outboundOrder.fields.startTime"),
+  endTime: t("orderForm.outboundOrder.fields.endTime"),
+  totalAmount: t("orderForm.outboundOrder.fields.totalAmount"),
+  totalDiscountAmount: t("orderForm.outboundOrder.fields.totalDiscountAmount"),
+  totalIncomeAmount: t("orderForm.outboundOrder.fields.totalIncomeAmount"),
+  totalDuration: t("orderForm.outboundOrder.fields.totalDuration")
+}));
+const outboundOrderPlaceholders = computed(() => ({
+  mainlandLicensePlates: t("orderForm.outboundOrder.placeholders.mainlandLicensePlates"),
+  orderNumber: t("orderForm.outboundOrder.placeholders.orderNumber"),
+  userName: t("orderForm.outboundOrder.placeholders.userName"),
+  typeCode: t("orderForm.outboundOrder.placeholders.typeCode"),
+  startTime: t("orderForm.outboundOrder.placeholders.startTime"),
+  endTime: t("orderForm.outboundOrder.placeholders.endTime"),
+  totalAmount: t("orderForm.outboundOrder.placeholders.totalAmount"),
+  totalDiscountAmount: t("orderForm.outboundOrder.placeholders.totalDiscountAmount"),
+  totalIncomeAmount: t("orderForm.outboundOrder.placeholders.totalIncomeAmount"),
+  totalDuration: t("orderForm.outboundOrder.placeholders.totalDuration")
+}));
 const indexMethod = (index: number) => {
   const { pageSize, pageNumber } = params;
   return index + 1 + (pageNumber - 1) * pageSize;
@@ -72,40 +96,40 @@ const typeCodeLocal = computed(() => typeCode(t));
   <div class="bg-white dark:bg-[#141414] content">
     <div class="c_box">
       <div class="title">
-        <div class="lf">出库订单流水</div>
+        <div class="lf">{{ t("orderForm.outboundOrder.title") }}</div>
       </div>
       <div class="form_box_p">
         <div class="form_box">
           <div class="form_item_box">
-            <div>车牌号/手机号码(无牌车)：</div>
+            <div>{{ outboundOrderFields.mainlandLicensePlates }}：</div>
             <el-input
               v-model="searchParams.mainlandLicensePlates"
               clearable
-              placeholder="请输入车牌号/手机号码(无牌车)"
+              :placeholder="outboundOrderPlaceholders.mainlandLicensePlates"
             />
           </div>
           <div class="form_item_box">
-            <div>订单编号：</div>
+            <div>{{ outboundOrderFields.orderNumber }}：</div>
             <el-input
               v-model="searchParams.orderNumber"
               clearable
-              placeholder="请输入订单编号"
+              :placeholder="outboundOrderPlaceholders.orderNumber"
             />
           </div>
           <div v-if="isAdmin" class="form_item_box">
-            <div>商户：</div>
+            <div>{{ outboundOrderFields.userName }}：</div>
             <el-input
               v-model="searchParams.userName"
               clearable
-              placeholder="请输入商户"
+              :placeholder="outboundOrderPlaceholders.userName"
             />
           </div>
           <div class="form_item_box">
-            <div>停车类型：</div>
+            <div>{{ outboundOrderFields.typeCode }}：</div>
             <el-select
               v-model="searchParams.typeCode"
               clearable
-              placeholder="请选择停车类型"
+              :placeholder="outboundOrderPlaceholders.typeCode"
               style="width: 100%"
             >
               <el-option
@@ -117,22 +141,22 @@ const typeCodeLocal = computed(() => typeCode(t));
             </el-select>
           </div>
           <div class="form_item_box">
-            <div>进场时间：</div>
+            <div>{{ outboundOrderFields.startTime }}：</div>
             <div class="time_picker_date">
               <el-date-picker
                 v-model="searchParams.startTime"
-                placeholder="请选择进场时间"
+                :placeholder="outboundOrderPlaceholders.startTime"
                 type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
             </div>
           </div>
           <div class="form_item_box">
-            <div>出场时间：</div>
+            <div>{{ outboundOrderFields.endTime }}：</div>
             <div class="time_picker_date">
               <el-date-picker
                 v-model="searchParams.endTime"
-                placeholder="请选择出场时间"
+                :placeholder="outboundOrderPlaceholders.endTime"
                 type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss"
               />
@@ -140,44 +164,44 @@ const typeCodeLocal = computed(() => typeCode(t));
           </div>
 
           <div class="form_item_box">
-            <div>总计金额：</div>
+            <div>{{ outboundOrderFields.totalAmount }}：</div>
             <el-input
               v-model="searchParams.totalAmount"
               clearable
-              placeholder="请输入总计金额"
+              :placeholder="outboundOrderPlaceholders.totalAmount"
               type="number"
             />
           </div>
           <div class="form_item_box">
-            <div>优惠金额：</div>
+            <div>{{ outboundOrderFields.totalDiscountAmount }}：</div>
             <el-input
               v-model="searchParams.totalDiscountAmount"
               clearable
-              placeholder="请输入优惠金额"
+              :placeholder="outboundOrderPlaceholders.totalDiscountAmount"
               type="number"
             />
           </div>
           <div class="form_item_box">
-            <div>收入金额：</div>
+            <div>{{ outboundOrderFields.totalIncomeAmount }}：</div>
             <el-input
               v-model="searchParams.totalIncomeAmount"
               clearable
-              placeholder="请输入收入金额"
+              :placeholder="outboundOrderPlaceholders.totalIncomeAmount"
               type="number"
             />
           </div>
           <div class="form_item_box">
-            <div>停车时长：</div>
+            <div>{{ outboundOrderFields.totalDuration }}：</div>
             <el-input
               v-model="searchParams.totalDuration"
               clearable
-              placeholder="请输入停车时长"
+              :placeholder="outboundOrderPlaceholders.totalDuration"
               type="number"
             />
           </div>
         </div>
         <el-button class="flex-shrink-1" type="primary" @click="getData">
-          搜索
+          {{ t("button.search") }}
         </el-button>
       </div>
       <el-table
@@ -191,7 +215,7 @@ const typeCodeLocal = computed(() => typeCode(t));
           :index="indexMethod"
           :show-overflow-tooltip="false"
           align="center"
-          label="序号"
+          :label="t('label.serialNumber')"
           min-width="60"
           type="index"
         />

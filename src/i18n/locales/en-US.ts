@@ -58,6 +58,7 @@ export default {
   // Common Labels
   label: {
     name: 'Name',
+    serialNumber: 'No.',
     status: 'Status',
     created: 'Created',
     updated: 'Updated',
@@ -565,6 +566,31 @@ export default {
   },
   orderForm: {
     outboundOrder: {
+      title: 'Outbound Order Flow',
+      fields: {
+        mainlandLicensePlates: 'License Plate / Phone Number (No Plate Vehicle)',
+        orderNumber: 'Order Number',
+        userName: 'Merchant',
+        typeCode: 'Parking Type',
+        startTime: 'Entry Time',
+        endTime: 'Exit Time',
+        totalAmount: 'Total Amount',
+        totalDiscountAmount: 'Discount Amount',
+        totalIncomeAmount: 'Income Amount',
+        totalDuration: 'Parking Duration'
+      },
+      placeholders: {
+        mainlandLicensePlates: 'Please enter license plate / phone number (no plate vehicle)',
+        orderNumber: 'Please enter order number',
+        userName: 'Please enter merchant',
+        typeCode: 'Please select parking type',
+        startTime: 'Please select entry time',
+        endTime: 'Please select exit time',
+        totalAmount: 'Please enter total amount',
+        totalDiscountAmount: 'Please enter discount amount',
+        totalIncomeAmount: 'Please enter income amount',
+        totalDuration: 'Please enter parking duration'
+      },
       columns: {
         merchant: 'Merchant',
         mainlandLicensePlates: 'License Plate / Phone (No Plate Vehicle)',
@@ -714,8 +740,8 @@ export default {
       licensePlate: 'License Plate / Phone',
       vehicleGroupName: 'Vehicle Group Name',
       deviceGroupNumber: 'Device Group Number',
-      isBilling: 'Is Billing Started Here',
-      isOutOfWarehouse: 'Is Exit Recorded',
+      isBilling: 'Billing Status',
+      isOutOfWarehouse: 'Exit Status',
       warehousingTime: 'Entry Time'
     },
     outbound: {
@@ -731,7 +757,7 @@ export default {
       vehicleGroupName: 'Vehicle Group Name',
       deviceGroupNumber: 'Device Group Number',
       outboundCameraIp: 'Exit Camera IP',
-      isBilling: 'Is Settlement Billing Here',
+      isBilling: 'Billing Status',
       warehousingTime: 'Entry Time',
       outboundTime: 'Exit Time',
       remark: 'Remark'
@@ -742,12 +768,12 @@ export default {
       exited: 'Exited'
     },
     billList: {
-      startBilling: 'Start Billing',
-      settlementBilling: 'Settlement Billing',
+      startBilling: 'Billing Started',
+      settlementBilling: 'Billing Settled',
       noBilling: 'No Billing'
     },
     billOutList: {
-      settlementBilling: 'Settlement Billing',
+      settlementBilling: 'Billing Settled',
       noBilling: 'No Billing'
     }
   }

@@ -58,6 +58,7 @@ export default {
   // 通用标签
   label: {
     name: '名称',
+    serialNumber: '序号',
     status: '状态',
     created: '创建时间',
     updated: '更新时间',
@@ -618,6 +619,31 @@ export default {
   ,
   orderForm: {
     outboundOrder: {
+      title: '出库订单流水',
+      fields: {
+        mainlandLicensePlates: '车牌号/手机号码(无牌车)',
+        orderNumber: '订单编号',
+        userName: '商户',
+        typeCode: '停车类型',
+        startTime: '进场时间',
+        endTime: '出场时间',
+        totalAmount: '总计金额',
+        totalDiscountAmount: '优惠金额',
+        totalIncomeAmount: '收入金额',
+        totalDuration: '停车时长'
+      },
+      placeholders: {
+        mainlandLicensePlates: '请输入车牌号/手机号码(无牌车)',
+        orderNumber: '请输入订单编号',
+        userName: '请输入商户',
+        typeCode: '请选择停车类型',
+        startTime: '请选择进场时间',
+        endTime: '请选择出场时间',
+        totalAmount: '请输入总计金额',
+        totalDiscountAmount: '请输入优惠金额',
+        totalIncomeAmount: '请输入收入金额',
+        totalDuration: '请输入停车时长'
+      },
       columns: {
         merchant: '商户名称',
         mainlandLicensePlates: '车牌号/手机号码(无牌车)',
