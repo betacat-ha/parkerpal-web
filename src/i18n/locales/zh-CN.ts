@@ -136,7 +136,13 @@ export default {
       refreshQr: '刷新二维码'
     },
     messages: {
-      noCouponLeft: '已无多余优惠券可以领取，请稍后再试！'
+      noCouponLeft: '已无多余优惠券可以领取，请稍后再试！',
+      getCouponSuccess: '领券成功'
+    },
+    qrExpiry: {
+      label: '二维码失效时间：',
+      remainingMinutes: '还有 {minutes} 分钟失效',
+      expired: '二维码已失效，请点击刷新按钮重新生成'
     },
     rules: {
       platesRequired: '请输入您的车牌号码/手机号码（无牌车）',

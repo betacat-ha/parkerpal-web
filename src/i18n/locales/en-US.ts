@@ -136,7 +136,13 @@ export default {
       refreshQr: 'Refresh QR Code'
     },
     messages: {
-      noCouponLeft: ': No more coupons are available. Please contact the property manager.'
+      noCouponLeft: ': No more coupons are available. Please contact the property manager.',
+      getCouponSuccess: 'Coupon received successfully'
+    },
+    qrExpiry: {
+      label: 'QR Code Expiry Time: ',
+      remainingMinutes: 'Expires in {minutes} minute(s)',
+      expired: 'QR code has expired. Please click the refresh button to generate a new one'
     },
     rules: {
       platesRequired: 'Please enter the license plate number / phone number (no plate vehicle)',

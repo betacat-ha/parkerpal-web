@@ -74,6 +74,51 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
 const num = ref(0);
 const status = ref(0);
 const url = ref("");
+const qrCodeExpireTime = ref(""); // 二维码失效时间，时间戳
+const qrCodeRemainingMinutes = ref(0); // 二维码剩余有效分钟数
+let expiryUpdateTimer: any = null; // 更新剩余时间的定时器
+
+// 格式化失效时间为可读的日期时间字符串 (yyyy.mm.dd HH:mm:ss 24小时制)
+const formatExpiryTime = () => {
+  if (!qrCodeExpireTime.value) return '';
+  const expireTimeMs = typeof qrCodeExpireTime.value === 'string'
+    ? parseInt(qrCodeExpireTime.value)
+    : qrCodeExpireTime.value;
+  
+  const date = new Date(expireTimeMs);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+  return `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+};
+
+// 计算二维码还有多少分钟失效
+const calculateRemainingMinutes = () => {
+  if (!qrCodeExpireTime.value) return 0;
+  const expireTimeMs = typeof qrCodeExpireTime.value === 'string' 
+    ? parseInt(qrCodeExpireTime.value) 
+    : qrCodeExpireTime.value;
+  const now = Date.now();
+  const remainingMs = expireTimeMs - now;
+  return remainingMs > 0 ? Math.ceil(remainingMs / 60000) : 0;
+};
+
+// 启动剩余时间更新定时器
+const startExpiryCountdown = () => {
+  if (expiryUpdateTimer) clearInterval(expiryUpdateTimer);
+  qrCodeRemainingMinutes.value = calculateRemainingMinutes();
+  expiryUpdateTimer = setInterval(() => {
+    qrCodeRemainingMinutes.value = calculateRemainingMinutes();
+    if (qrCodeRemainingMinutes.value <= 0) {
+      clearInterval(expiryUpdateTimer);
+    }
+  }, 60000); // 每分钟更新一次
+};
+
 onBeforeMount(() => {
   const userId = user.id;
   getCode();
@@ -86,16 +131,23 @@ let time = null;
 const getCode = () => {
   clearTimeout(time);
   const userId = user.id;
-  // TODO: 设置接口
+  // TODO: 设置接口url
   generateQRCode({
     userId,
     url: "https://sample.com/#/pages/parkingLot/parkingLot"
   }).then(res => {
-    url.value = res.data;
-    time = setTimeout(getCode, 1800000);
+    url.value = res.data.qrCodeUrl;
+    qrCodeExpireTime.value = res.data.expireTime;
+    startExpiryCountdown();
+    // time = setTimeout(getCode, 1800000);
+    ElMessage.success(`${user.userName}${t("couponIssuance.messages.getCouponSuccess")}`);
+
   });
 };
-onBeforeUnmount(() => clearTimeout(time));
+onBeforeUnmount(() => {
+  clearTimeout(time);
+  if (expiryUpdateTimer) clearInterval(expiryUpdateTimer);
+});
 </script>
 
 <template>
@@ -136,8 +188,15 @@ onBeforeUnmount(() => clearTimeout(time));
     <div class="w-[500px] mx-auto">
       <div class="text-center mb-[20px]">{{ t("couponIssuance.desktop.qrTitle") }}</div>
       <img :src="_src(url)" :alt="t('couponIssuance.desktop.qrAlt')" class="w-[200px] h-[200px] mx-auto block mb-[20px]" />
+      <div class="text-center mb-[10px]">
+        {{ t("couponIssuance.qrExpiry.label") }}<span class="font-semibold">{{ formatExpiryTime() }}</span>
+      </div>
       <div class="text-center">
         {{ t("couponIssuance.desktop.qrNotice") }}
+        <span v-if="qrCodeRemainingMinutes > 0" class="text-primary">
+          {{ t("couponIssuance.qrExpiry.remainingMinutes", { minutes: qrCodeRemainingMinutes }) }}
+        </span>
+        <span v-else class="text-danger">{{ t("couponIssuance.qrExpiry.expired") }}</span>
       </div>
       <el-row justify="center" style="width: 100%">
         <el-col :span="12">
