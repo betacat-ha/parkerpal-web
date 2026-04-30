@@ -137,7 +137,7 @@ export default {
     },
     messages: {
       noCouponLeft: ': No more coupons are available. Please contact the property manager.',
-      getCouponSuccess: 'Coupon received successfully'
+      getCouponSuccess: ': Coupon requested successfully'
     },
     qrExpiry: {
       label: 'QR Code Expiry Time: ',
