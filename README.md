@@ -1,8 +1,7 @@
-
 <div align="center">
   <img width="100px" alt="logo" style="width: 100px;
         height: 100px; border-radius: 15px; margin: 5;" src="./img/logo-round.png"/>
-  <p style="font-size: 24px; font-weight: bold;">智泊无忧小程序端</p>
+  <p style="font-size: 24px; font-weight: bold;">智泊无忧Web端</p>
 </div>
 <div align="center">
 <img alt="pnpm Version Badge" src="https://img.shields.io/badge/pnpm-9.15.0-orange">
@@ -12,9 +11,22 @@
 <img alt="GitHub License Badge" src="https://img.shields.io/github/license/betacat-ha/parkerpal-web">
 </div>
 
+
 该项目基于Vue3.0，结合TypeScript，UI框架采用Element Plus，3D地图采用ESMap。
 
 ---
+
+## 项目链接
+
+| 项目名           | 项目地址                                        |
+| ---------------- | ----------------------------------------------- |
+| 智泊无忧服务端   | https://github.com/betacat-ha/parkerpal-service |
+| 智泊无忧Web端    | https://github.com/betacat-ha/parkerpal-web     |
+| 智泊无忧小程序端 | https://github.com/betacat-ha/ParkerPal-uni-app |
+| 智泊无忧传感器   | https://github.com/betacat-ha/ParkerPal-Sensor  |
+
+
+
 
 ## 功能
 
