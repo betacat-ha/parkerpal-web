@@ -187,6 +187,13 @@ export default {
     owner: '车主',
     phone: '电话',
     status: '状态',
+    type: {
+      temporary: '临时车辆',
+      monthly: '月保车辆',
+      visitor: '访客车辆',
+      noPlate: '无牌车辆',
+      other: '其他车辆'
+    },
     carType: {
       internal: '内部车辆',
       enterprise: '所属企业公车',

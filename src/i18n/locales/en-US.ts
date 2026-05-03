@@ -7,10 +7,10 @@ export default {
     orderForm: 'Order Management',
     outboundOrder: 'Order Flow',
     vehicle: 'Parking Management',
-    carRentalSpace: 'Rental Space Management',
+    carRentalSpace: 'Coupon Management',
     vipCar: 'Internal Vehicles',
     visitorCar: 'Guest Vehicles',
-    journal: 'Vehicle In/Out Records',
+    journal: 'Vehicle Records',
     parkingSpaceManagement: 'Space Management',
     parkingSpaceReservation: 'Reservation Management',
     costManagement: 'Cost Management',
@@ -187,6 +187,13 @@ export default {
     owner: 'Owner',
     phone: 'Phone',
     status: 'Status',
+    type: {
+      temporary: 'Temporary Vehicles',
+      monthly: 'Monthly Parking Vehicles',
+      visitor: 'Visitor Vehicles',
+      noPlate: 'No Plate Vehicles',
+      other: 'Other Vehicles'
+    },
     carType: {
       internal: 'Internal Vehicles',
       enterprise: 'Company Fleet Vehicles',
