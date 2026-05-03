@@ -134,7 +134,7 @@ const getCode = () => {
   // TODO: 设置接口url
   generateQRCode({
     userId,
-    url: "https://sample.com/#/pages/parkingLot/parkingLot"
+    url: "https://localhost:8848/#/pages/parkingLot/parkingLot"
   }).then(res => {
     url.value = res.data.qrCodeUrl;
     qrCodeExpireTime.value = res.data.expireTime;
