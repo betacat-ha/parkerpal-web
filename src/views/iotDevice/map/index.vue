@@ -139,7 +139,9 @@ mapApp.setClickNodeCallback((eventData) => {
   DialogVisible.value.title = t('parking.reservation.dialog.title');
   DialogVisible.value.content = `${t('parking.reservation.dialog.confirmPrefix')}${parkingFloorLabel}${selectedParkingSpace.value.name}${t('parking.reservation.dialog.confirmSuffix')}`;
   DialogVisible.value.showCancel = true;
+  DialogVisible.value.showClose = true;
   DialogVisible.value.onConfirm = reserveParkingSpace;
+  DialogVisible.value.onBeforeClose = handleDialogClose;
   DialogVisible.value.visible = true;
 
   // mapApp.createParkingSpaceDetailPop({ x: mapCoord.x, y: mapCoord.y, fnum: FloorNum, id: ID, name: name });
