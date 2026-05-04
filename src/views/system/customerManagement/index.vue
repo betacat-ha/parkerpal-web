@@ -165,7 +165,7 @@ const statusList = computed(() => [
         <el-table-column align="center" :label="t('label.status')">
           <template #default="scope">
             <div class="text_box">
-              {{ statusList.find(item => item.value === scope.row.status)?.label ?? "--" }}
+              {{ statusList.find(item => item.value == scope.row.status)?.label ?? "--" }}
             </div>
           </template>
         </el-table-column>

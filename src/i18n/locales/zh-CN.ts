@@ -381,6 +381,7 @@ export default {
         userName: '单位名称',
         phoneNumber: '联系电话',
         roleId: '角色',
+        unitAddress: '单位地址',
         status: '状态',
         freeTime: '免费停车时长（分钟）',
         frontBusinessLicense: '营业执照',
@@ -391,6 +392,7 @@ export default {
         userName: '请输入单位名称',
         phoneNumber: '请输入联系电话',
         roleId: '请选择角色',
+        unitAddress: '请输入单位地址',
         status: '请选择状态',
         freeTime: '请输入免费停车时长'
       },

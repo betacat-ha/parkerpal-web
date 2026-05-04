@@ -381,6 +381,7 @@ export default {
         userName: 'Company Name',
         phoneNumber: 'Phone Number',
         roleId: 'Role',
+        unitAddress: 'Company Address',
         status: 'Status',
         freeTime: 'Free Parking Duration (Minutes)',
         frontBusinessLicense: 'Business License',
@@ -391,6 +392,7 @@ export default {
         userName: 'Please enter company name',
         phoneNumber: 'Please enter phone number',
         roleId: 'Please select role',
+        unitAddress: 'Please enter company address',
         status: 'Please select status',
         freeTime: 'Please enter free parking duration'
       },
