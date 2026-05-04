@@ -2,10 +2,11 @@
 import mapView from '@/components/mapView.vue'
 import { getParkingSpaceStatus, newOrUpdateSpaceReservationRecord } from "@/api";
 import { default as mapApp } from '@/utils/map/init'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { get } from 'sortablejs';
 import { number } from 'echarts';
 import { useSocket } from '@/utils/websocket'
+import { useI18n } from 'vue-i18n'
 import { useUserStoreHook } from "@/store/modules/user";
 import { parkingSpaceFNumList } from '@/views/data';
 
@@ -13,6 +14,10 @@ import { parkingSpaceFNumList } from '@/views/data';
 const mapViewRef = ref(null);
 
 const color = ["#7eacca", "#ff0000", "#00ff00"];
+
+// i18n
+const { t } = useI18n();
+const parkingSpaceFNumListLocal = computed(() => parkingSpaceFNumList(t));
 
 // websocket
 const account = useUserStoreHook().userInfo.account;
@@ -73,6 +78,17 @@ socket.on('message', (data: any) => {
 // 车位弹窗
 const isDialogVisible = ref(false); // 控制弹窗显示
 
+// 车位弹窗状态
+const DialogVisible = ref({
+  visible: false,
+  title: "",
+  content: "",
+  showCancel: false,
+  showClose: true,
+  onConfirm: () => { },
+  onBeforeClose: () => { }
+});
+
 // 处理弹窗关闭
 const handleDialogClose = () => {
   DialogVisible.value.visible = false;
@@ -81,9 +97,8 @@ const handleDialogClose = () => {
   DialogVisible.value.showCancel = false;
   DialogVisible.value.showClose = true;
   DialogVisible.value.onConfirm = () => { };
-  DialogVisible.value.onCancel = handleDialogClose;
   DialogVisible.value.onBeforeClose = handleDialogClose;
-}
+};
 
 // 预约车位请求
 const reserveParkingSpace = () => {
@@ -99,19 +114,8 @@ const reserveParkingSpace = () => {
     DialogVisible.value.showClose = false;
     DialogVisible.value.onConfirm = handleDialogClose;
     DialogVisible.value.visible = true;
-  })
-}
-
-const DialogVisible = ref({
-  visible: false,
-  title: "",
-  content: "",
-  showCancel: false,
-  showClose: true,
-  onConfirm: () => { },
-  onCancel: handleDialogClose,
-  onBeforeClose: handleDialogClose
-});
+  });
+};
 
 
 
@@ -132,7 +136,7 @@ mapApp.setClickNodeCallback((eventData) => {
 
   selectedParkingSpace.value = { name, id: ID, fnum: FloorNum };
   DialogVisible.value.title = "车位预约";
-  DialogVisible.value.content = `是否预约${parkingSpaceFNumList.find(item => Number(item.value) == selectedParkingSpace.value.fnum)?.label}${selectedParkingSpace.value.name}，15分钟内未到达车位，将自动取消预约，当月3次超时取消后将无法使用预约功能。`;
+  DialogVisible.value.content = `是否预约${parkingSpaceFNumListLocal.value.find(item => Number(item.value) == selectedParkingSpace.value.fnum)?.label}${selectedParkingSpace.value.name}，15分钟内未到达车位，将自动取消预约，当月3次超时取消后将无法使用预约功能。`;
   DialogVisible.value.showCancel = true;
   DialogVisible.value.onConfirm = reserveParkingSpace;
   DialogVisible.value.visible = true;
@@ -176,7 +180,7 @@ defineOptions({
       <template #footer>
         <div class="dialog-footer">
           <el-button type="primary" @click="DialogVisible.onConfirm">确定</el-button>
-          <el-button v-if="DialogVisible.showCancel" @click="DialogVisible.onCancel">取消</el-button>
+          <el-button v-if="DialogVisible.showCancel" @click="DialogVisible.onBeforeClose">取消</el-button>
         </div>
       </template>
     </el-dialog>
