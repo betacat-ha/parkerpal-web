@@ -28,7 +28,7 @@ import { setLocale, getLocale } from "@/i18n";
 const { locale } = useI18n();
 
 const currentLang = computed(() => {
-  return getLocale() === "zh-CN" ? "中文" : "EN";
+  return getLocale() === "zh-CN" ? "EN" : "中文";
 });
 
 const handleLanguageSwitch = (command: string) => {

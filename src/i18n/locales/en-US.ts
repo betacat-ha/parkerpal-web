@@ -122,7 +122,7 @@ export default {
       qrNotice: 'Dynamic code, can only be used once and is valid for 30 minutes.'
     },
     placeholders: {
-      plates: 'Please enter your license plate number / phone number (no plate vehicle)'
+      plates: 'Please enter the license plate number / phone number'
     },
     labels: {
       merchantCoupon: 'Merchant Coupon',
@@ -159,10 +159,10 @@ export default {
       discountAmount: 'Discount Amount',
       discountInfo: 'Discount Info',
       payableAmount: 'Amount Due',
-      success: 'Coupon received successfully',
+      success: 'Coupon issued successfully',
       noticePrefix: 'Please leave within',
       noticeHighlight: '30 minutes',
-      noticeSuffix: 'after receiving the coupon, otherwise parking fees must be paid.'
+      noticeSuffix: 'after issuing the coupon, otherwise parking fees must be paid.'
     }
   },
   // Other Pages
@@ -558,8 +558,8 @@ export default {
       labels: {
         remaining: 'Remaining Spaces',
         used: 'Used Spaces',
-        unissued: 'Unissued Coupon Spaces',
-        issued: 'Issued Coupon Spaces'
+        unissued: 'Unissued Coupon',
+        issued: 'Issued Coupon'
       }
     },
     trendChart: {
