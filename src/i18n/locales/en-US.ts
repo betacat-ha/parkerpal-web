@@ -589,7 +589,14 @@ export default {
       unreserved: 'Unreserved',
       reserved: 'Reserved',
       cancelled: 'Cancelled',
-      expired: 'Expired'
+      expired: 'Expired',
+      dialog: {
+        title: 'Parking Space Reservation',
+        confirmPrefix: 'Reserve ',
+        confirmSuffix: '? If you do not arrive within 15 minutes, the reservation will be cancelled automatically. After 3 timeout cancellations in a month, reservation will be unavailable.',
+        successTitle: 'Reservation Successful',
+        successContent: 'The parking space has been reserved successfully. Please arrive within 15 minutes, otherwise the reservation will be cancelled automatically.'
+      }
     },
     model: {
       default: 'MUST Parking'

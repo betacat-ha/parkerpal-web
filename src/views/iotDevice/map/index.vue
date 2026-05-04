@@ -109,8 +109,8 @@ const reserveParkingSpace = () => {
     reservationUserId: "2" // TODO: 此处为了测试，写死了用户ID，实际不需要传，后端会自动获取
   }).then(res => {
     console.log('预约车位请求成功', res);
-    DialogVisible.value.title = "预约成功";
-    DialogVisible.value.content = "车位预约成功，请在15分钟内到达车位，超时将自动取消预约。";
+    DialogVisible.value.title = t('parking.reservation.dialog.successTitle');
+    DialogVisible.value.content = t('parking.reservation.dialog.successContent');
     DialogVisible.value.showClose = false;
     DialogVisible.value.onConfirm = handleDialogClose;
     DialogVisible.value.visible = true;
@@ -135,8 +135,9 @@ mapApp.setClickNodeCallback((eventData) => {
   const { FloorNum, mapCoord, ID, name } = eventData;
 
   selectedParkingSpace.value = { name, id: ID, fnum: FloorNum };
-  DialogVisible.value.title = "车位预约";
-  DialogVisible.value.content = `是否预约${parkingSpaceFNumListLocal.value.find(item => Number(item.value) == selectedParkingSpace.value.fnum)?.label}${selectedParkingSpace.value.name}，15分钟内未到达车位，将自动取消预约，当月3次超时取消后将无法使用预约功能。`;
+  const parkingFloorLabel = parkingSpaceFNumListLocal.value.find(item => Number(item.value) === Number(selectedParkingSpace.value.fnum))?.label ?? '';
+  DialogVisible.value.title = t('parking.reservation.dialog.title');
+  DialogVisible.value.content = `${t('parking.reservation.dialog.confirmPrefix')}${parkingFloorLabel}${selectedParkingSpace.value.name}${t('parking.reservation.dialog.confirmSuffix')}`;
   DialogVisible.value.showCancel = true;
   DialogVisible.value.onConfirm = reserveParkingSpace;
   DialogVisible.value.visible = true;
@@ -160,9 +161,9 @@ defineOptions({
       <mapView ref="mapViewRef"></mapView>
       <div class="codition fix">
         <ul>
-          <li><span class="codition-first"></span>占用车位</li>
-          <li><span class="codition-second"></span>空闲车位</li>
-          <li><span class="codition-third"></span>固定车位</li>
+          <li><span class="codition-first"></span>{{ t('parking.status.occupied') }}</li>
+          <li><span class="codition-second"></span>{{ t('parking.status.empty') }}</li>
+          <li><span class="codition-third"></span>{{ t('parking.status.fixed') }}</li>
         </ul>
       </div>
       <!-- 公共气泡模块 -->
@@ -174,13 +175,13 @@ defineOptions({
 
 
     <!-- 预约对话框 -->
-    <el-dialog title="车位预约" v-model="DialogVisible.visible" width="30%" :before-close="DialogVisible.onBeforeClose"
+    <el-dialog :title="DialogVisible.title" v-model="DialogVisible.visible" width="30%" :before-close="DialogVisible.onBeforeClose"
       :show-close="DialogVisible.showClose" :close-on-click-modal="false" align-center>
       <span> {{ DialogVisible.content }} </span>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="DialogVisible.onConfirm">确定</el-button>
-          <el-button v-if="DialogVisible.showCancel" @click="DialogVisible.onBeforeClose">取消</el-button>
+          <el-button type="primary" @click="DialogVisible.onConfirm">{{ t('button.confirm') }}</el-button>
+          <el-button v-if="DialogVisible.showCancel" @click="DialogVisible.onBeforeClose">{{ t('button.cancel') }}</el-button>
         </div>
       </template>
     </el-dialog>

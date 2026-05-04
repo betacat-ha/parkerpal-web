@@ -641,7 +641,14 @@ export default {
       unreserved: '未预约',
       reserved: '已预约',
       cancelled: '已取消',
-      expired: '已过期'
+      expired: '已过期',
+      dialog: {
+        title: '车位预约',
+        confirmPrefix: '是否预约',
+        confirmSuffix: '，15分钟内未到达车位，将自动取消预约，当月3次超时取消后将无法使用预约功能。',
+        successTitle: '预约成功',
+        successContent: '车位预约成功，请在15分钟内到达车位，超时将自动取消预约。'
+      }
     },
     model: {
       default: '广师大停车场'
