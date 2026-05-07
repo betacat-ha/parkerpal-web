@@ -91,6 +91,9 @@
 ### 停车领券
 - 支持消费者领取停车优惠券，PC端与移动端均可领取。
 
+### 多语言支持
+- 采用i18n框架，目前支持中文、英文，后续添加更多语言支持。
+
 ---
 
 ## 特点
@@ -106,6 +109,14 @@
 
 
 ---
+
+
+
+## 截图
+
+![parkerpal-device-management](./img/parkerpal-device-management.png)
+
+![parkerpal-indoor-map](./img/parkerpal-indoor-map.png)
 
 ## 前端安装教程
 
