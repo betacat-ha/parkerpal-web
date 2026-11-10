@@ -67,7 +67,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "pinyin-pro": "^3.21.0",
-    "qs": "^6.12.1",
+    "qs": "^6.16.1",
     "responsive-storage": "^2.2.0",
     "sortablejs": "^1.15.2",
     "uuid": "^10.0.0",
